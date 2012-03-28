@@ -1,27 +1,15 @@
 @header-color: #262626;
-
-@foursquare: #0066CC;
-@instagram: #800000;
-
 .box-shadow(@arguments) {
   -webkit-box-shadow: @arguments;
   -moz-box-shadow: @arguments;
   box-shadow: @arguments;
 }
-html { 
-	height: 100% 
-}
-body { 
-	height: 100%; 
-	margin: 0; 
-	padding: 0 ;
-	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 #container {
 	height: 100%;
 	width: 100%;
 	margin: 0; 
-	padding: 0 ;
+	padding: 0;
+	font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 header {
@@ -29,6 +17,8 @@ background-color: @header-color;
 .box-shadow(0 1px 2px rgba(0,0,0,0.5));
 top:0;
 left:0;
+width: 100%;
+position: fixed;
 	#header_container {
 	width: 100%;
 		#logo {
@@ -40,41 +30,81 @@ left:0;
 }
 
 #main_container {
-	width: 100%;
-	#map_canvas { 
-		width: 100%;
-		height: 100%;
-		position: relative;
+width: 100%;
+height: 100px;
+}
+#loginwrapper {
+	margin: 50px auto;
+	height: 100px;
+	width: 200px;
+	border: solid 1px;
+	#login {
+		display: block;
+		padding: 10px;
+		cursor: pointer;
 	}
 }
-.mappin {
-	position: absolute;
-	background-repeat: no-repeat;
-	background-position: center bottom;
-	background-origin: content-box;
-	padding: 0;
-	cursor: pointer;
-	.mappinimage {
-		border-radius: 2px;
-		margin: 10px;
-		height: 35px;
-		width: 35px;
-		background-color: black;
+#mainview {
+margin-top: 45px;
+	#leftbar {
+		width: 300px;
+		min-height: 300px;
+		border-right :solid 1px #e5e5e5;
+		float: left;
 	}
-	.instagram {
-		border: solid 1px;
-		background-image: url(img/instagram.png);
+	#contentcontainer {
+		width: 600px;
+		float: left;
+		min-height: 300px;
+		//border: solid 1px;
+	}
+
+}
+.moduleview {
+	
+	margin: 5px;
+	padding: 20px 5px;
+	min-height: 100px;
+	border: solid 1px darken(#e5e5e5, 10%);
+	position: relative;
+	//border-top: solid 1px darken(#e5e5e5, 10%);
+	.modulename {
+	font-size: 17pt;
+	font-weight: 100;
+	letter-spacing: -1px;
+	}
+	.modulecode {
+		display: block;
+		position: absolute;
+		left: 5px;
+		top: 5px;
+		font-size: 11pt;
+		font-weight: 600;
+		letter-spacing: -1px;
+	}
+	.moduleicons {
+		position: absolute;
+		right: 5px;
+		bottom: 5px;
+		.moduleicon {
+		float: left;
 		background-size: 100%;
+		padding: 2px;
+		margin: 0px 3px;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		height: 25px;
+		width: 25px;
+		cursor: pointer;
+		}
+		.workbin {
+		background-image: url(img/workbin.png);
+		}
+		.gradebook {
+		background-image: url(img/gradebook.png);
+		}
+		.webcast {
+		background-image: url(img/webcast.png);
+		}
 	}
-	.foursquare {
-		border: solid 1px;
-		background-image: url(img/foursquare.png);
-		background-size: 100%;
-	}
-}
-.instagram {
-	background-image: url(img/arrowblack.png);
-}
-.foursquare {
-	background-image: url(img/arrowblack.png);
 }

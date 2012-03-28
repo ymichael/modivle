@@ -35,6 +35,18 @@ var ivle = (function($){
 			 * 	APICALLS (work in progress)
 			 */
 
+			//validate user
+			this.validate = function(success, error){
+				var endpoint = 'Validate';
+				var params = {
+					"APIKey" : apikey,
+					"Token" : this.authtoken,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error);
+			}
+
 			//modules
 			this.modules = function(success, error){
 				var endpoint = 'Modules';

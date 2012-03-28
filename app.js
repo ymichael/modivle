@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , routes = require('./routes');
 
@@ -15,7 +10,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'your secret here' }));
+  app.use(express.session({ secret: 'asdfasdfasdf' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -31,13 +26,19 @@ app.configure('production', function(){
 app.get('/', function(req,res){
   var variables = {};
   variables.title = "modIVLE";
-  
-  var bootstrap = {};
-  bootstrap.name = "asdf";
-  bootstrap.token = "asdfasdfasdf";
+  if (!req.session.bootstrap) req.session.bootstrap = {};
+  variables.bootstrap = req.session.bootstrap;
 
-  variables.bootstrap = bootstrap;
   res.render('index', variables)
+});
+
+app.get('/ivle/auth', function(req,res){
+  var token = req.query.token;
+  
+  //add token to session variable
+  if (!req.session.bootstrap) req.session.bootstrap = {};
+  req.session.bootstrap.token = token;
+  res.redirect('/', 301);
 });
 
 var port = process.env.PORT || 3000;
