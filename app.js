@@ -12,14 +12,16 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.session({ secret: 'asdfasdfasdf' }));
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.static(__dirname + '/public'));
 });
 app.configure('production', function(){
   app.use(express.errorHandler());
+  app.set('views', __dirname + '/viewsproduction');
+  app.use(express.static(__dirname + '/build'));
 });
 
 // Routes
