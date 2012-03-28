@@ -39,12 +39,6 @@ var ModIvle = Backbone.View.extend({
 			this.renderlogin();
 		}
 	},
-	events: {
-
-	},
-	render: function(){
-
-	},
 	renderlogin: function(){
 		var callbackurl = window.location.origin + "/ivle/auth";
 		this.$('#main_container').html(ich.login());
@@ -58,24 +52,29 @@ var MainView = Backbone.View.extend({
 		_.bindAll(this, 'render');
 		this.user = options.user;
 		this.modules = options.modules;
+		this.modules.on('reset', this.fixheight, this);
+
+		var fixheight = function(){
+			var winheight = $(window).height() - 50;
+			var height = winheight < $("#leftbar").children().length * 120 ? $("#leftbar").children().length * 170 : winheight;
+
+			$("#leftbar").height(height);
+			$("#contentcontainer").height(height).width($(window).width()-305);
+		};
+		var lazyresize = _.debounce(fixheight, 300);
+		//bind resize event
+		$(window).resize(lazyresize);
 	},
 	render: function(){
 		this.$el.html(ich.mainview());
 		//resize divs
 		this.$("#leftbar").height($(window).height() - 50);
 		this.$("#contentcontainer").height($(window).height() - 50).width($(window).width()-305);
-		var fixheight = function(){
-			this.$("#leftbar").height($(window).height() - 50);
-			this.$("#contentcontainer").height($(window).height() - 50).width($(window).width()-305);
-		};
-		fixheight();
-		var lazyresize = _.debounce(fixheight, 300);
-		//bind resize event
-		$(window).resize(lazyresize);
-
 		this.leftbar = new v.ModulesView({collection: this.modules, el: this.$('#leftbar')});
-		this.leftbar.render();
 		return this;
+	},
+	fixheight: function(){
+		$(window).resize();
 	},
 	events: {}
 });
@@ -83,6 +82,7 @@ var v = {};
 v.ModulesView = Backbone.View.extend({
 	initialize: function(){
 		this.collection.on('reset', this.render, this);
+		this.$el.addClass('loading');
 	},
 	render: function(){
 		var fragment = document.createDocumentFragment();
@@ -91,12 +91,13 @@ v.ModulesView = Backbone.View.extend({
 			fragment.appendChild(x.render().el);
 		},this);
 		this.$el.html(fragment);
+		this.$el.removeClass('loading');
+		return this;
 	}
 });
 v.ModuleView = Backbone.View.extend({
 	className: "moduleview",
 	initialize: function(){
-
 	},
 	render: function(){
 		this.$el.html(ich.moduleview(this.model.simpleinfo));

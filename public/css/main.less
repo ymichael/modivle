@@ -14,6 +14,7 @@
 
 header {
 background-color: @header-color;
+z-index: 50;
 .box-shadow(0 1px 2px rgba(0,0,0,0.5));
 top:0;
 left:0;
@@ -46,6 +47,7 @@ height: 100px;
 }
 #mainview {
 margin-top: 45px;
+padding-bottom: 50px;
 	#leftbar {
 		width: 300px;
 		min-height: 300px;
@@ -60,8 +62,13 @@ margin-top: 45px;
 	}
 
 }
+.loading {
+background-image:url(img/loading.gif);
+background-position: center top;
+background-size: 100%;
+background-repeat: no-repeat;
+}
 .moduleview {
-	
 	margin: 5px;
 	padding: 20px 5px;
 	min-height: 100px;
