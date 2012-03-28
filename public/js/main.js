@@ -1,9 +1,9 @@
 require.config({
 	paths: {
-		'jquery': "libs/jquery-1.7.1.min",
+		'jquery': "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min",
 		'underscore': "libs/underscore-min",
 		'backbone': "libs/backbone-min",
-		'ich': "libs/icanhazamd",
+		'ich': "libs/icanhazamd.min",
 		'ivle': "libs/ivle",
 
 		'mainapp' : "scripts/app",
