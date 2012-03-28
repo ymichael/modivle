@@ -21,7 +21,7 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
   app.set('views', __dirname + '/viewsproduction');
-  app.use(express.static(__dirname + '/build'));
+  app.use(express.static(__dirname + '/build', { maxAge: 86400000 }));
 });
 
 // Routes
