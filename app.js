@@ -9,7 +9,6 @@ var express = require('express')
 var app = module.exports = express.createServer();
 
 // Configuration
-
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -24,14 +23,22 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
-
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
 // Routes
+app.get('/', function(req,res){
+  var variables = {};
+  variables.title = "modIVLE";
+  
+  var bootstrap = {};
+  bootstrap.name = "asdf";
+  bootstrap.token = "asdfasdfasdf";
 
-app.get('/', routes.index);
+  variables.bootstrap = bootstrap;
+  res.render('index', variables)
+});
 
 var port = process.env.PORT || 3000;
 app.listen(port, function() {

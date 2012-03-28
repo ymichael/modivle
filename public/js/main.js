@@ -4,6 +4,7 @@ require.config({
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
+		'ivle': "libs/ivle",
 
 		'mainapp' : "scripts/app",
 		'appmodels': "scripts/models",
@@ -12,16 +13,6 @@ require.config({
 });
 require(['mainapp'], 
 function(app){
-	$(function(){
-		setTimeout(function() { window.scrollTo(0, 1) }, 100);
-	});
-
-	var loadmap = function(){
-		var googlemaps = $("<script type='text/javascript' src='http://maps.googleapis.com/maps/api/js?key=AIzaSyBqqSM8IWCEe1QsLf3w_11H5Mi4ZWWrDPo&sensor=true&callback=initialize'></script>");
-		$("body").append(googlemaps);
-	}
-
-	var a = new app();
-	window.initialize = a.init;
-	loadmap();
+	var x = new app();
+	x.init();
 });
