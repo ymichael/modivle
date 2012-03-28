@@ -1,8 +1,8 @@
 require.config({
 	paths: {
-		'jquery': "libs/jquery-1.7.1",
-		'underscore': "libs/underscore",
-		'backbone': "libs/backbone",
+		'jquery': "libs/jquery-1.7.1.min",
+		'underscore': "libs/underscore-min",
+		'backbone': "libs/backbone-min",
 		'ich': "libs/icanhazamd",
 		'ivle': "libs/ivle",
 
