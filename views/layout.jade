@@ -2,5 +2,8 @@
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(name="viewport", content="initial-scale=1.0, user-scalable=no")
+    link(rel='stylesheet', href='/css/normalize.css')
+    link(rel="stylesheet/less", href="css/main.less")
+    script(src="js/libs/less-1.1.5.min.js")
   body!= body
