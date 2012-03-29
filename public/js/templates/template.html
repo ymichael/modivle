@@ -1,21 +1,66 @@
 <script id='login' type='text/html'>
-	<div id='loginwrapper'>
-		<a id="login">login to ivle</a>
-	</div>
+	<div id='login' title='login'></div>
 </script>
+<script id='headeruser' type='text/html'>
+	<div id='logout' title='logout'></div>
+</script>
+
+
 <script id='mainview' type='text/html'>
-	<div id='leftbar'>
+	<div id='leftbar'></div>
+	<div id='contentcontainer'></div>
+</script>
 
-	</div>
-	<div id='contentcontainer'>
-
+<script id='usersnapshot' type='text/html'>
+	<div id='usersnapshot'>
+		<span>welcome.</span>
 	</div>
 </script>
+
+
 <script id='moduleview' type='text/html'>
-	<span class='modulename'> {{name}} </span>
 	<span class='modulecode'> {{code}} </span>
-	<div class='moduleicons'></div>
+	<div class='moduleicon'></div>
 </script>
+
 <script id='moduleicon' type='text/html'>
 	<div class='moduleicon {{type}}' title="{{type}}"></div>
+</script>
+
+
+<script id='workbinview' type='text/html'>
+	<div id='workbinheading'>
+		<div class='breadcrumbs'></div>
+	</div>
+	<div id='filescontainertop' class='itemview'>
+		<div class="itemname">
+			<span>Name</span>
+		</div>
+		<div class="itemtype">
+			<span>Kind</span>
+		</div>
+		<div class="itemsize">
+			<span>Size</span>
+		</div>
+	</div>
+	<div id='filescontainer'><div>
+</script>
+<script id='breadcrumb' type='text/html'>
+	<div class='arrow'></div>
+	<span>{{name}}</span>
+</script>
+
+
+
+<script id='itemview' type='text/html'>
+	<div class="itemname">
+		<div class='itemicon'></div>
+		<span>{{name}}</span>
+	</div>
+	<div class="itemtype">
+		<span>{{type}}</span>
+	</div>
+	<div class="itemsize">
+		<span>{{size}}</span>
+	</div>
 </script>

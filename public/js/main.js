@@ -5,7 +5,9 @@ require.config({
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
 		'ivle': "libs/ivle",
-		'mainapp' : "scripts/app"
+		'mainapp' : "scripts/app",
+		'appmodels' : "scripts/models",
+		'appviews' : "scripts/views"
 	}
 });
 require(['mainapp'], 

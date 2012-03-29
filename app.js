@@ -1,5 +1,8 @@
 var express = require('express')
-  , routes = require('./routes');
+  , routes = require('./routes')
+  , redisstore = require('connect-redis')(express); // redis sessions
+
+
 
 var app = module.exports = express.createServer();
 
@@ -10,7 +13,11 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'asdfasdfasdf' }));
+  
+  // redis session store.
+  var sessionstore = new redisstore;
+  app.use(express.session({ secret: "5{6?8j6^@%$R^Q+", store: sessionstore }));
+  
   app.use(app.router);
 });
 
@@ -37,17 +44,22 @@ app.get('/', function(req,res){
   } else {
   	variables.layout = "layoutdev";  
   }
-  
   res.render('index', variables)
 });
 
 app.get('/ivle/auth', function(req,res){
   var token = req.query.token;
-  
   //add token to session variable
   if (!req.session.bootstrap) req.session.bootstrap = {};
   req.session.bootstrap.token = token;
+  console.log('adsf');
   res.redirect('/', 301);
+});
+
+app.get('/logout', function(req,res){
+  req.session.destroy(function(err){
+    res.redirect('/', 301);  
+  });
 });
 
 var port = process.env.PORT || 3000;

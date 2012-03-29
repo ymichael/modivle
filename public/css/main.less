@@ -4,114 +4,298 @@
   -moz-box-shadow: @arguments;
   box-shadow: @arguments;
 }
+#overlay {
+	position: fixed;
+	top: 0;
+	
+	/* Fallback for web browsers that doesn't support RGBa */
+	//background: rgb(0, 0, 0);
+	/* RGBa with 0.6 opacity */
+	background: rgba(0, 0, 0, 0.3);
+	z-index: 50;
+	display: none;
+	width: 100%;
+	height: 100%;
+	.loading {
+		font-size: 20px;
+		margin: auto;
+		position: relative;
+		top: 100px;
+		background-color: white;
+		display: block;
+		width: 400px;
+		color: #555;
+		border :solid 1px;
+		text-align: center;
+		padding: 50px;
+		#close {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		height: 15px;
+		width: 15px;
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		background-image: url(/img/close.png);
+		cursor: pointer;
+		}
+	}
+}
 #container {
 	height: 100%;
-	width: 100%;
-	margin: 0; 
+	width: 960px;
+	margin: 0 auto; 
 	padding: 0;
-	font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-
+body {
+font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
+font-weight: normal;
+color: #555;
+letter-spacing: -1px;
+}
 header {
-background-color: @header-color;
-z-index: 50;
-.box-shadow(0 1px 2px rgba(0,0,0,0.5));
-top:0;
-left:0;
 width: 100%;
-position: fixed;
 	#header_container {
 	width: 100%;
-		#logo {
-		height: 30px;
-		padding: 5px 5px 5px;
-		}	
+	height: 50px;
+	margin-top: 20px;
+		#login {
+			margin: auto;
+		}
+		#logout {
+			float: right;
+		}
+		#login, #logout {
+		height: 20px;
+		width: 20px;
+		padding: 10px;
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		background-image: url(/img/logout.png);
+		cursor: pointer;
+		}
 	}
-
 }
 
 #main_container {
 width: 100%;
-height: 100px;
+float: left;
+margin-bottom: 200px;
 }
-#loginwrapper {
-	margin: 50px auto;
-	height: 100px;
+#leftbar {
 	width: 200px;
-	border: solid 1px;
-	#login {
-		display: block;
-		padding: 10px;
-		cursor: pointer;
+	min-height: 300px;
+	float: left;
+	#usersnapshot {
+	font-size: 20px;
+	padding: 0px;
+	margin: 10px 5px;
+	border-bottom: solid 1px #e5e5e5;
 	}
 }
-#mainview {
-margin-top: 45px;
-padding-bottom: 50px;
-	#leftbar {
-		width: 300px;
-		min-height: 300px;
-		border-right :solid 1px #e5e5e5;
-		float: left;
-	}
-	#contentcontainer {
-		width: 600px;
-		float: left;
-		min-height: 300px;
-		//border: solid 1px;
-	}
-
+#contentcontainer {
+	width: 750px;
+	float: right;
+	min-height: 300px;
 }
-.loading {
-background-image:url(/img/loading.gif);
-background-position: center top;
-background-size: 100%;
-background-repeat: no-repeat;
-}
+// .loading {
+// background-image:url(/img/loading.gif);
+// background-position: center top;
+// background-size: 100%;
+// background-repeat: no-repeat;
+// }
 .moduleview {
-	margin: 5px;
-	padding: 20px 5px;
-	min-height: 100px;
-	border: solid 1px darken(#e5e5e5, 10%);
-	position: relative;
-	//border-top: solid 1px darken(#e5e5e5, 10%);
-	.modulename {
-	font-size: 17pt;
-	font-weight: 100;
+cursor: pointer;
+margin: 5px;
+min-height: 35px;
+border: solid 1px darken(#e5e5e5, 10%);
+position: relative;
+	.modulecode {
+	display: block;
+	position: absolute;
+	left: 35px;
+	top: 6px;
+	font-size: 20px;
 	letter-spacing: -1px;
 	}
-	.modulecode {
-		display: block;
-		position: absolute;
-		left: 5px;
-		top: 5px;
-		font-size: 11pt;
-		font-weight: 600;
-		letter-spacing: -1px;
+	.moduleicon {
+	float: left;
+	padding: 5px;
+	height: 23px;
+	width: 23px;
+	background-size: 100%;
+	background-origin: content-box;
+	background-repeat: no-repeat;
+	background-image: url(/img/module.png);
 	}
-	.moduleicons {
-		position: absolute;
-		right: 5px;
-		bottom: 5px;
-		.moduleicon {
-		float: left;
-		background-size: 100%;
-		padding: 2px;
-		margin: 0px 3px;
-		background-origin: content-box;
-		background-repeat: no-repeat;
-		height: 25px;
-		width: 25px;
-		cursor: pointer;
+}
+
+
+#filescontainer {
+border: solid 1px #e5e5e5;
+}
+#workbinheading {
+	height: 40px;
+	.breadcrumbs {
+	padding: 5px 0px;
+		.breadcrumb {
+		border-left: solid 1px #e5e5e5;
+			.arrow {
+			display: inline-block;
+			height: 15px;
+			width: 15px;
+			background-origin: content-box;
+			background-repeat: no-repeat;
+			background-size: 100%;
+			background-image: url(/img/next.png);
+			}
+			float: left;
+			font-size: 18px;
+			padding: 5px;
+			padding-left: 5px;
 		}
-		.workbin {
-		background-image: url(/img/workbin.png);
+		.parent {
+			cursor: pointer;
 		}
-		.gradebook {
-		background-image: url(/img/gradebook.png);
+		.parent:hover span{ 
+			text-decoration: underline;
 		}
-		.webcast {
-		background-image: url(/img/webcast.png);
+		.current {
+			color: black;
 		}
 	}
 }
+
+#filescontainertop {
+background-color: #e5e5e5;
+border-top: solid 1px darken(#e5e5e5, 30%);
+border-bottom: solid 1px darken(#e5e5e5, 30%);
+height: 30px;
+cursor: auto;
+span {
+		position: absolute;
+		bottom: 8px;
+		color: #555;
+		font-size: 14px;
+		display: block;
+}
+}
+.itemview:hover {
+background-color: lighten(#e5e5e5, 3%);
+}
+.itemview {
+width: 100%;
+height: 40px;
+position: relative;
+padding-top: 5px;
+font-size: 14px;
+border-bottom: solid 1px darken(#e5e5e5,10%);
+cursor: pointer;
+	.itemname {
+	float: left;
+	width: 55%;
+	height: 100%;
+	position: relative;
+		span {
+		position: absolute;
+		bottom: 12px;
+		display: block;
+		margin-left: 45px;
+		}
+		.itemicon {
+		position: absolute;
+		left: 0;
+		padding: 5px;
+		height: 25px;
+		width: 25px;
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		}
+
+	}
+	.itemtype {
+		span {
+		position: absolute;
+		bottom: 12px;
+		display: block;
+		font-size: 12px;
+		color: lighten(#555, 20%);
+		}
+	float: left;
+	width: 25%;
+	height: 100%
+	}
+	.itemsize {
+		span {
+		position: absolute;
+		bottom: 12px;
+		font-size: 12px;
+		display: block;
+		color: lighten(#555, 20%);
+		}
+	float: left;
+	width: 20%;
+	height: 100%
+	}
+}
+
+.folderview {
+	.itemicon{
+	background-image: url(/img/folder.png);
+	}
+}
+.fileview {
+	.itemicon {
+	background-image: url(/img/file.png);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
