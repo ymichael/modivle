@@ -52,7 +52,6 @@ app.get('/ivle/auth', function(req,res){
   //add token to session variable
   if (!req.session.bootstrap) req.session.bootstrap = {};
   req.session.bootstrap.token = token;
-  console.log('adsf');
   res.redirect('/', 301);
 });
 
