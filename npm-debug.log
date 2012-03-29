@@ -1,0 +1,46 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'uglifyjs', '-g' ]
+info using npm@1.1.12
+info using node@v0.6.14
+verbose config file /Users/michael/.npmrc
+verbose config file /usr/local/etc/npmrc
+verbose config file /usr/local/lib/node_modules/npm/npmrc
+silly exec /usr/local/bin/node "/usr/local/lib/node_modules/npm/bin/npm-get-uid-gid.js" "nobody" 20
+silly spawning [ '/usr/local/bin/node',
+silly spawning   [ '/usr/local/lib/node_modules/npm/bin/npm-get-uid-gid.js',
+silly spawning     'nobody',
+silly spawning     20 ],
+silly spawning   null ]
+silly output from getuid/gid {"uid":-2,"gid":20}
+silly output from getuid/gid 
+verbose cache add [ 'uglifyjs', null ]
+silly cache add: name, spec, args [ undefined, 'uglifyjs', [ 'uglifyjs', null ] ]
+verbose parsed url { pathname: 'uglifyjs', path: 'uglifyjs', href: 'uglifyjs' }
+verbose addNamed [ 'uglifyjs', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'uglifyjs', '', false ]
+verbose raw, before any munging uglifyjs
+verbose url resolving [ 'https://registry.npmjs.org/', './uglifyjs' ]
+verbose url resolved https://registry.npmjs.org/uglifyjs
+http GET https://registry.npmjs.org/uglifyjs
+http 404 https://registry.npmjs.org/uglifyjs
+silly get cb [ 404,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     date: 'Thu, 29 Mar 2012 05:36:45 GMT',
+silly get cb     'content-type': 'application/json',
+silly get cb     'content-length': '52',
+silly get cb     'cache-control': 'must-revalidate' } ]
+ERR! 404 'uglifyjs' is not in the npm registry.
+ERR! 404 You should bug the author to publish it
+ERR! 404 Note that you can also install from a
+ERR! 404 tarball, folder, or http url, or git url.
+ERR! 
+ERR! System Darwin 11.3.0
+ERR! command "node" "/usr/local/bin/npm" "install" "uglifyjs" "-g"
+ERR! cwd /Users/michael/Dropbox/Projects/modivle
+ERR! node -v v0.6.14
+ERR! npm -v 1.1.12
+ERR! code E404
+ERR! message 404 Not Found: uglifyjs
+ERR! errno {}
+verbose exit [ 1, true ]

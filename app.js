@@ -20,7 +20,6 @@ app.configure('development', function(){
 });
 app.configure('production', function(){
   app.use(express.errorHandler());
-  app.set('views', __dirname + '/viewsproduction');
   app.use(express.static(__dirname + '/build', { maxAge: 86400000 }));
 });
 
@@ -30,7 +29,15 @@ app.get('/', function(req,res){
   variables.title = "modIVLE";
   if (!req.session.bootstrap) req.session.bootstrap = {};
   variables.bootstrap = req.session.bootstrap;
-
+  
+  var production = process.env.NODE_ENV;
+  // $ NODE_ENV=production node app.js
+  if (production){
+  	variables.layout = "layoutprod";
+  } else {
+  	variables.layout = "layoutdev";  
+  }
+  
   res.render('index', variables)
 });
 
