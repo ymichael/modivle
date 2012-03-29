@@ -40,7 +40,9 @@ var ModIvle = Backbone.View.extend({
 		}
 	},
 	renderlogin: function(){
-		var callbackurl = window.location.origin + "/ivle/auth";
+		var re = new RegExp("^(.+" + window.location.host+ ")");
+		var callbackurl =  re.exec(window.location.href)[1] + "/ivle/auth";
+
 		this.$('#main_container').html(ich.login());
 		this.ivle.auth(this.$('#login'), callbackurl);
 	}
