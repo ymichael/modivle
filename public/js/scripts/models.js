@@ -52,6 +52,7 @@ m.File = Backbone.Model.extend({
 		var bytes = this.get('FileSize');
 
 		simpleinfo.size = this.calcfilesize(bytes);
+		simpleinfo.filetype = this.get('FileType')
 		simpleinfo.type = this.get('FileType')+ " document";
 		this.simpleinfo = simpleinfo;
 
@@ -140,7 +141,7 @@ m.Modules = Backbone.Collection.extend({
 			  url: "/modules",
 			  data: {modules : modules},
 			  success: function(data){
-			  	console.log(data);
+			  	//console.log(data);
 			  },
 			  dataType: 'json'
 			});

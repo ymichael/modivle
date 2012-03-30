@@ -7,7 +7,7 @@ require.config({
 		'ivle': "libs/ivle",
 		'mainapp' : "scripts/app",
 		'appmodels' : "scripts/models",
-		'appviews' : "scripts/views"
+		'appviews' : "scripts/views",
 	}
 });
 require(['mainapp'], 

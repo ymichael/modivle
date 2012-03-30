@@ -16,7 +16,7 @@ var ModIvle = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
 		var apikey = "ba1ge5NQ9cl76KQNI1Suc";
-		this.ivle = new ivle(apikey);
+		this.ivle = new ivle(apikey, '/proxy/');
 
 		_.bindAll(this, 'init');
 	},
