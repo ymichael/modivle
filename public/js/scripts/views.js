@@ -7,6 +7,7 @@ var v = {};
 v.ModulesView = Backbone.View.extend({
 	initialize: function(){
 		this.collection.on('reset', this.render, this);
+		this.collection.on('add', this.render, this);
 		this.$el.addClass('loading');
 	},
 	render: function(){

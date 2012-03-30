@@ -55,6 +55,17 @@ app.get('/ivle/auth', function(req,res){
   res.redirect('/', 301);
 });
 
+app.post('/modules', function(req,res){
+  if (!req.session.bootstrap)req.session.bootstrap = {};
+  if (!req.session.bootstrap.token){
+    res.redirect('/', 301);
+  } else {
+    var modules = req.body;
+    req.session.bootstrap.modules = req.body.modules;
+    res.json({updatestatus: "Success"});
+  }
+});
+
 app.get('/logout', function(req,res){
   req.session.destroy(function(err){
     res.redirect('/', 301);  

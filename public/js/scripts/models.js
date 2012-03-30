@@ -119,7 +119,7 @@ m.Module = Backbone.Model.extend({
 m.Modules = Backbone.Collection.extend({
 	initialize: function(models, options){
 		this.user = options.user;
-		_.bindAll(this, 'fetch');
+		_.bindAll(this, 'fetch','update');
 	},
 	model: m.Module,
 	fetch: function(callback){
@@ -132,6 +132,47 @@ m.Modules = Backbone.Collection.extend({
 			}, that);
 			that.reset(modules);
 			callback();
+			
+			var modules = JSON.stringify(data.Results);
+			//save state
+			$.ajax({
+			  type: 'POST',
+			  url: "/modules",
+			  data: {modules : modules},
+			  success: function(data){
+			  	console.log(data);
+			  },
+			  dataType: 'json'
+			});
+		});
+	},
+	update: function(callback){
+		var that = this;
+		this.user.modules(function(data){
+			var changes = _.filter(data.Results,function(module){
+				return ! that.get(module.ID);
+			},that)
+			
+			if (changes.length > 0){
+				var modules = _.map(changes, function(module){
+					var x = new m.Module(module);
+					x.user = that.user;
+					return x;
+				}, that);
+	
+				that.add(modules);
+				var modules = JSON.stringify(data.Results);
+				//save state
+				$.ajax({
+				  type: 'POST',
+				  url: "/modules",
+				  data: {modules : modules},
+				  success: function(data){
+				  	// console.log(data);
+				  },
+				  dataType: 'json'
+				});
+			}
 		});
 	}
 });

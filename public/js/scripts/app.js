@@ -27,14 +27,25 @@ var ModIvle = Backbone.View.extend({
 			this.usertoken = this.bootstrap.token;
 			this.user = new this.ivle.user(this.usertoken);
 			
-			this.loading();
+			if (this.bootstrap.modules) {
+				//modules availible on server
+				var that = this;
+				var modules = _.map($.parseJSON(this.bootstrap.modules), function(module){
+					var x = new m.Module(module);
+					x.user = that.user;
+					return x;
+				}, that);
+				this.modules = new m.Modules(modules,{user: this.user});
+				this.modules.update();	
+			} else {
+				var that = this;
+				this.loading();
+				this.modules = new m.Modules([],{user: this.user});
+				this.modules.fetch(function(){
+					that.stoploading();
+				});	
+			}
 			//user modules
-			var that = this;
-			this.modules = new m.Modules([],{user: this.user});
-			this.modules.fetch(function(){
-				that.stoploading();
-			});
-			
 			this.render();
 		} else {
 			//not authenticated
