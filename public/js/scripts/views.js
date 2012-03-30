@@ -8,7 +8,6 @@ v.ModulesView = Backbone.View.extend({
 	initialize: function(){
 		this.collection.on('reset', this.render, this);
 		this.collection.on('add', this.render, this);
-		this.$el.addClass('loading');
 	},
 	render: function(){
 		var fragment = document.createDocumentFragment();
@@ -17,7 +16,6 @@ v.ModulesView = Backbone.View.extend({
 			fragment.appendChild(x.render().el);
 		},this);
 		this.$el.html(fragment);
-		this.$el.removeClass('loading');
 		return this;
 	}
 });
@@ -140,6 +138,7 @@ v.WorkbinView = Backbone.View.extend({
 	initialize: function(options){
 		this.currentitem = options.currentitem;
 		this.currentitem.on('all', this.render, this);
+		_.bindAll(this, 'sortbyname');
 	},
 	render: function(){
 		//mainframe
@@ -163,6 +162,21 @@ v.WorkbinView = Backbone.View.extend({
 		},this);
 		this.$('#filescontainer').html(fragment);
 		return this;
+	},
+	events: {
+		"click #filescontainertop .itemname": "sortbyname"
+	},
+	sortbyname: function(){
+		if (!this.sorted){
+			this.currentitem.items.reset(_.sortBy(this.currentitem.items.models, function(model){
+				return model.simpleinfo.name;
+			}, this));
+			this.render();
+			this.sorted = true;
+		} else {
+			this.currentitem.items.reset(this.currentitem.items.models.reverse());
+			this.render();
+		}
 	}
 });
 v.FileView = Backbone.View.extend({
