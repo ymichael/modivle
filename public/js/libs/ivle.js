@@ -12,6 +12,7 @@ var ivle = (function($){
 			type: 'GET',
 			dataType: 'jsonp',
 			data: params,
+			contentType:"application/x-javascript",
 			url: url,
 			success: success,
 			error: error
