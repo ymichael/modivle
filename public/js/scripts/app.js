@@ -31,7 +31,7 @@ var ModIvle = Backbone.View.extend({
 				//modules availible on server
 				var that = this;
 				var modules = _.map(this.bootstrap.modules, function(module){
-					console.log(module);
+					// console.log(module);
 					var x = new m.Module(module);
 					// console.log(module);
 					x.user = that.user;
