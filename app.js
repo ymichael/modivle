@@ -1,5 +1,6 @@
 var express = require('express')
   , routes = require('./routes')
+  , _ = require('underscore')
   , redisstore = require('connect-redis')(express); // redis sessions
 
 
@@ -16,7 +17,7 @@ app.configure(function(){
   
   // redis session store.
   var sessionstore = new redisstore;
-  app.use(express.session({ secret: "5{6?8j6^@%$R^Q+", store: sessionstore }));
+  app.use(express.session({ secret: "5{6?8j6^@%$R^Q+", store: sessionstore, maxAge: 1209600 }));
   
   app.use(app.router);
 });
@@ -34,9 +35,10 @@ app.configure('production', function(){
 app.get('/', function(req,res){
   var variables = {};
   variables.title = "modIVLE";
-  if (!req.session.bootstrap) req.session.bootstrap = {};
+  if (!req.session.bootstrap){
+    req.session.bootstrap = {};
+  }
   variables.bootstrap = req.session.bootstrap;
-  
   var production = process.env.NODE_ENV;
   // $ NODE_ENV=production node app.js
   if (production){
@@ -51,24 +53,46 @@ app.get('/ivle/auth', function(req,res){
   var token = req.query.token;
   //add token to session variable
   if (!req.session.bootstrap) req.session.bootstrap = {};
-  req.session.bootstrap.token = token;
-  res.redirect('/', 301);
+  
+  //regenerate new session
+  req.session.regenerate(function(err){
+    //tmp measure. todo.
+    if (err) {
+      res.redirect('/');
+    } else {
+      req.session.bootstrap.token = token;
+      res.redirect('/', 302);
+    }
+  });
 });
 
 app.post('/modules', function(req,res){
-  if (!req.session.bootstrap)req.session.bootstrap = {};
-  if (!req.session.bootstrap.token){
-    res.redirect('/', 301);
+  if (!req.session.bootstrap || !req.session.bootstrap.token){
+    res.redirect('/', 302);
   } else {
-    var modules = req.body;
-    req.session.bootstrap.modules = req.body.modules;
+    var modules = req.body.modules;
+    req.session.bootstrap.modules = modules;
     res.json({updatestatus: "Success"});
   }
 });
 
+app.post('/workbin', function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
+    res.redirect('/', 302);
+  } else {
+    _.each(req.session.bootstrap.modules, function(module){
+      if (module.ID == req.body.moduleid){
+        module.workbin = req.body.workbin;
+      }
+    });
+    res.json({updatestatus: "Success"});
+  }
+});
+
+
 app.get('/logout', function(req,res){
   req.session.destroy(function(err){
-    res.redirect('/', 301);  
+    res.redirect('/', 302);
   });
 });
 

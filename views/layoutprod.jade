@@ -2,10 +2,8 @@
 html
   head
     title= title
-    meta(name="viewport", content="initial-scale=1.0, user-scalable=no")
     link(rel="stylesheet", href="css/main.css")
-  body!= body
-    script(type="text/javascript").
+      script(type="text/javascript").
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-30405365-1']);
         _gaq.push(['_trackPageview']);
@@ -15,3 +13,4 @@ html
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
+  body!= body

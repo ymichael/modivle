@@ -15,7 +15,8 @@ m.Folder = Backbone.Model.extend({
 		if (count == 0){
 			simpleinfo.size = "empty";
 		} else {
-			simpleinfo.size = (count + this.get('Folders').length) + " items";	
+			if (this.get('Folders')) count = parseInt(count, 10) + this.get('Folders').length;
+			simpleinfo.size = count + " items";	
 		}
 		
 		simpleinfo.type = "folder";
@@ -67,7 +68,7 @@ m.File = Backbone.Model.extend({
 			bytes = bytes / Math.pow(2, 10);
 		}
 
-		return bytes.toFixed(2).toString().slice(0,6) + " " + unit[index];
+		return parseInt(bytes).toFixed(2).toString().slice(0,6) + " " + unit[index];
 	}
 });
 
@@ -94,25 +95,68 @@ m.Workbin = Backbone.Model.extend({
 
 m.Module = Backbone.Model.extend({
 	initialize: function(options){
-		_.bindAll(this, 'fetchworkbin');
+		_.bindAll(this, 'fetchworkbin','thinfolder');
 		var simpleinfo = {}
 		simpleinfo.code = this.get('CourseCode');
 		simpleinfo.name = this.get('CourseName');
 		simpleinfo.semester = this.get('CourseSemester');
 		simpleinfo.year = this.get('CourseAcadYear');
-		simpleinfo.workbin = this.get('Workbins');
-		simpleinfo.gradebook = this.get('Gradebooks');
-		simpleinfo.webcast = this.get('Webcasts');
-		simpleinfo.forum = this.get('Forums');
+		// simpleinfo.workbin = this.get('Workbins');
+		// simpleinfo.gradebook = this.get('Gradebooks');
+		// simpleinfo.webcast = this.get('Webcasts');
+		// simpleinfo.forum = this.get('Forums');
 		this.simpleinfo = simpleinfo;
 		this.set({id: this.get('ID')});
-		this.workbin = new m.Workbin();
+
+		//each module has a workbin.
+		// console.log(this.get('workbin'));
+		this.workbin = new m.Workbin(this.get('workbin'));
 		this.workbin.setname(simpleinfo.code);
+	},
+	thinfiles: function(filearray){
+		return _.map(filearray, function(file){
+			var y = {};
+			y.FileDescription = file.FileDescription;
+			y.FileName = file.FileName;
+			y.FileSize = file.FileSize;
+			y.FileType = file.FileType;
+			y.ID = file.ID;
+			return y;
+		});
+	},
+	thinfolder: function(folderarray){
+		return _.map(folderarray, function(folder){
+			var y = {};
+			y.FolderName = folder.FolderName;
+			y.FileCount = folder.FileCount;
+			y.Files = this.thinfiles(folder.Files);
+			y.Folders = this.thinfolder(folder.Folder);
+			y.ID = folder.ID;
+			return y;
+		}, this);
 	},
 	fetchworkbin: function(){
 		var that = this;
 		this.user.workbin(this.id, function(data){
 			that.workbin.set(data.Results[0]);
+			//save space.
+			var relevant = {};
+			relevant.Folders = that.thinfolder(data.Results[0].Folders);
+			relevant.ID = data.Results[0].ID;
+			relevant.Title = data.Results[0].Title;
+			
+			var workbin = relevant;
+
+			//save state
+			$.ajax({
+			  type: 'POST',
+			  url: "/workbin",
+			  data: {moduleid : that.id, workbin: workbin},
+			  success: function(data){
+			  	//console.log(data);
+			  },
+			  dataType: 'json'
+			});
 		});
 		return this;
 	}
@@ -134,7 +178,19 @@ m.Modules = Backbone.Collection.extend({
 			that.reset(modules);
 			callback();
 			
-			var modules = JSON.stringify(data.Results);
+			//save space.
+			var modules = _.map(data.Results, function(mod){
+				//keep relevant variables
+				var relevant = {};
+
+				relevant.CourseCode = mod.CourseCode;
+				relevant.CourseName = mod.CourseName;
+				relevant.CourseSemester = mod.CourseSemester;
+				relevant.CourseAcadYear = mod.CourseAcadYear;
+				relevant.ID = mod.ID;
+
+				return relevant;
+			});
 			//save state
 			$.ajax({
 			  type: 'POST',
@@ -162,14 +218,28 @@ m.Modules = Backbone.Collection.extend({
 				}, that);
 	
 				that.add(modules);
-				var modules = JSON.stringify(data.Results);
+				
+				//save space.
+				var modules = _.map(data.Results, function(mod){
+					//keep relevant variables
+					var relevant = {};
+
+					relevant.CourseCode = mod.CourseCode;
+					relevant.CourseName = mod.CourseName;
+					relevant.CourseSemester = mod.CourseSemester;
+					relevant.CourseAcadYear = mod.CourseAcadYear;
+					relevant.ID = mod.ID;
+
+					return relevant;
+				});
+
 				//save state
 				$.ajax({
 				  type: 'POST',
 				  url: "/modules",
 				  data: {modules : modules},
 				  success: function(data){
-				  	// console.log(data);
+				  	//console.log(data);
 				  },
 				  dataType: 'json'
 				});

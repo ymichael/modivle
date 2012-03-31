@@ -44,37 +44,16 @@ v.MainView = Backbone.View.extend({
 		this.user = options.user;
 		this.modules = options.modules;
 		
-		_.bindAll(this, 'render', 'moduleselected','fixheight');
-		// this.modules.on('reset', this.fixheight, this);
+		_.bindAll(this, 'render', 'moduleselected');
 	},
 	render: function(){
 		this.$el.html(ich.mainview());
-		// //resize divs
-		// this.$("#leftbar").height($(window).height() - 50);
-		// this.$("#contentcontainer").height($(window).height() - 50);
 		
 		//populate left bar
 		this.modulesview = new v.ModulesView({collection: this.modules});
 		this.$('#leftbar').append(ich.usersnapshot());
 		this.$('#leftbar').append(this.modulesview.render().el);
 		return this;
-	},
-	fixheight: function(){
-		var fixheight = function(){
-			var winheight = $(window).height() - 50;
-			var height = winheight < $("#leftbar").children().length * 120 ? $("#leftbar").children().length * 170 : winheight;
-
-			$("#leftbar").height(height);
-			$("#contentcontainer").height($(window).height() - 50);
-			// $("#contentcontainer").height(height).width($(window).width()-205);
-		};
-		var lazyresize = _.debounce(fixheight, 300);
-		
-		//bind resize event
-		$(window).resize(lazyresize);
-		
-		//call once
-		$(window).resize();
 	},
 	events: {
 		"moduleselected" : "moduleselected",

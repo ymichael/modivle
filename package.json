@@ -13,5 +13,6 @@
     , "redis": "*"
     , "connect-redis" : "*"
     , "request" : "*"
+    , "underscore" : "*"
   }
 }
