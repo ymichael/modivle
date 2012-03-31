@@ -49,17 +49,16 @@ app.get('/', function(req,res){
   res.render('index', variables)
 });
 
-app.get('/ivle/auth', function(req,res){
-  var token = req.query.token;
-  //add token to session variable
-  if (!req.session.bootstrap) req.session.bootstrap = {};
-  
+app.get('/ivle/auth', function(req,res){  
   //regenerate new session
   req.session.regenerate(function(err){
     //tmp measure. todo.
     if (err) {
       res.redirect('/');
     } else {
+      //add token to session variable
+      if (!req.session.bootstrap) req.session.bootstrap = {};
+      var token = req.query.token;
       req.session.bootstrap.token = token;
       res.redirect('/', 302);
     }
