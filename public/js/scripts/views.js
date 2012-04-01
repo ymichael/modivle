@@ -10,13 +10,29 @@ v.ModulesView = Backbone.View.extend({
 		this.collection.on('add', this.render, this);
 	},
 	render: function(){
+		this.views = [];
 		var fragment = document.createDocumentFragment();
 		_.each(this.collection.models, function(module){
 			var x = new v.ModuleView({model: module});
+			this.views.push(x);
 			fragment.appendChild(x.render().el);
 		},this);
 		this.$el.html(fragment);
 		return this;
+	},
+	events: {
+		"moduleselected" : "moduleselected"
+	},
+	moduleselected: function(e, module){
+		this.active(module.simpleinfo.code);
+	},
+	active: function(modcode){
+		this.$(".active").removeClass("active");
+		_.each(this.views, function(view){
+			if (view.model.simpleinfo.code == modcode){
+				view.active();
+			}
+		}, this);
 	}
 });
 v.ModuleView = Backbone.View.extend({
@@ -32,6 +48,9 @@ v.ModuleView = Backbone.View.extend({
 	},
 	moduleselected: function(){
 		this.$el.trigger('moduleselected', this.model);
+	},
+	active: function(){
+		this.$el.addClass("active");
 	}
 });
 
@@ -64,6 +83,8 @@ v.MainView = Backbone.View.extend({
 	},
 	moduleselected: function(e, module){
 		this.workbinview = new v.WorkbinView({currentitem : module.fetchworkbin().workbin});
+
+		//this.workbinview = new v.WorkbinView({currentitem : module.workbin});
 		this.$('#contentcontainer').html(this.workbinview.render().el);
 	},
 	drilldown: function(e, model){
@@ -125,8 +146,8 @@ v.WorkbinView = Backbone.View.extend({
 		//render breadcrumbs
 		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
 		this.breadcrumbs.render();
-		
-		if (typeof this.currentitem.get('Folders') != 'undefined'){
+		// console.log(this.currentitem);
+		if (typeof this.currentitem.get('ID') != 'undefined'){
 			if(this.currentitem.items.models.length == 0){
 				//empty folder
 				this.$('#filescontainer').html(ich.emptyfolder());
@@ -173,7 +194,27 @@ v.FileView = Backbone.View.extend({
 	initialize: function(){},
 	render: function(){
 		this.$el.html(ich.itemview(this.model.simpleinfo));
+		this.itemicon();
 		return this;
+	},
+	itemicon: function(){
+		var type = this.model.simpleinfo.filetype;
+		var filearray = [
+			//put the popular ones first
+			"zip", "doc", "pdf","ppt","xls", 
+			"acc", "avi","bmp","c", "cpp", "dmg", "exe", "flv", "gif", "h", "html", 
+			"ics", "java", "jpg", "key", "mp3", "mid", "mp4", "mpg", "php","png", 
+			"psd", "py", "qt", "rar", "rb", "rtf", "sql", "tiff", "txt", "wav", 
+			"xml"
+		];
+		var bg = _.find(filearray, function(atype){
+			return atype == type;
+		});
+		var defaultfile = "_blank";
+		bg = bg ? bg : defaultfile;
+
+		bg = "url(/img/filetypes/" + bg + ".png)";
+		this.$('.itemicon').css("background-image", bg);
 	},
 	events: {
 		"click" : "downloadfile"
