@@ -74,6 +74,8 @@ app.post('/modules', function(req,res){
     res.redirect('/', 302);
   } else {
     var modules = req.body.modules;
+    //session is not updating occasionally
+    req.session.bootstrap.update = "1";
     req.session.bootstrap.modules = modules;
     res.json({updatestatus: "Success"});
   }

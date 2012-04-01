@@ -51,7 +51,6 @@ v.MainView = Backbone.View.extend({
 		
 		//populate left bar
 		this.modulesview = new v.ModulesView({collection: this.modules});
-		this.$('#leftbar').append(ich.usersnapshot());
 		this.$('#leftbar').append(this.modulesview.render().el);
 		return this;
 	},
@@ -126,20 +125,31 @@ v.WorkbinView = Backbone.View.extend({
 		//render breadcrumbs
 		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
 		this.breadcrumbs.render();
+		
+		if (typeof this.currentitem.get('Folders') != 'undefined'){
+			if(this.currentitem.items.models.length == 0){
+				//empty folder
+				this.$('#filescontainer').html(ich.emptyfolder());
+			} else {
+				//files and folders
+				var fragment = document.createDocumentFragment();
+				_.each(this.currentitem.items.models, function(item){
+					if (item.type == 'document'){
+						var x = new v.FileView({model: item});
+						fragment.appendChild(x.render().el);
+					} else if (item.type == 'folder'){
+						var x = new v.FolderView({model: item});
+						fragment.appendChild(x.render().el);
+					}
+				},this);
+				this.$('#filescontainer').html(fragment);
 
-
-		//files and folders
-		var fragment = document.createDocumentFragment();
-		_.each(this.currentitem.items.models, function(item){
-			if (item.type == 'document'){
-				var x = new v.FileView({model: item});
-				fragment.appendChild(x.render().el);
-			} else if (item.type == 'folder'){
-				var x = new v.FolderView({model: item});
-				fragment.appendChild(x.render().el);
-			}
-		},this);
-		this.$('#filescontainer').html(fragment);
+			}	
+		} else {
+			//loading folder
+			this.$('#filescontainer').html(ich.loadingfolder());
+		}
+		
 		return this;
 	},
 	events: {
