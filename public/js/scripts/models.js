@@ -218,7 +218,7 @@ m.Modules = Backbone.Collection.extend({
 				}, that);
 	
 				that.add(modules);
-				
+				callback();
 				//save space.
 				var modules = _.map(data.Results, function(mod){
 					//keep relevant variables
