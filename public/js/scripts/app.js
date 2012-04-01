@@ -55,6 +55,7 @@ var ModIvle = Backbone.View.extend({
 		}
 	},
 	loading: function(){
+		$('.loading').html("please be patient, loading your modules...");
 		$('#overlay').show();
 		var that = this;
 		$('#close').click(function(){
@@ -62,6 +63,7 @@ var ModIvle = Backbone.View.extend({
 		});
 	},
 	stoploading: function(){
+		$('.loading').html("");
 		$('#overlay').hide();
 	},
 	render: function(){

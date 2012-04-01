@@ -38,8 +38,27 @@ app.configure('production', function(){
 // Routes
 app.get('/', function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
+    var production = process.env.NODE_ENV;
+    // $ NODE_ENV=production node app.js
+    var variables = {};
+    variables.title = "modIVLE";
+    if (production){
+      variables.layout = "layoutprodlogin";
+    } else {
+      variables.layout = "layoutdevlogin";  
+    }
+    res.render('login', variables);
+  } else {
+    res.redirect('/welcome', 302);
+  }
+});
+
+
+
+app.get('/welcome', function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token){
     //not logged in
-    res.redirect('/pleaselogin', 302);
+    res.redirect('/', 302);
   } else {
     var variables = {};
     variables.title = "modIVLE";
@@ -57,24 +76,6 @@ app.get('/', function(req,res){
     res.render('index', variables)
   }
 });
-
-app.get('/pleaselogin', function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
-    var variables = {};
-    variables.title = "modIVLE";
-    if (production){
-      variables.layout = "layoutprodlogin";
-    } else {
-      variables.layout = "layoutdevlogin";  
-    }
-    res.render('login', variables);
-  } else {
-    res.redirect('/', 302);
-  }
-});
-
 
 app.get('/ivle/auth', function(req,res){  
   //regenerate new session
