@@ -17,8 +17,12 @@ app.configure(function(){
   
   // redis session store.
   var sessionstore = new redisstore;
-  app.use(express.session({ secret: "5{6?8j6^@%$R^Q+", store: sessionstore, maxAge: 1209600 }));
-  
+  app.use(express.session({ 
+    secret: "5{6?8j6^@%$R^Q+", 
+    store: sessionstore,
+    cookie: 
+      {maxAge: 1000*60*60*24*14}
+    }));
   app.use(app.router);
 });
 
