@@ -43,7 +43,7 @@ var ModIvle = Backbone.View.extend({
 				var that = this;
 				this.loading();
 				this.modules = new m.Modules([],{user: this.user});
-				this.modules.update(function(){
+				this.modules.fetch(function(){
 					that.stoploading();
 				});	
 			}
