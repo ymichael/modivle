@@ -32,7 +32,8 @@ app.configure('development', function(){
 });
 app.configure('production', function(){
   app.use(express.errorHandler());
-  app.use(express.static(__dirname + '/build', { maxAge: 86400000 }));
+  var oneday = 86400000;
+  app.use(express.static(__dirname + '/build', { maxAge: oneday*7 }));
 });
 
 // Routes
