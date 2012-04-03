@@ -129,7 +129,7 @@ m.Module = Backbone.Model.extend({
 			y.FolderName = folder.FolderName;
 			y.FileCount = folder.FileCount;
 			y.Files = this.thinfiles(folder.Files);
-			y.Folders = this.thinfolder(folder.Folder);
+			y.Folders = this.thinfolder(folder.Folders);
 			y.ID = folder.ID;
 			return y;
 		}, this);
@@ -145,7 +145,6 @@ m.Module = Backbone.Model.extend({
 			
 			//assign relevant to workbin.
 			var workbin = relevant;
-
 			that.workbin.set(relevant);
 
 			//save state
