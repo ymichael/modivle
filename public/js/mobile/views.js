@@ -128,7 +128,7 @@ v.WorkbinBreadcrumbs = Backbone.View.extend({
 		// }
 		//add current folder
 		var x = new v.WorkbinBreadcrumb({model: this.model, type: "current"});
-		this.$el.append(x.render().el);
+		this.$el.prepend(x.render().el);
 		return this;
 	},
 	events: {
