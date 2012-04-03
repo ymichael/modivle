@@ -12,10 +12,10 @@ m.Folder = Backbone.Model.extend({
 		var simpleinfo = {};
 		simpleinfo.name = this.get('FolderName');
 		var count = this.get('FileCount')
+		if (this.get('Folders')) count = parseInt(count, 10) + this.get('Folders').length;
 		if (count == 0){
 			simpleinfo.size = "empty";
 		} else {
-			if (this.get('Folders')) count = parseInt(count, 10) + this.get('Folders').length;
 			simpleinfo.size = count + " items";	
 		}
 		
