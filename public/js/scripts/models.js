@@ -71,7 +71,6 @@ m.File = Backbone.Model.extend({
 		return parseInt(bytes).toFixed(2).toString().slice(0,6) + " " + unit[index];
 	}
 });
-
 m.Workbin = Backbone.Model.extend({
 	initialize: function(){
 		this.fields();
@@ -114,7 +113,7 @@ m.Module = Backbone.Model.extend({
 		this.workbin.setname(simpleinfo.code);
 	},
 	thinfiles: function(filearray){
-		return _.map(filearray, function(file){
+		return _.map(filearray.reverse(), function(file){
 			var y = {};
 			y.FileDescription = file.FileDescription;
 			y.FileName = file.FileName;
@@ -138,14 +137,16 @@ m.Module = Backbone.Model.extend({
 	fetchworkbin: function(){
 		var that = this;
 		this.user.workbin(this.id, function(data){
-			that.workbin.set(data.Results[0]);
 			//save space.
 			var relevant = {};
 			relevant.Folders = that.thinfolder(data.Results[0].Folders);
 			relevant.ID = data.Results[0].ID;
 			relevant.Title = data.Results[0].Title;
 			
+			//assign relevant to workbin.
 			var workbin = relevant;
+
+			that.workbin.set(relevant);
 
 			//save state
 			$.ajax({
@@ -182,13 +183,11 @@ m.Modules = Backbone.Collection.extend({
 			var modules = _.map(data.Results, function(mod){
 				//keep relevant variables
 				var relevant = {};
-
 				relevant.CourseCode = mod.CourseCode;
 				relevant.CourseName = mod.CourseName;
 				relevant.CourseSemester = mod.CourseSemester;
 				relevant.CourseAcadYear = mod.CourseAcadYear;
 				relevant.ID = mod.ID;
-
 				return relevant;
 			});
 			//save state
@@ -223,13 +222,11 @@ m.Modules = Backbone.Collection.extend({
 				var modules = _.map(data.Results, function(mod){
 					//keep relevant variables
 					var relevant = {};
-
 					relevant.CourseCode = mod.CourseCode;
 					relevant.CourseName = mod.CourseName;
 					relevant.CourseSemester = mod.CourseSemester;
 					relevant.CourseAcadYear = mod.CourseAcadYear;
 					relevant.ID = mod.ID;
-
 					return relevant;
 				});
 

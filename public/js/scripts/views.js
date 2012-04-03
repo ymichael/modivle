@@ -54,9 +54,6 @@ v.ModuleView = Backbone.View.extend({
 	}
 });
 
-
-
-
 v.MainView = Backbone.View.extend({
 	el: "#main_container",
 	initialize: function(options){
@@ -154,6 +151,7 @@ v.WorkbinView = Backbone.View.extend({
 			} else {
 				//files and folders
 				var fragment = document.createDocumentFragment();
+				//reverse models to show latest files at the top.
 				_.each(this.currentitem.items.models, function(item){
 					if (item.type == 'document'){
 						var x = new v.FileView({model: item});
