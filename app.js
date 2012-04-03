@@ -36,21 +36,23 @@ app.configure('production', function(){
   app.use(express.static(__dirname + '/build', { maxAge: oneday*7 }));
 });
 
-
-// app.get('/', function(req, res){
-//     var ua = req.header('user-agent');
-//     if(/mobile/i.test(ua)) {
-//         res.json("mobile");
-//     } else {
-//         res.json("desktop");
-//     }
-// });
-
-
 //Routes
-app.get('/', routes.desktop.login);
-app.get('/welcome', routes.desktop.welcome);
-
+app.get('/', function(req, res){
+    var ua = req.header('user-agent');
+    if(/mobile/i.test(ua)) {
+        routes.mobile.login(req, res);
+    } else {
+        routes.desktop.login(req, res);
+    }
+});
+app.get('/welcome', function(req, res){
+    var ua = req.header('user-agent');
+    if(/mobile/i.test(ua)) {
+        routes.mobile.welcome(req, res);
+    } else {
+        routes.desktop.welcome(req, res);
+    }
+});
 
 //Generic routes
 app.get('/ivle/auth', routes.auth);

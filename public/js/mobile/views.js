@@ -70,15 +70,20 @@ v.MainView = Backbone.View.extend({
 		this.$('#leftbar').append(this.modulesview.render().el);
 		return this;
 	},
+	home: function(){
+		this.$("#contentcontainer").hide();
+	},
 	events: {
 		"moduleselected" : "moduleselected",
 		"drilldown": "drilldown",
-		"downloadfile" : "downloadfile"
+		"downloadfile" : "downloadfile",
+		"home" : "home"
 	},
 	downloadfile: function(e, file){
 		this.user.file(file.id);
 	},
 	moduleselected: function(e, module){
+		this.$("#contentcontainer").show();
 		this.workbinview = new v.WorkbinView({currentitem : module.fetchworkbin().workbin});
 
 		//this.workbinview = new v.WorkbinView({currentitem : module.workbin});
@@ -115,17 +120,26 @@ v.WorkbinBreadcrumb = Backbone.View.extend({
 v.WorkbinBreadcrumbs = Backbone.View.extend({
 	initialize: function(){},
 	render: function(){
-		current = this.model.parent;
-		while (current){
-			var x = new v.WorkbinBreadcrumb({model: current, type: "parent"});
-			this.$el.prepend(x.render().el);
-			current = current.parent;
-		}
-
+		// current = this.model.parent;
+		// while (current){
+		// 	var x = new v.WorkbinBreadcrumb({model: current, type: "parent"});
+		// 	this.$el.prepend(x.render().el);
+		// 	current = current.parent;
+		// }
 		//add current folder
 		var x = new v.WorkbinBreadcrumb({model: this.model, type: "current"});
 		this.$el.append(x.render().el);
 		return this;
+	},
+	events: {
+		"click #back" : "back"
+	},
+	back: function(){
+		if (this.model.parent){
+			this.$el.trigger('drilldown', this.model.parent);	
+		} else {
+			this.$el.trigger('home');
+		}
 	}
 });
 
@@ -141,7 +155,7 @@ v.WorkbinView = Backbone.View.extend({
 		this.$el.html(ich.workbinview());
 
 		//render breadcrumbs
-		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
+		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('#workbinheading')});
 		this.breadcrumbs.render();
 		// console.log(this.currentitem);
 		if (typeof this.currentitem.get('ID') != 'undefined'){

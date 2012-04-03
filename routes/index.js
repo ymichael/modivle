@@ -4,14 +4,14 @@ var request = require('request'),
 //GENERAL ROUTES
 exports.proxy = function(req,res){
   	var proxyreq = req.query.request;
-	request(proxyreq, function (error, response, body) {
-		  if (!error && response.statusCode == 200) {
-			res.json(body);
-		  } else {
-		  	res.json({error: error});
-		  }
-	});
-};
+  	request(proxyreq, function (error, response, body) {
+  		  if (!error && response.statusCode == 200) {
+  			res.json(body);
+  		  } else {
+  		  	res.json({error: error});
+  		  }
+  	});
+}
 exports.auth = function(req,res){  
   //regenerate new session
   req.session.regenerate(function(err){
@@ -56,6 +56,13 @@ exports.logout = function(req,res){
   });
 }
 
+//USER AGENT ROUTER
+exports.route = function(req, res){
+
+}
+
+
+
 //DESKTOP
 exports.desktop = {};
 exports.desktop.login = function(req, res){
@@ -97,3 +104,41 @@ exports.desktop.welcome = function(req,res){
 }
 
 //MOBILE
+exports.mobile = {};
+exports.mobile.login = function(req, res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token){
+    var production = process.env.NODE_ENV;
+    // $ NODE_ENV=production node app.js
+    var variables = {};
+    variables.title = "modIVLE";
+    if (production){
+      variables.layout = "mobile/layoutprodlogin";
+    } else {
+      variables.layout = "mobile/layoutdevlogin";  
+    }
+    res.render('mobile/login', variables);
+  } else {
+    res.redirect('/welcome', 302);
+  }
+}
+exports.mobile.welcome = function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token){
+    //not logged in
+    res.redirect('/', 302);
+  } else {
+    var variables = {};
+    variables.title = "modIVLE";
+    if (!req.session.bootstrap){
+      req.session.bootstrap = {};
+    }
+    variables.bootstrap = req.session.bootstrap;
+    var production = process.env.NODE_ENV;
+    // $ NODE_ENV=production node app.js
+    if (production){
+      variables.layout = "mobile/layoutprod";
+    } else {
+      variables.layout = "mobile/layoutdev";  
+    }
+    res.render('mobile/index', variables)
+  }
+}
