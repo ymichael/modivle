@@ -36,96 +36,27 @@ app.configure('production', function(){
   app.use(express.static(__dirname + '/build', { maxAge: oneday*7 }));
 });
 
-// Routes
-app.get('/', function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
-    var variables = {};
-    variables.title = "modIVLE";
-    if (production){
-      variables.layout = "layoutprodlogin";
-    } else {
-      variables.layout = "layoutdevlogin";  
-    }
-    res.render('login', variables);
-  } else {
-    res.redirect('/welcome', 302);
-  }
-});
+
+// app.get('/', function(req, res){
+//     var ua = req.header('user-agent');
+//     if(/mobile/i.test(ua)) {
+//         res.json("mobile");
+//     } else {
+//         res.json("desktop");
+//     }
+// });
 
 
-
-app.get('/welcome', function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    //not logged in
-    res.redirect('/', 302);
-  } else {
-    var variables = {};
-    variables.title = "modIVLE";
-    if (!req.session.bootstrap){
-      req.session.bootstrap = {};
-    }
-    variables.bootstrap = req.session.bootstrap;
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
-    if (production){
-      variables.layout = "layoutprod";
-    } else {
-      variables.layout = "layoutdev";  
-    }
-    res.render('index', variables)
-  }
-});
-
-app.get('/ivle/auth', function(req,res){  
-  //regenerate new session
-  req.session.regenerate(function(err){
-    //tmp measure. todo.
-    if (err) {
-      res.redirect('/');
-    } else {
-      //add token to session variable
-      if (!req.session.bootstrap) req.session.bootstrap = {};
-      var token = req.query.token;
-      req.session.bootstrap.token = token;
-      res.redirect('/', 302);
-    }
-  });
-});
-
-app.post('/modules', function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    res.redirect('/', 302);
-  } else {
-    var modules = req.body.modules;
-    //session is not updating occasionally
-    req.session.bootstrap.update = "1";
-    req.session.bootstrap.modules = modules;
-    res.json({updatestatus: "Success"});
-  }
-});
-
-app.post('/workbin', function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
-    res.redirect('/', 302);
-  } else {
-    _.each(req.session.bootstrap.modules, function(module){
-      if (module.ID == req.body.moduleid){
-        module.workbin = req.body.workbin;
-      }
-    });
-    res.json({updatestatus: "Success"});
-  }
-});
+//Routes
+app.get('/', routes.desktop.login);
+app.get('/welcome', routes.desktop.welcome);
 
 
-app.get('/logout', function(req,res){
-  req.session.destroy(function(err){
-    res.redirect('/', 302);
-  });
-});
-
+//Generic routes
+app.get('/ivle/auth', routes.auth);
+app.post('/modules', routes.modules);
+app.post('/workbin', routes.workbin);
+app.get('/logout', routes.logout);
 app.get('/proxy', routes.proxy);
 
 var port = process.env.PORT || 9002;

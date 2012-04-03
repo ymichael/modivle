@@ -147,6 +147,7 @@ v.WorkbinView = Backbone.View.extend({
 		if (typeof this.currentitem.get('ID') != 'undefined'){
 			if(this.currentitem.items.models.length == 0){
 				//empty folder
+				console.log(this.currentitem);
 				this.$('#filescontainer').html(ich.emptyfolder());
 			} else {
 				//files and folders
