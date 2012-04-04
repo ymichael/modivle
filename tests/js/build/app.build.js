@@ -1,7 +1,7 @@
 ({
-  	baseUrl: ".",
-  	name: "login",
-  	out: "../../build/js/login.js",
+  	baseUrl: "../",
+  	name: "main",
+  	out: "../../../build/js/main.js",
 	paths: {
 		'jquery': "empty:",
 		'underscore': "libs/underscore",
@@ -10,7 +10,6 @@
 		'ivle': "libs/ivle",
 		'mainapp' : "scripts/app",
 		'appmodels' : "scripts/models",
-		'appviews' : "scripts/views",
-		'loginscript' : "scripts/login"
+		'appviews' : "scripts/views"
 	}
 })

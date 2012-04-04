@@ -1,7 +1,7 @@
 ({
-  	baseUrl: ".",
+  	baseUrl: "../",
   	name: "mobilemain",
-  	out: "../../build/js/mobilemain.js",
+  	out: "../../../build/js/mobilemain.js",
 	paths: {
 		'jquery': "empty:",
 		'underscore': "libs/underscore",

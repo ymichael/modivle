@@ -1,0 +1,18 @@
+require.config({
+	paths: {
+		'jquery': "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min",
+		//'jquery': "libs/jquery-1.7.2",
+		'underscore': "libs/underscore",
+		'backbone': "libs/backbone",
+		'ich': "libs/icanhazamd",
+		'ivle': "libs/ivle",
+		'mainapp' : "mobile/app",
+		'appmodels' : "mobile/models",
+		'appviews' : "mobile/views",
+	}
+});
+require(['mainapp'], 
+function(app){
+	var x = new app();
+	x.init();
+});
