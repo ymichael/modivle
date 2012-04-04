@@ -12,13 +12,32 @@ function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
 ich.grabTemplates();
 
+var ModIvleRouter = Backbone.Router.extend({
+	initialize: function(options){
+		this.parent = options.parent;
+		console.log(this.parent);
+	},
+	routes: {
+		"test" : "test"
+	},
+	test: function(){
+		console.log('asdf');
+	}
+});
+
 var ModIvle = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
 		var apikey = "ba1ge5NQ9cl76KQNI1Suc";
 		this.ivle = new ivle(apikey, '/proxy/');
-
 		_.bindAll(this, 'init');
+
+		//app router
+		this.router = new ModIvleRouter({parent: this});
+		Backbone.history.start();
+
+		//test router
+		this.router.navigate("test");
 	},
 	init: function(){
 		this.bootstrap = bootstrap;
