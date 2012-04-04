@@ -35,11 +35,15 @@ var ModIvleRouter = Backbone.Router.extend({
 		//does not match any module. 
 		if (!mod) return this.navigate("");
 		
+		//fetchworkbin.
+		mod.fetchworkbin();
+		
 		if (folder.length == 0){
 			found = mod.workbin;
 		} else {
+			var current = mod.workbin;
 			while (folder.length > 0) {
-				var nested = _.find(mod.workbin.items.models, function(item){
+				var nested = _.find(current.items.models, function(item){
 					return item.simpleinfo.name == folder[0];
 				}, this);
 				if (nested){
@@ -48,7 +52,8 @@ var ModIvleRouter = Backbone.Router.extend({
 						found = nested;
 					}
 					//remove first item in array.
-					folder = folder.slice(1);	
+					folder = folder.slice(1);
+					current = nested;
 				} else {
 					//end loop;
 					folder = [];
