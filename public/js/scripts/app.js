@@ -17,55 +17,65 @@ var ModIvleRouter = Backbone.Router.extend({
 		this.parent = options.parent;
 	},
 	routes: {
-		"login" : "login"
+		"*hash" : "update"
 	},
-	login: function(){
-		console.log('login');
+	update: function(hash){
+		this.init(hash.split("/"));
 	},
-	init: function(){
-		var hash = window.location.hash;
-		var filepath = hash.split("/").slice(1);
-		var mod = _.find(this.parent.modules.models, function(module){
-			return module.simpleinfo.code == filepath[0];
-		}, this);
+	init: function(update){
+		//main blank page
+		if (update && update[0] == "" && this.parent.mainview){
+			return this.parent.mainview.home();
+		}
 
-		var folder = filepath.slice(1);
-		var found;
+		var hash = window.location.hash;
+		var filepath = update || hash.split("/").slice(1);
 		
-		//does not match any module. 
-		if (!mod) return this.navigate("");
-		
-		//fetchworkbin.
-		mod.fetchworkbin();
-		
-		if (folder.length == 0){
-			found = mod.workbin;
-		} else {
-			var current = mod.workbin;
-			while (folder.length > 0) {
-				var nested = _.find(current.items.models, function(item){
-					return item.simpleinfo.name == folder[0];
-				}, this);
-				if (nested){
-					if (folder.length == 1){
-						//found the folder;
-						found = nested;
+		if (this.parent.modules){
+			var mod = _.find(this.parent.modules.models, function(module){
+				return module.simpleinfo.code == filepath[0];
+			}, this);
+
+			var folder = filepath.slice(1);
+			var found;
+			
+			//does not match any module. 
+			if (!mod) return this.navigate("");
+			
+			//fetchworkbin.
+			mod.fetchworkbin();
+			
+			if (folder.length == 0){
+				found = mod.workbin;
+			} else {
+				var current = mod.workbin;
+				while (folder.length > 0) {
+					var nested = _.find(current.items.models, function(item){
+						return item.simpleinfo.name == folder[0];
+					}, this);
+					if (nested){
+						if (folder.length == 1){
+							//found the folder;
+							found = nested;
+						}
+						//remove first item in array.
+						folder = folder.slice(1);
+						current = nested;
+					} else {
+						//end loop;
+						folder = [];
 					}
-					//remove first item in array.
-					folder = folder.slice(1);
-					current = nested;
-				} else {
-					//end loop;
-					folder = [];
 				}
 			}
+			if (found){
+				this.parent.mainview.modulesview.active(mod.simpleinfo.code);
+				this.parent.mainview.drilldown(null, found);
+			} else {
+				//reset the hash tag. invalid
+				this.navigate("");
+			}
 		}
-		if (found){
-			this.parent.mainview.drilldown(null, found);
-		} else {
-			//reset the hash tag. invalid
-			this.navigate("");
-		}
+		
 		
 	}
 });

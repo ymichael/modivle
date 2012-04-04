@@ -91,9 +91,15 @@ v.MainView = Backbone.View.extend({
 			this.workbinview.remove();	
 		}	
 		this.navigateto(model.filepath());
-
 		this.workbinview = new v.WorkbinView({currentitem : model});
 		this.$('#contentcontainer').html(this.workbinview.render().el);
+	},
+	home: function(){
+		if (this.workbinview){
+			this.workbinview.off();
+			this.workbinview.remove();
+			this.modulesview.active();
+		}
 	},
 	navigateto: function(hash){
 		this.$el.trigger("navigateto", hash);
