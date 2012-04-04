@@ -14,5 +14,6 @@
     , "connect-redis" : "*"
     , "request" : "*"
     , "underscore" : "*"
+    , "requirejs" : "*"
   }
 }
