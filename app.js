@@ -37,20 +37,25 @@ app.configure('production', function(){
 });
 
 //Routes
+var ismobile = function(req){
+  var ua = req.header('user-agent');
+  var mobile = /mobile/i.test(ua);
+  var ipad = /ipad/i.test(ua);
+  return !ipad && mobile
+}
+
 app.get('/', function(req, res){
-    var ua = req.header('user-agent');
-    if(/mobile/i.test(ua)) {
-        routes.mobile.login(req, res);
+    if (ismobile(req)){
+      routes.mobile.login(req, res);
     } else {
-        routes.desktop.login(req, res);
+      routes.desktop.login(req, res);
     }
 });
 app.get('/welcome', function(req, res){
-    var ua = req.header('user-agent');
-    if(/mobile/i.test(ua)) {
-        routes.mobile.welcome(req, res);
+    if (ismobile(req)){
+      routes.mobile.welcome(req, res);
     } else {
-        routes.desktop.welcome(req, res);
+      routes.desktop.welcome(req, res);
     }
 });
 
