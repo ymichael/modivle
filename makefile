@@ -1,8 +1,8 @@
 all:
 	#optimise js files
-	r.js -o public/js/app.build.js
-	r.js -o public/js/login.build.js
-	r.js -o public/js/mobile.build.js
+	r.js -o public/js/build/app.build.js
+	r.js -o public/js/build/login.build.js
+	r.js -o public/js/build/mobile.build.js
 	
 	cat public/css/normalize.css public/css/main.less > public/css/combine.less
 	cat public/css/normalize.css public/css/login.less > public/css/combinelogin.less
@@ -32,3 +32,7 @@ clean:
 	rm build/css/mobile.css
 
 	rm -R build/img
+
+tests:
+	#client side js tests
+	r.js -o public/js/tests/
