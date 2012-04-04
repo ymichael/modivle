@@ -15,13 +15,53 @@ ich.grabTemplates();
 var ModIvleRouter = Backbone.Router.extend({
 	initialize: function(options){
 		this.parent = options.parent;
-		console.log(this.parent);
 	},
 	routes: {
-		"test" : "test"
+		"login" : "login"
 	},
-	test: function(){
-		console.log('asdf');
+	login: function(){
+		console.log('login');
+	},
+	init: function(){
+		var hash = window.location.hash;
+		var filepath = hash.split("/").slice(1);
+		var mod = _.find(this.parent.modules.models, function(module){
+			return module.simpleinfo.code == filepath[0];
+		}, this);
+
+		var folder = filepath.slice(1);
+		var found;
+		
+		//does not match any module. 
+		if (!mod) return this.navigate("");
+		
+		if (folder.length == 0){
+			found = mod.workbin;
+		} else {
+			while (folder.length > 0) {
+				var nested = _.find(mod.workbin.items.models, function(item){
+					return item.simpleinfo.name == folder[0];
+				}, this);
+				if (nested){
+					if (folder.length == 1){
+						//found the folder;
+						found = nested;
+					}
+					//remove first item in array.
+					folder = folder.slice(1);	
+				} else {
+					//end loop;
+					folder = [];
+				}
+			}
+		}
+		if (found){
+			this.parent.mainview.drilldown(null, found);
+		} else {
+			//reset the hash tag. invalid
+			this.navigate("");
+		}
+		
 	}
 });
 
@@ -34,10 +74,8 @@ var ModIvle = Backbone.View.extend({
 
 		//app router
 		this.router = new ModIvleRouter({parent: this});
-		Backbone.history.start();
-
-		//test router
-		this.router.navigate("test");
+		//Backbone.history.start({pushState: true, root: "/welcome"});
+		Backbone.history.start({root: "/welcome"});
 	},
 	init: function(){
 		this.bootstrap = bootstrap;
@@ -68,6 +106,7 @@ var ModIvle = Backbone.View.extend({
 			}
 			//user modules
 			this.render();
+			this.router.init();
 		} else {
 			//not authenticated
 			this.renderlogin();
@@ -102,13 +141,17 @@ var ModIvle = Backbone.View.extend({
 		this.$('#header_container').html(ich.login());
 		this.ivle.auth(this.$('#login'), callbackurl);
 	},
-	events: {
-		'click #logout': "logout",
-	},
 	logout: function(){
 		var re = new RegExp("^(.+" + window.location.host+ ")");
 		var logout =  re.exec(window.location.href)[1] + "/logout";
 		window.location.href = logout;
+	},
+	navigateto: function(e, hash){
+		this.router.navigate("#/" + hash);
+	},
+	events: {
+		'click #logout': "logout",
+		'navigateto' : "navigateto"
 	}
 });
 
