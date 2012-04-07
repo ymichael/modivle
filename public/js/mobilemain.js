@@ -1,3 +1,4 @@
+/*global require:true */
 require.config({
 	paths: {
 		'jquery': "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min",
@@ -8,7 +9,7 @@ require.config({
 		'ivle': "libs/ivle",
 		'mainapp' : "mobile/app",
 		'appmodels' : "mobile/models",
-		'appviews' : "mobile/views",
+		'appviews' : "mobile/views"
 	}
 });
 require(['mainapp'], 

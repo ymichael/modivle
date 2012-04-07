@@ -43,3 +43,7 @@ clean:
 test:
 	#copy latest js files into test folder.
 	cp -R public/js tests/
+
+jshint:
+	jshint public/js/scripts
+	jshint public/js/mobile

@@ -1,12 +1,13 @@
+/*global define:true, bootstrap */
 define([
-	  'jquery'
-	, 'underscore'
-	, 'backbone'
-	, 'ich'
-	, 'ivle'
-	, 'appmodels'
-	, 'appviews'
-	, 'text!templates/mobile.html'
+	'jquery',
+	'underscore',
+	'backbone',
+	'ich',
+	'ivle',
+	'appmodels',
+	'appviews',
+	'text!templates/mobile.html'
 ], 
 function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
@@ -20,15 +21,15 @@ var ModIvle = Backbone.View.extend({
 		_.bindAll(this, 'init');
 	},
 	init: function(){
-		this.bootstrap = bootstrap;
+		this.bootstrap = typeof bootstrap !== "undefined" ? bootstrap : {};
 		if (this.bootstrap.token){
 			//authenticated
 			this.usertoken = this.bootstrap.token;
 			this.user = new this.ivle.user(this.usertoken);
 			
+			var that = this;
 			if (this.bootstrap.modules) {
 				//modules availible on server
-				var that = this;
 				var modules = _.map(this.bootstrap.modules, function(module){
 					// console.log(module);
 					var x = new m.Module(module);
@@ -39,7 +40,6 @@ var ModIvle = Backbone.View.extend({
 				this.modules = new m.Modules(modules,{user: this.user});
 				this.modules.update();	
 			} else {
-				var that = this;
 				this.loading();
 				this.modules = new m.Modules([],{user: this.user});
 				this.modules.fetch(function(){
@@ -83,7 +83,7 @@ var ModIvle = Backbone.View.extend({
 	},
 	events: {
 		'click #logout': "logout",
-		'click #home': "home",
+		'click #home': "home"
 	},
 	logout: function(){
 		var re = new RegExp("^(.+" + window.location.host+ ")");

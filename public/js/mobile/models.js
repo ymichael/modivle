@@ -1,3 +1,4 @@
+/*global define:true */
 define(['jquery', 'underscore', 'backbone'], 
 function($,_,Backbone){
 	
@@ -11,9 +12,11 @@ m.Folder = Backbone.Model.extend({
 		this.type = "folder";
 		var simpleinfo = {};
 		simpleinfo.name = this.get('FolderName');
-		var count = this.get('FileCount')
-		if (this.get('Folders')) count = parseInt(count, 10) + this.get('Folders').length;
-		if (count == 0){
+		var count = this.get('FileCount');
+		if (this.get('Folders')){
+			count = parseInt(count, 10) + this.get('Folders').length;	
+		} 
+		if (count === 0){
 			simpleinfo.size = "empty";
 		} else {
 			simpleinfo.size = count + " items";	
@@ -53,22 +56,26 @@ m.File = Backbone.Model.extend({
 		var bytes = this.get('FileSize');
 
 		simpleinfo.size = this.calcfilesize(bytes);
-		simpleinfo.filetype = this.get('FileType')
+		simpleinfo.filetype = this.get('FileType');
 		simpleinfo.type = this.get('FileType')+ " document";
 		this.simpleinfo = simpleinfo;
 
 		this.set({id : this.get('ID')});
 	},
 	calcfilesize: function(bytes){
+		var unit, index;
 		unit = ["bytes", "KB", "MB", "GB"];
 		index = 0;
 		while (Math.floor(bytes).toString().length > 3){
-			index++
+			index++;
 			bytes = parseInt(bytes, 10);
-			bytes = bytes / Math.pow(2, 10);
+			bytes = bytes / 1024;
 		}
 
-		return parseInt(bytes).toFixed(2).toString().slice(0,6) + " " + unit[index];
+		if (Math.round(bytes) !== bytes) {
+			bytes = parseFloat(bytes, 10).toFixed(2).toString().slice(0,6);
+		}
+		return  bytes + " " + unit[index];
 	}
 });
 m.Workbin = Backbone.Model.extend({
@@ -95,7 +102,7 @@ m.Workbin = Backbone.Model.extend({
 m.Module = Backbone.Model.extend({
 	initialize: function(options){
 		_.bindAll(this, 'fetchworkbin','thinfolder');
-		var simpleinfo = {}
+		var simpleinfo = {};
 		simpleinfo.code = this.get('CourseCode');
 		simpleinfo.name = this.get('CourseName');
 		simpleinfo.semester = this.get('CourseSemester');
@@ -149,13 +156,13 @@ m.Module = Backbone.Model.extend({
 
 			//save state
 			$.ajax({
-			  type: 'POST',
-			  url: "/workbin",
-			  data: {moduleid : that.id, workbin: workbin},
-			  success: function(data){
-			  	//console.log(data);
-			  },
-			  dataType: 'json'
+				type: 'POST',
+				url: "/workbin",
+				data: {moduleid : that.id, workbin: workbin},
+				success: function(data){
+					//console.log(data);
+				},
+				dataType: 'json'
 			});
 		});
 		return this;
@@ -179,7 +186,7 @@ m.Modules = Backbone.Collection.extend({
 			callback();
 			
 			//save space.
-			var modules = _.map(data.Results, function(mod){
+			modules = _.map(data.Results, function(mod){
 				//keep relevant variables
 				var relevant = {};
 				relevant.CourseCode = mod.CourseCode;
@@ -191,13 +198,13 @@ m.Modules = Backbone.Collection.extend({
 			});
 			//save state
 			$.ajax({
-			  type: 'POST',
-			  url: "/modules",
-			  data: {modules : modules},
-			  success: function(data){
-			  	//console.log(data);
-			  },
-			  dataType: 'json'
+				type: 'POST',
+				url: "/modules",
+				data: {modules : modules},
+				success: function(data){
+					//console.log(data);
+				},
+				dataType: 'json'
 			});
 		});
 	},
@@ -206,7 +213,7 @@ m.Modules = Backbone.Collection.extend({
 		this.user.modules(function(data){
 			var changes = _.filter(data.Results,function(module){
 				return ! that.get(module.ID);
-			},that)
+			},that);
 			
 			if (changes.length > 0){
 				var modules = _.map(changes, function(module){
@@ -218,7 +225,7 @@ m.Modules = Backbone.Collection.extend({
 				that.add(modules);
 				
 				//save space.
-				var modules = _.map(data.Results, function(mod){
+				modules = _.map(data.Results, function(mod){
 					//keep relevant variables
 					var relevant = {};
 					relevant.CourseCode = mod.CourseCode;
@@ -231,13 +238,13 @@ m.Modules = Backbone.Collection.extend({
 
 				//save state
 				$.ajax({
-				  type: 'POST',
-				  url: "/modules",
-				  data: {modules : modules},
-				  success: function(data){
-				  	//console.log(data);
-				  },
-				  dataType: 'json'
+					type: 'POST',
+					url: "/modules",
+					data: {modules : modules},
+					success: function(data){
+						//console.log(data);
+					},
+					dataType: 'json'
 				});
 			}
 		});

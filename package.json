@@ -15,5 +15,6 @@
     , "request" : "*"
     , "underscore" : "*"
     , "requirejs" : "*"
+    , "jshint" : "*"
   }
 }

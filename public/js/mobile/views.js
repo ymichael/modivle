@@ -1,3 +1,4 @@
+/*global define:true */
 define(['jquery','underscore','backbone', 'ich'],
 function($,_,Backbone,ich){
 
@@ -29,7 +30,7 @@ v.ModulesView = Backbone.View.extend({
 	active: function(modcode){
 		this.$(".active").removeClass("active");
 		_.each(this.views, function(view){
-			if (view.model.simpleinfo.code == modcode){
+			if (view.model.simpleinfo.code === modcode){
 				view.active();
 			}
 		}, this);
@@ -112,7 +113,7 @@ v.WorkbinBreadcrumb = Backbone.View.extend({
 		"click": "drilldown"
 	},
 	drilldown: function(){
-		if (this.type == "parent"){
+		if (this.type === "parent"){
 			this.$el.trigger('drilldown', this.model);
 		}
 	}
@@ -120,13 +121,6 @@ v.WorkbinBreadcrumb = Backbone.View.extend({
 v.WorkbinBreadcrumbs = Backbone.View.extend({
 	initialize: function(){},
 	render: function(){
-		// current = this.model.parent;
-		// while (current){
-		// 	var x = new v.WorkbinBreadcrumb({model: current, type: "parent"});
-		// 	this.$el.prepend(x.render().el);
-		// 	current = current.parent;
-		// }
-		//add current folder
 		var x = new v.WorkbinBreadcrumb({model: this.model, type: "current"});
 		this.$el.prepend(x.render().el);
 		return this;
@@ -158,8 +152,8 @@ v.WorkbinView = Backbone.View.extend({
 		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('#workbinheading')});
 		this.breadcrumbs.render();
 		// console.log(this.currentitem);
-		if (typeof this.currentitem.get('ID') != 'undefined'){
-			if(this.currentitem.items.models.length == 0){
+		if (typeof this.currentitem.get('ID') !== 'undefined'){
+			if(this.currentitem.items.models.length === 0){
 				//empty folder
 				this.$('#filescontainer').html(ich.emptyfolder());
 			} else {
@@ -167,11 +161,12 @@ v.WorkbinView = Backbone.View.extend({
 				var fragment = document.createDocumentFragment();
 				//reverse models to show latest files at the top.
 				_.each(this.currentitem.items.models, function(item){
-					if (item.type == 'document'){
-						var x = new v.FileView({model: item});
+					var x;
+					if (item.type === 'document'){
+						x = new v.FileView({model: item});
 						fragment.appendChild(x.render().el);
-					} else if (item.type == 'folder'){
-						var x = new v.FolderView({model: item});
+					} else if (item.type === 'folder'){
+						x = new v.FolderView({model: item});
 						fragment.appendChild(x.render().el);
 					}
 				},this);
@@ -220,7 +215,7 @@ v.FileView = Backbone.View.extend({
 			"xml"
 		];
 		var bg = _.find(filearray, function(atype){
-			return atype == type;
+			return atype === type;
 		});
 		var defaultfile = "_blank";
 		bg = bg ? bg : defaultfile;

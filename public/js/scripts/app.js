@@ -1,12 +1,13 @@
+/*global define:true, bootstrap */
 define([
-	  'jquery'
-	, 'underscore'
-	, 'backbone'
-	, 'ich'
-	, 'ivle'
-	, 'appmodels'
-	, 'appviews'
-	, 'text!templates/template.html'
+	'jquery',
+	'underscore',
+	'backbone',
+	'ich',
+	'ivle',
+	'appmodels',
+	'appviews',
+	'text!templates/template.html'
 ], 
 function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
@@ -24,7 +25,7 @@ var ModIvleRouter = Backbone.Router.extend({
 	},
 	init: function(update){
 		//main blank page
-		if (update && update[0] == "" && this.parent.mainview){
+		if (update && update[0] === "" && this.parent.mainview){
 			return this.parent.mainview.home();
 		}
 
@@ -33,28 +34,34 @@ var ModIvleRouter = Backbone.Router.extend({
 		
 		if (this.parent.modules){
 			var mod = _.find(this.parent.modules.models, function(module){
-				return module.simpleinfo.code == filepath[0];
+				return module.simpleinfo.code === filepath[0];
 			}, this);
 
 			var folder = filepath.slice(1);
 			var found;
 			
 			//does not match any module. 
-			if (!mod) return this.navigate("");
+			if (!mod) {
+				return this.navigate("");	
+			} 
 			
 			//fetchworkbin.
 			mod.fetchworkbin();
 			
-			if (folder.length == 0){
+			if (folder.length === 0){
 				found = mod.workbin;
 			} else {
 				var current = mod.workbin;
+
+				var findnested = function(folder){
+					_.find(current.items.models, function(item){
+						return item.simpleinfo.name === folder;
+					});	
+				};
 				while (folder.length > 0) {
-					var nested = _.find(current.items.models, function(item){
-						return item.simpleinfo.name == folder[0];
-					}, this);
+					var nested = findnested(folder[0]);
 					if (nested){
-						if (folder.length == 1){
+						if (folder.length === 1){
 							//found the folder;
 							found = nested;
 						}
@@ -93,15 +100,15 @@ var ModIvle = Backbone.View.extend({
 		Backbone.history.start({root: "/welcome"});
 	},
 	init: function(){
-		this.bootstrap = bootstrap;
+		this.bootstrap = typeof bootstrap !== "undefined" ? bootstrap : {};
 		if (this.bootstrap.token){
 			//authenticated
 			this.usertoken = this.bootstrap.token;
 			this.user = new this.ivle.user(this.usertoken);
 			
+			var that = this;
 			if (this.bootstrap.modules) {
 				//modules availible on server
-				var that = this;
 				var modules = _.map(this.bootstrap.modules, function(module){
 					// console.log(module);
 					var x = new m.Module(module);
@@ -112,7 +119,6 @@ var ModIvle = Backbone.View.extend({
 				this.modules = new m.Modules(modules,{user: this.user});
 				this.modules.update();	
 			} else {
-				var that = this;
 				this.loading();
 				this.modules = new m.Modules([],{user: this.user});
 				this.modules.fetch(function(){
