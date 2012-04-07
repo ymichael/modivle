@@ -79,17 +79,30 @@ v.MainView = Backbone.View.extend({
 		this.user.file(file.id);
 	},
 	moduleselected: function(e, module){
-		this.workbinview = new v.WorkbinView({currentitem : module.fetchworkbin().workbin});
+		//update hash
+		this.navigateto(module.simpleinfo.code);
 
-		//this.workbinview = new v.WorkbinView({currentitem : module.workbin});
+		this.workbinview = new v.WorkbinView({currentitem : module.fetchworkbin().workbin});
 		this.$('#contentcontainer').html(this.workbinview.render().el);
 	},
 	drilldown: function(e, model){
-		this.workbinview.off();
-		this.workbinview.remove();
-		
+		if (this.workbinview){
+			this.workbinview.off();
+			this.workbinview.remove();	
+		}	
+		if (e) this.navigateto(model.filepath());
 		this.workbinview = new v.WorkbinView({currentitem : model});
 		this.$('#contentcontainer').html(this.workbinview.render().el);
+	},
+	home: function(){
+		if (this.workbinview){
+			this.workbinview.off();
+			this.workbinview.remove();
+			this.modulesview.active();
+		}
+	},
+	navigateto: function(hash){
+		this.$el.trigger("navigateto", hash);
 	}
 });
 

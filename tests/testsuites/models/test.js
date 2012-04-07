@@ -14,11 +14,15 @@ require.config({
 require(["appmodels"], 
 function(m){
 	//jasmine test.
-	describe("Client-Side Backbone Models Test Suite", function(){
-		it("Gets required modules correctly", function(){
-			expect(true == true);
+	describe("m.File", function(){
+		
+		var file = new m.File();
+		it("Calculates filesize correctly", function(){
+			expect(file.calcfilesize(100)).toEqual("100 bytes");
+			expect(file.calcfilesize(1234)).toEqual("1.21 KB");
+			expect(file.calcfilesize(1323123)).toEqual("1.26 MB");
 		});
-
-
+		//clean up
+		delete file;
 	});
 });

@@ -42,4 +42,4 @@ clean:
 
 test:
 	#copy latest js files into test folder.
-	cp -R public/js tests/js
+	cp -R public/js tests/

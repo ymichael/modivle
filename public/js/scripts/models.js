@@ -73,10 +73,13 @@ m.File = Backbone.Model.extend({
 		while (Math.floor(bytes).toString().length > 3){
 			index++
 			bytes = parseInt(bytes, 10);
-			bytes = bytes / Math.pow(2, 10);
+			bytes = bytes / 1024;
 		}
 
-		return parseInt(bytes).toFixed(2).toString().slice(0,6) + " " + unit[index];
+		if (!(Math.round(bytes) === bytes)){
+			bytes = parseFloat(bytes, 10).toFixed(2).toString().slice(0,6);
+		}
+		return  bytes + " " + unit[index];
 	}
 });
 m.Workbin = Backbone.Model.extend({

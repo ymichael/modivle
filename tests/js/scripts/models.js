@@ -21,9 +21,7 @@ m.Folder = Backbone.Model.extend({
 		
 		simpleinfo.type = "folder";
 		this.simpleinfo = simpleinfo;
-
 		this.init();
-
 		this.set({id : this.get('ID')});
 	},
 	init: function(){
@@ -36,6 +34,16 @@ m.Folder = Backbone.Model.extend({
 		}, this);
 		this.items.add(folders);
 		this.items.add(files);
+	},
+	filepath: function(){
+		var path = ""
+		var current = this.parent;
+		while (current) {
+			path = current.simpleinfo.name + "/" + path
+			current = current.parent;
+		}
+
+		return path + this.simpleinfo.name;
 	}
 });
 m.File = Backbone.Model.extend({
@@ -65,10 +73,13 @@ m.File = Backbone.Model.extend({
 		while (Math.floor(bytes).toString().length > 3){
 			index++
 			bytes = parseInt(bytes, 10);
-			bytes = bytes / Math.pow(2, 10);
+			bytes = bytes / 1024;
 		}
 
-		return parseInt(bytes).toFixed(2).toString().slice(0,6) + " " + unit[index];
+		if (!(Math.round(bytes) === bytes)){
+			bytes = parseFloat(bytes, 10).toFixed(2).toString().slice(0,6);
+		}
+		return  bytes + " " + unit[index];
 	}
 });
 m.Workbin = Backbone.Model.extend({
@@ -88,6 +99,9 @@ m.Workbin = Backbone.Model.extend({
 	},
 	setname: function(name){
 		this.simpleinfo.name = name;
+	},
+	filepath: function(){
+		return this.simpleinfo.name;
 	}
 });
 
