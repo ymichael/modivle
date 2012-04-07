@@ -17,7 +17,7 @@ var ModIvleRouter = Backbone.Router.extend({
 		this.parent = options.parent;
 	},
 	routes: {
-		"*hash" : "update"
+		"!/*hash" : "update"
 	},
 	update: function(hash){
 		this.init(hash.split("/"));
@@ -162,7 +162,7 @@ var ModIvle = Backbone.View.extend({
 		window.location.href = logout;
 	},
 	navigateto: function(e, hash){
-		this.router.navigate("#/" + hash);
+		this.router.navigate("#!/" + hash);
 	},
 	events: {
 		'click #logout': "logout",

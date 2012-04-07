@@ -90,7 +90,7 @@ v.MainView = Backbone.View.extend({
 			this.workbinview.off();
 			this.workbinview.remove();	
 		}	
-		this.navigateto(model.filepath());
+		if (e) this.navigateto(model.filepath());
 		this.workbinview = new v.WorkbinView({currentitem : model});
 		this.$('#contentcontainer').html(this.workbinview.render().el);
 	},
