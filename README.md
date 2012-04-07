@@ -1,8 +1,8 @@
-# modIVLE source
+# Modivle source
 
 Application hosted here [modivle](http://modivle.yrmichael.com)
 
-feedback, contributions very welcome!!
+Feedback, contributions very welcome!
 
 # Setting up the development environment
 
@@ -13,4 +13,15 @@ Depending on your configuration, you might need to export the installed modules 
 
 When you make changes, you can update the project using the makefile. (```make all```)
 
-Finally, execute the app - ```node app.js```
+Finally, executing the app:
+
+```bash
+# you need to run redis first.
+
+# Development mode
+$ node app.js
+
+# Production mode
+$ export NODE_ENV=production 
+$ node app.js
+```
