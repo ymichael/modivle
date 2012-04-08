@@ -45,5 +45,11 @@ test:
 	cp -R public/js tests/
 
 jshint:
+	#scripts
 	jshint public/js/scripts
 	jshint public/js/mobile
+	
+	#main files
+	jshint public/js/login.js
+	jshint public/js/main.js
+	jshint public/js/mobilemain.js

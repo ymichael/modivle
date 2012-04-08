@@ -53,13 +53,13 @@ var ModIvleRouter = Backbone.Router.extend({
 			} else {
 				var current = mod.workbin;
 
-				var findnested = function(folder){
-					_.find(current.items.models, function(item){
+				var folderinnested = function(current, folder){
+					return _.find(current.items.models, function(item){
 						return item.simpleinfo.name === folder;
 					});	
 				};
 				while (folder.length > 0) {
-					var nested = findnested(folder[0]);
+					var nested = folderinnested(current, folder[0]);
 					if (nested){
 						if (folder.length === 1){
 							//found the folder;
