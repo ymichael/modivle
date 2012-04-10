@@ -18,10 +18,11 @@ var ModIvleRouter = Backbone.Router.extend({
 		this.parent = options.parent;
 	},
 	routes: {
-		"!/*hash" : "update"
+		"*hash" : "update"
 	},
 	update: function(hash){
-		this.init(hash.split("/"));
+		hash = hash.split("/")[0] === "!" ? hash.split("/").slice(1) : hash.split("/");
+		this.init(hash);
 	},
 	init: function(update){
 		//main blank page
@@ -82,8 +83,6 @@ var ModIvleRouter = Backbone.Router.extend({
 				this.navigate("");
 			}
 		}
-		
-		
 	}
 });
 
