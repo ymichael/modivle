@@ -59,6 +59,11 @@ var ivle = (function($){
 			 * 	APICALLS (work in progress)
 			 */
 
+			//set auth token
+			this.setauthtoken = function(newauthtoken){
+				this.authtoken = newauthtoken;
+			}
+
 			//validate user
 			this.validate = function(success, error){
 				var endpoint = 'Validate';

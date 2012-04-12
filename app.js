@@ -65,6 +65,7 @@ app.post('/modules', routes.modules);
 app.post('/workbin', routes.workbin);
 app.get('/logout', routes.logout);
 app.get('/proxy', routes.proxy);
+app.post('/auth', routes.token);
 
 var port = process.env.PORT || 9002;
 app.listen(port, function() {

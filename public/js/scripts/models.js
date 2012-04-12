@@ -155,6 +155,11 @@ m.Module = Backbone.Model.extend({
 	fetchworkbin: function(){
 		var that = this;
 		this.user.workbin(this.id, function(data){
+			//check if all is good.
+			if (data.Results.length === 0) {
+				data.Results[0] = {};
+			}
+
 			//save space.
 			var relevant = {};
 			relevant.Folders = that.thinfolder(data.Results[0].Folders);
@@ -182,7 +187,7 @@ m.Module = Backbone.Model.extend({
 m.Modules = Backbone.Collection.extend({
 	initialize: function(models, options){
 		this.user = options.user;
-		_.bindAll(this, 'fetch','update');
+		_.bindAll(this, 'fetch', 'update');
 	},
 	model: m.Module,
 	fetch: function(callback){
@@ -222,8 +227,23 @@ m.Modules = Backbone.Collection.extend({
 	update: function(callback){
 		var that = this;
 		this.user.modules(function(data){
+			if (data.Comments === "Invalid login!"){
+				//handle error.
+			}
 			var changes = _.filter(data.Results,function(module){
 				return ! that.get(module.ID);
+			},that);
+
+			//remove inactive modules
+			var activemodule = function(module){
+				return _.find(data.Results, function(mod){
+					return module.id === data.Results.ID;
+				});
+			};
+			_.each(that.models, function(module){
+				if (!activemodule(module)){
+					that.remove(module);
+				}
 			},that);
 			
 			if (changes.length > 0){

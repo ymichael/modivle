@@ -27,6 +27,18 @@ exports.auth = function(req,res){
     }
   });
 }
+exports.token = function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token){
+    res.redirect('/', 302);
+  } else {
+    var newtoken = req.body.token;
+    var date = req.body.date;
+    //session is not updating occasionally
+    req.session.bootstrap.token = newtoken;
+    req.session.bootstrap.date = date;
+    res.json({updatestatus: "Success"});
+  }
+}
 exports.modules = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     res.redirect('/', 302);

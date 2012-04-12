@@ -43,7 +43,7 @@ var ModIvleRouter = Backbone.Router.extend({
 			
 			//does not match any module. 
 			if (!mod) {
-				return this.navigate("");	
+				return this.navigate("");
 			} 
 			
 			//fetchworkbin.
@@ -127,6 +127,44 @@ var ModIvle = Backbone.View.extend({
 			//user modules
 			this.render();
 			this.router.init();
+
+			//validate user token.
+			//validate done on the client-side as it take sometime (~2 seconds)
+			this.user.validate(function(data){
+				if (data.Success === false){
+					//console.log('validation failed');
+				} else {
+					if (data.Token !== that.usertoken) {
+						//update user token on client.
+						that.usertoken = data.Token;
+						that.user.setauthtoken(that.usertoken);
+
+						//reset app state.
+						that.modules.fetch();
+					}
+					
+					var datere = /^\/Date\((.*)+.*\)\//;
+					var match = datere.exec(data.ValidTill);
+					var date = match ? new Date(parseInt(match[1], 10)) : match;
+
+					if (date && (date != that.bootstrap.date || that.usertoken != that.bootstrap.token)){
+						//save state
+						$.ajax({
+							type: 'POST',
+							url: "/auth",
+							data: {token : that.usertoken, date: date},
+							success: function(data){
+								//console.log(data);
+							},
+							dataType: 'json'
+						});	
+					}
+
+					
+				} 
+			}, function(){
+				//error callback.
+			});
 		} else {
 			//not authenticated
 			this.renderlogin();
