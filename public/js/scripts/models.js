@@ -237,11 +237,12 @@ m.Modules = Backbone.Collection.extend({
 			//remove inactive modules
 			var activemodule = function(module){
 				return _.find(data.Results, function(mod){
-					return module.id === data.Results.ID;
+					return module.id === mod.ID;
 				});
 			};
 			_.each(that.models, function(module){
 				if (!activemodule(module)){
+					console.log('adf');
 					that.remove(module);
 				}
 			},that);
