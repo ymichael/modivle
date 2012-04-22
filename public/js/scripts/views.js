@@ -223,9 +223,16 @@ v.FileView = Backbone.View.extend({
 			"psd", "py", "qt", "rar", "rb", "rtf", "sql", "tiff", "txt", "wav", 
 			"xml"
 		];
-		var bg = _.find(filearray, function(atype){
-			return atype === type;
-		});
+
+		// Workaround/hack to link docx/pptx to the doc/ppt icons. Remove when no longer needed.
+		// Bypasses usual search through array (since we already know which icon to use.)
+		var bg;
+		switch(type) {
+			case "docx": bg = "doc"; break;
+			case "pptx": bg = "ppt"; break;
+			default: bg = _.find(filearray, function(atype){ return atype === type; }); break;
+		}
+
 		var defaultfile = "_blank";
 		bg = bg ? bg : defaultfile;
 
