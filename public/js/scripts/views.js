@@ -256,7 +256,7 @@ v.FileView = Backbone.View.extend({
 			txt : "txt",
 			wav : "wav", 
 			xml : "xml"
-		}
+		};
 
 		var defaultfile = "_blank";
 		bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
