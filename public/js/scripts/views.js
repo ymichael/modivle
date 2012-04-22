@@ -215,19 +215,51 @@ v.FileView = Backbone.View.extend({
 	},
 	itemicon: function(){
 		var type = this.model.simpleinfo.filetype;
-		var filearray = [
-			//put the popular ones first
-			"zip", "doc", "pdf", "ppt", "xls", "xlsx", 
-			"acc", "avi", "bmp","c", "cpp", "dmg", "exe", "flv", "gif", "h", "html", 
-			"ics", "java", "jpg", "key", "mp3", "mid", "mp4", "mpg", "php","png", 
-			"psd", "py", "qt", "rar", "rb", "rtf", "sql", "tiff", "txt", "wav", 
-			"xml"
-		];
-		var bg = _.find(filearray, function(atype){
-			return atype === type;
-		});
+		var fileTypes = { 
+			zip : "zip", 
+			doc : "doc", 
+			docx : "doc", // Redirect docx to doc's icon. 
+			pdf : "pdf", 
+			ppt : "ppt", 
+			pptx : "ppt", // Redirect pptx to ppt's icon.
+			xls : "xls", 
+			xlsx : "xlsx",
+			acc : "acc", 
+			avi : "avi", 
+			bmp : "bmp",
+			c : "c", 
+			cpp : "cpp", 
+			dmg : "dmg", 
+			exe : "exe", 
+			flv : "flv", 
+			gif : "gif", 
+			h : "h", 
+			html : "html", 
+			ics : "ics", 
+			java : "java", 
+			jpg : "jpg", 
+			key : "key", 
+			mp3 : "mp3", 
+			mid : "mid", 
+			mp4 : "mp4", 
+			mpg : "mpg", 
+			php : "php", 
+			png : "png", 
+			psd : "psd",
+			py : "py",
+			qt : "qt",
+			rar : "rar",
+			rb : "rb",
+			rtf :  "rtf",
+			sql : "sql",
+			tiff : "tiff",
+			txt : "txt",
+			wav : "wav", 
+			xml : "xml"
+		};
+
 		var defaultfile = "_blank";
-		bg = bg ? bg : defaultfile;
+		bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
 
 		bg = "url(/img/filetypes/" + bg + ".png)";
 		this.$('.itemicon').css("background-image", bg);
