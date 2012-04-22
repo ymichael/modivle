@@ -217,8 +217,8 @@ v.FileView = Backbone.View.extend({
 		var type = this.model.simpleinfo.filetype;
 		var filearray = [
 			//put the popular ones first
-			"zip", "doc", "pdf","ppt","xls", 
-			"acc", "avi","bmp","c", "cpp", "dmg", "exe", "flv", "gif", "h", "html", 
+			"zip", "doc", "pdf", "ppt", "xls", "xlsx", 
+			"acc", "avi", "bmp","c", "cpp", "dmg", "exe", "flv", "gif", "h", "html", 
 			"ics", "java", "jpg", "key", "mp3", "mid", "mp4", "mpg", "php","png", 
 			"psd", "py", "qt", "rar", "rb", "rtf", "sql", "tiff", "txt", "wav", 
 			"xml"
