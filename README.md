@@ -1,10 +1,10 @@
-# Modivle source
+![MODIVLE source](http://dl.dropbox.com/u/24733998/modivleblack.png)
 
 Application hosted here [modivle](http://modivle.yrmichael.com)
 
 Feedback, contributions very welcome!
 
-# Setting up the development environment
+## Setting up the development environment
 
 You'll need **Redis** installed. Details at http://redis.io/download
 
@@ -24,4 +24,14 @@ $ node app.js
 # Production mode
 $ export NODE_ENV=production 
 $ node app.js
+```
+
+## Contributing
+
+modivle uses [jshint](https://github.com/jshint/jshint/) for validation of js.
+
+please validate changes by doing:
+
+```sh
+make jshint
 ```
