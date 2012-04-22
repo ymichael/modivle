@@ -46,8 +46,8 @@ test:
 
 jshint:
 	#scripts
-	jshint public/js/scripts
-	jshint public/js/mobile
+	jshint public/js/scripts/
+	jshint public/js/mobile/
 	
 	#main files
 	jshint public/js/login.js

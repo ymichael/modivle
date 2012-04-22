@@ -259,7 +259,7 @@ v.FileView = Backbone.View.extend({
 		};
 
 		var defaultfile = "_blank";
-		bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
+		var bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
 
 		bg = "url(/img/filetypes/" + bg + ".png)";
 		this.$('.itemicon').css("background-image", bg);
