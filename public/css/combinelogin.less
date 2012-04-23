@@ -502,47 +502,199 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+@pagewidth:900px;
 #container {
 	height: 100%;
-	width: 960px;
+	width: @pagewidth;
 	margin: 0 auto; 
 	padding: 0;
+	#main_container {
+	width: @pagewidth;
+	}
 }
 body {
 font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
 font-weight: normal;
-color: #555;
 letter-spacing: -1px;
 }
 header {
 width: 100%;
+border-bottom: solid 1px #e5e5e5;
 	#header_container {
-	width: 100%;
-	height: 50px;
-	margin-top: 20px;
+	width: @pagewidth;
+	height: 70px;
+	margin: auto;
+		#logo {
+			width: 200px;
+			margin: 20px;
+			float: left;
+		}
 		#login {
-			position: relative;
-			margin: auto;
-			.loginhere {
-			opacity: 0.5;
-			position: absolute;
-			width: 100px;
-			top: 35px;
-			left: -100px;
-			}
-		}
-		#logout {
-			float: right;
-		}
-		#login, #logout {
 		height: 20px;
-		width: 20px;
-		padding: 10px;
+		float: right;
+		width: 25px;
+		padding: 25px;
 		background-size: 100%;
 		background-origin: content-box;
 		background-repeat: no-repeat;
 		background-image: url(/img/logout.png);
 		cursor: pointer;
 		}
+	}
+}
+
+.page {
+padding: 20px 0px;
+position: relative;
+	.desc {
+	padding: 20px 0px;
+	float: left;
+	width: 400px;
+		.title {
+		font-size: 40px;
+		letter-spacing: -3px;
+		}
+		.text {
+		font-size: 17px;
+		font-family: georgia, serif;
+		}
+		a {
+		color: #555;
+		}
+	}
+	.pagetitle {
+		font-size: 45px;
+		letter-spacing: -4px;
+		text-align: center;
+		border-bottom: dashed 1px black;
+		opacity: 0.3;
+	}
+	.content {
+	height: 150px;
+	position: relative;
+	padding: 50px 100px;
+	border-bottom: solid 1px #e5e5e5;
+		.imgwrapper {
+		float: right;
+		width: 200px;
+		height: 100px;
+		position: relative;
+		}
+	}
+	.content:nth-child(odd){
+		.desc {
+			float: right;
+		}
+		.imgwrapper {
+			float: left;
+			position: relative;
+		}
+	}
+
+}
+
+#features {
+	//images
+	img#mobile {
+	height: 300px;
+	position: absolute;
+	top: -70px;
+	left: 70px;
+	}
+	img#simple {
+	height: 250px;
+	position: absolute;
+	right: -40px;
+	top: -30px;
+	}
+	img#github {
+	height: 200px;
+	position: absolute;
+	right: 0px;
+	top: -40px;
+	}	
+}
+
+#getintouch {
+height: 200px;
+	.desc {
+		float: left;
+		width: 300px;
+		margin-left: 10px;
+	}
+	.contact {
+		float: right;
+		margin: 35px 30px;
+		.field {
+		position: relative;
+		height: 40px;
+			.icon{
+				height: 30px;
+				width: 30px;
+				background-size: 100%;
+				background-repeat: no-repeat;
+				float: left;
+			}
+			.label{
+				float :left;
+				font-size: 18px;
+				letter-spacing: -2px;
+				color: #555;
+				padding: 5px 10px;
+			}
+			a {
+				color: #555;
+			}
+		}
+		#twitter {
+			.icon {
+				background-image: url(/img/logo/twitter.png);
+			}
+		}
+		#mail {
+			.icon {
+				background-image: url(/img/logo/mail.png);
+			}
+		}
+	}
+}
+
+#top {
+margin-bottom: 50px;
+padding: 20px 0 50px 0;
+	#screenshotwrapper {
+	width: 500px;
+	margin: auto;
+		#screenshot {
+			width: 500px;
+		}
+	}
+	#titledesc {
+	font-size: 30px;
+	letter-spacing: -3px;
+	text-align: center;
+	}
+	#fblike {
+	position: relative;
+		.fb-like {
+		position: absolute;
+		top: 10px;
+		left: 320px;
+		}
+	}
+}
+
+
+footer {
+width: 100%;
+height: 200px;
+background-color: #e5e5e5;
+border-top: dashed 1px;
+	#footer_container {
+	width: @pagewidth;
+	margin: auto;
+	text-align: right;
+	font-size: 14px;
+		a { color: black; }
 	}
 }
