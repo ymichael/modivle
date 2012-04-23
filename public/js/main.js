@@ -12,7 +12,7 @@ require.config({
 		'appviews' : "scripts/views"
 	}
 });
-require(['mainapp'], 
+require(['mainapp'],
 function(app){
 	var x = new app();
 	x.init();

@@ -130,7 +130,7 @@ v.WorkbinBreadcrumbs = Backbone.View.extend({
 	},
 	back: function(){
 		if (this.model.parent){
-			this.$el.trigger('drilldown', this.model.parent);	
+			this.$el.trigger('drilldown', this.model.parent);
 		} else {
 			this.$el.trigger('home');
 		}
@@ -172,7 +172,7 @@ v.WorkbinView = Backbone.View.extend({
 				},this);
 				this.$('#filescontainer').html(fragment);
 
-			}	
+			}
 		} else {
 			//loading folder
 			this.$('#filescontainer').html(ich.loadingfolder());
@@ -208,10 +208,10 @@ v.FileView = Backbone.View.extend({
 		var type = this.model.simpleinfo.filetype;
 		var filearray = [
 			//put the popular ones first
-			"zip", "doc", "pdf","ppt","xls", 
-			"acc", "avi","bmp","c", "cpp", "dmg", "exe", "flv", "gif", "h", "html", 
-			"ics", "java", "jpg", "key", "mp3", "mid", "mp4", "mpg", "php","png", 
-			"psd", "py", "qt", "rar", "rb", "rtf", "sql", "tiff", "txt", "wav", 
+			"zip", "doc", "pdf","ppt","xls",
+			"acc", "avi","bmp","c", "cpp", "dmg", "exe", "flv", "gif", "h", "html",
+			"ics", "java", "jpg", "key", "mp3", "mid", "mp4", "mpg", "php","png",
+			"psd", "py", "qt", "rar", "rb", "rtf", "sql", "tiff", "txt", "wav",
 			"xml"
 		];
 		var bg = _.find(filearray, function(atype){

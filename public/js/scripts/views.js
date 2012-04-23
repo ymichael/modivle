@@ -89,11 +89,11 @@ v.MainView = Backbone.View.extend({
 	drilldown: function(e, model){
 		if (this.workbinview){
 			this.workbinview.off();
-			this.workbinview.remove();	
-		}	
+			this.workbinview.remove();
+		}
 		if (e) {
-			this.navigateto(model.filepath());	
-		} 
+			this.navigateto(model.filepath());
+		}
 
 		this.workbinview = new v.WorkbinView({currentitem : model});
 		this.$('#contentcontainer').html(this.workbinview.render().el);
@@ -181,7 +181,7 @@ v.WorkbinView = Backbone.View.extend({
 				},this);
 				this.$('#filescontainer').html(fragment);
 
-			}	
+			}
 		} else {
 			//loading folder
 			this.$('#filescontainer').html(ich.loadingfolder());
@@ -215,36 +215,36 @@ v.FileView = Backbone.View.extend({
 	},
 	itemicon: function(){
 		var type = this.model.simpleinfo.filetype;
-		var fileTypes = { 
-			zip : "zip", 
-			doc : "doc", 
-			docx : "doc", // Redirect docx to doc's icon. 
-			pdf : "pdf", 
-			ppt : "ppt", 
+		var fileTypes = {
+			zip : "zip",
+			doc : "doc",
+			docx : "doc", // Redirect docx to doc's icon.
+			pdf : "pdf",
+			ppt : "ppt",
 			pptx : "ppt", // Redirect pptx to ppt's icon.
-			xls : "xls", 
+			xls : "xls",
 			xlsx : "xlsx",
-			acc : "acc", 
-			avi : "avi", 
+			acc : "acc",
+			avi : "avi",
 			bmp : "bmp",
-			c : "c", 
-			cpp : "cpp", 
-			dmg : "dmg", 
-			exe : "exe", 
-			flv : "flv", 
-			gif : "gif", 
-			h : "h", 
-			html : "html", 
-			ics : "ics", 
-			java : "java", 
-			jpg : "jpg", 
-			key : "key", 
-			mp3 : "mp3", 
-			mid : "mid", 
-			mp4 : "mp4", 
-			mpg : "mpg", 
-			php : "php", 
-			png : "png", 
+			c : "c",
+			cpp : "cpp",
+			dmg : "dmg",
+			exe : "exe",
+			flv : "flv",
+			gif : "gif",
+			h : "h",
+			html : "html",
+			ics : "ics",
+			java : "java",
+			jpg : "jpg",
+			key : "key",
+			mp3 : "mp3",
+			mid : "mid",
+			mp4 : "mp4",
+			mpg : "mpg",
+			php : "php",
+			png : "png",
 			psd : "psd",
 			py : "py",
 			qt : "qt",
@@ -254,7 +254,7 @@ v.FileView = Backbone.View.extend({
 			sql : "sql",
 			tiff : "tiff",
 			txt : "txt",
-			wav : "wav", 
+			wav : "wav",
 			xml : "xml"
 		};
 

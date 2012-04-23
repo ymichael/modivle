@@ -1,5 +1,5 @@
 /*global define:true */
-define(['jquery', 'underscore', 'backbone'], 
+define(['jquery', 'underscore', 'backbone'],
 function($,_,Backbone){
 	
 var m = {};
@@ -14,12 +14,12 @@ m.Folder = Backbone.Model.extend({
 		simpleinfo.name = this.get('FolderName');
 		var count = this.get('FileCount');
 		if (this.get('Folders')){
-			count = parseInt(count, 10) + this.get('Folders').length;	
-		} 
+			count = parseInt(count, 10) + this.get('Folders').length;
+		}
 		if (count === 0){
 			simpleinfo.size = "empty";
 		} else {
-			simpleinfo.size = count + " items";	
+			simpleinfo.size = count + " items";
 		}
 		
 		simpleinfo.type = "folder";

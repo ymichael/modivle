@@ -8,7 +8,7 @@ define([
 	'appmodels',
 	'appviews',
 	'text!templates/template.html'
-], 
+],
 function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
 ich.grabTemplates();
@@ -41,10 +41,10 @@ var ModIvleRouter = Backbone.Router.extend({
 			var folder = filepath.slice(1);
 			var found;
 			
-			//does not match any module. 
+			//does not match any module.
 			if (!mod) {
 				return this.navigate("");
-			} 
+			}
 			
 			//fetchworkbin.
 			mod.fetchworkbin();
@@ -57,7 +57,7 @@ var ModIvleRouter = Backbone.Router.extend({
 				var folderinnested = function(current, folder){
 					return _.find(current.items.models, function(item){
 						return item.simpleinfo.name === folder;
-					});	
+					});
 				};
 				while (folder.length > 0) {
 					var nested = folderinnested(current, folder[0]);
@@ -116,13 +116,13 @@ var ModIvle = Backbone.View.extend({
 					return x;
 				}, that);
 				this.modules = new m.Modules(modules,{user: this.user});
-				this.modules.update();	
+				this.modules.update();
 			} else {
 				this.loading();
 				this.modules = new m.Modules([],{user: this.user});
 				this.modules.fetch(function(){
 					that.stoploading();
-				});	
+				});
 			}
 			//user modules
 			this.render();
@@ -147,7 +147,7 @@ var ModIvle = Backbone.View.extend({
 					var match = datere.exec(data.ValidTill);
 					var date = match ? new Date(parseInt(match[1], 10)) : match;
 
-					if (date && (date != that.bootstrap.date || that.usertoken != that.bootstrap.token)){
+					if (date && (date !== that.bootstrap.date || that.usertoken !== that.bootstrap.token)){
 						//save state
 						$.ajax({
 							type: 'POST',
@@ -157,11 +157,11 @@ var ModIvle = Backbone.View.extend({
 								//console.log(data);
 							},
 							dataType: 'json'
-						});	
+						});
 					}
 
 					
-				} 
+				}
 			}, function(){
 				//error callback.
 			});

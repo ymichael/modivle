@@ -1,5 +1,5 @@
 /*global define:true */
-define(['jquery','ivle'], 
+define(['jquery','ivle'],
 function($,ivle){
 
 var login = {};

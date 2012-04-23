@@ -8,7 +8,7 @@ define([
 	'appmodels',
 	'appviews',
 	'text!templates/mobile.html'
-], 
+],
 function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
 ich.grabTemplates();
@@ -38,13 +38,13 @@ var ModIvle = Backbone.View.extend({
 					return x;
 				}, that);
 				this.modules = new m.Modules(modules,{user: this.user});
-				this.modules.update();	
+				this.modules.update();
 			} else {
 				this.loading();
 				this.modules = new m.Modules([],{user: this.user});
 				this.modules.fetch(function(){
 					that.stoploading();
-				});	
+				});
 			}
 			//user modules
 			this.render();

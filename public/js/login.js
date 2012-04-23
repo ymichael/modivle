@@ -13,7 +13,7 @@ require.config({
 		'loginscript' : "scripts/login"
 	}
 });
-require(['loginscript'], 
+require(['loginscript'],
 function(login){
 	login.init();
 });

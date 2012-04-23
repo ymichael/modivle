@@ -1,5 +1,5 @@
 /*global define:true */
-define(['jquery', 'underscore', 'backbone'], 
+define(['jquery', 'underscore', 'backbone'],
 function($,_,Backbone){
 	
 var m = {};
@@ -19,7 +19,7 @@ m.Folder = Backbone.Model.extend({
 		if (count === 0){
 			simpleinfo.size = "empty";
 		} else {
-			simpleinfo.size = count + " items";	
+			simpleinfo.size = count + " items";
 		}
 		
 		simpleinfo.type = "folder";
@@ -242,7 +242,6 @@ m.Modules = Backbone.Collection.extend({
 			};
 			_.each(that.models, function(module){
 				if (!activemodule(module)){
-					console.log('adf');
 					that.remove(module);
 				}
 			},that);
