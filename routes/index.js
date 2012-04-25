@@ -82,7 +82,7 @@ exports.desktop.login = function(req, res){
     var production = process.env.NODE_ENV;
     // $ NODE_ENV=production node app.js
     var variables = {};
-    variables.title = "modIVLE";
+    variables.title = "MODIVLE";
     if (production){
       variables.layout = "layoutprodlogin";
     } else {
@@ -99,7 +99,7 @@ exports.desktop.welcome = function(req,res){
     res.redirect('/', 302);
   } else {
     var variables = {};
-    variables.title = "modIVLE";
+    variables.title = "MODIVLE";
     if (!req.session.bootstrap){
       req.session.bootstrap = {};
     }
@@ -122,7 +122,7 @@ exports.mobile.login = function(req, res){
     var production = process.env.NODE_ENV;
     // $ NODE_ENV=production node app.js
     var variables = {};
-    variables.title = "modIVLE";
+    variables.title = "MODIVLE";
     if (production){
       variables.layout = "mobile/layoutprodlogin";
     } else {
@@ -139,7 +139,7 @@ exports.mobile.welcome = function(req,res){
     res.redirect('/', 302);
   } else {
     var variables = {};
-    variables.title = "modIVLE";
+    variables.title = "MODIVLE";
     if (!req.session.bootstrap){
       req.session.bootstrap = {};
     }
