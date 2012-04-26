@@ -1,10 +1,18 @@
 !!! 5
 html
   head
-    title= title
+    title MODIVLE
     meta(charset="utf-8")
     meta(name='description',content="A NUS IVLE Client")
-    link(rel="stylesheet", href="css/main.css")
+    meta(name="viewport", content="width=device-width, user-scalable=no")
+
+    if env == "prod"
+      link(rel="stylesheet", href="css/mobilemain.css")
+    else if env == "dev"
+      link(rel='stylesheet', href='/css/normalize.css')
+      link(rel="stylesheet/less", href="css/mobilemain.less")
+      script(src="js/libs/less-1.1.5.min.js")
+
     script(type="text/javascript").
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-30405365-1']);
@@ -15,10 +23,5 @@ html
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-
-      // ADD THIS AT THE BOTTOM OF YOUR GOOGLE ANALYTICS TRACKING CODE //
-      window.onerror = function(message, file, line) { 
-         var sFormattedMessage = '[' + file + ' (' + line + ')] ' + message; 
-         _gaq.push(['_trackEvent', 'Exceptions', 'Application', sFormattedMessage, null, true]);
-      }
-  body!= body
+  body
+    block content
