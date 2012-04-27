@@ -53,3 +53,12 @@ jshint:
 	jshint public/js/login.js
 	jshint public/js/main.js
 	jshint public/js/mobilemain.js
+
+images:
+#optimise pngs
+	optipng build/img/*.png --strip all
+	optipng build/img/filetypes/*.png --strip all
+	optipng build/img/logo/*.png --strip all
+	
+	#jpeg
+	jpegtran -copy none -outfile build/img/logo/github.jpg -optimize build/img/logo/github.jpg
