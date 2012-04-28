@@ -46,23 +46,20 @@ body {
 	padding: 0;
 }
 header, #main, footer {
-	border-bottom: solid 1px;
 	width: 100%;
 	float: left;
 }
 #header_container, #main_container, #footer_container {
 	width: @pagewidth;
 	margin: auto;
-	border: solid 1px;
 }
 #header_container {
-	height: 50px;
-	margin-top: 20px;
+	margin-top: 15px;
 	#logout {
 		float: right;
 		height: 20px;
 		width: 20px;
-		padding: 10px;
+		padding: 10px 10px;
 		background-size: 100%;
 		background-origin: content-box;
 		background-repeat: no-repeat;
@@ -82,20 +79,37 @@ margin-bottom: 50px;
 }
 #leftbar {
 	width: 200px;
-	min-height: 300px;
 	float: left;
 }
 #content {
 	width: 750px;
 	float: right;
 	min-height: 300px;
+	#tabs {
+	width: 100%;
+	float: left;
+	border-bottom: solid 1px darken(#e5e5e5, 10%);
+		.tab {
+			float:left;
+			font-size: 13px;
+			padding: 5px 10px;
+			margin-right: 5px;
+			margin-bottom: 5px;
+		}
+	}
+	#tabcontent {
+	width: 100%;
+	float: left;
+		border: solid 1px #e5e5e5;
+		min-height: 400px;
+	}
 }
 
 
 // subviews
 .moduleview {
 	cursor: pointer;
-	margin: 5px;
+	margin-bottom: 5px;
 	min-height: 35px;
 	padding: 5px;
 	border: solid 1px darken(#e5e5e5, 0%);

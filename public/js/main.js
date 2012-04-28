@@ -15,5 +15,5 @@ require.config({
 require(['mainapp'],
 function(app){
 	var x = new app();
-	x.init();
+	x.start();
 });

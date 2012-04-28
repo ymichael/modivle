@@ -13,162 +13,77 @@ function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
 ich.grabTemplates();
 
-var ModIvleRouter = Backbone.Router.extend({
-	initialize: function(options){
-		this.parent = options.parent;
-	},
-	routes: {
-		"*hash" : "update"
-	},
-	update: function(hash){
-		hash = hash.split("/")[0] === "!" ? hash.split("/").slice(1) : hash.split("/");
-		this.init(hash);
-	},
-	init: function(update){
-		//main blank page
-		if (update && update[0] === "" && this.parent.mainview){
-			return this.parent.mainview.home();
-		}
-
-		var hash = window.location.hash;
-		var filepath = update || hash.split("/").slice(1);
-		
-		if (this.parent.modules){
-			var mod = _.find(this.parent.modules.models, function(module){
-				return module.simpleinfo.code === filepath[0];
-			}, this);
-
-			var folder = filepath.slice(1);
-			var found;
-			
-			//does not match any module.
-			if (!mod) {
-				return this.navigate("");
-			}
-			
-			//fetchworkbin.
-			mod.fetchworkbin();
-			
-			if (folder.length === 0){
-				found = mod.workbin;
-			} else {
-				var current = mod.workbin;
-
-				var folderinnested = function(current, folder){
-					return _.find(current.items.models, function(item){
-						return item.simpleinfo.name === folder;
-					});
-				};
-				while (folder.length > 0) {
-					var nested = folderinnested(current, folder[0]);
-					if (nested){
-						if (folder.length === 1){
-							//found the folder;
-							found = nested;
-						}
-						//remove first item in array.
-						folder = folder.slice(1);
-						current = nested;
-					} else {
-						//end loop;
-						folder = [];
-					}
-				}
-			}
-			if (found){
-				this.parent.mainview.modulesview.active(mod.simpleinfo.code);
-				this.parent.mainview.drilldown(null, found);
-			} else {
-				//reset the hash tag. invalid
-				this.navigate("");
-			}
-		}
-	}
-});
-
-var ModIvle = Backbone.View.extend({
+var App = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
 		var apikey = "ba1ge5NQ9cl76KQNI1Suc";
 		this.ivle = new ivle(apikey, '/proxy/');
-		_.bindAll(this, 'init');
-
-		//app router
-		this.router = new ModIvleRouter({parent: this});
-		//Backbone.history.start({pushState: true, root: "/welcome"});
-		Backbone.history.start({root: "/welcome"});
+		_.bindAll(this, 'start');
 	},
-	init: function(){
-		this.bootstrap = typeof bootstrap !== "undefined" ? bootstrap : {};
-		if (this.bootstrap.token){
-			//authenticated
-			this.usertoken = this.bootstrap.token;
-			this.user = new this.ivle.user(this.usertoken);
-			
-			var that = this;
-			if (this.bootstrap.modules) {
-				//modules availible on server
-				var modules = _.map(this.bootstrap.modules, function(module){
-					// console.log(module);
-					var x = new m.Module(module);
-					// console.log(module);
-					x.user = that.user;
-					return x;
-				}, that);
-				this.modules = new m.Modules(modules,{user: this.user});
-				this.modules.update();
-			} else {
-				this.loading();
-				this.modules = new m.Modules([],{user: this.user});
-				this.modules.fetch(function(){
-					that.stoploading();
-				});
-			}
-			//user modules
-			this.render();
-			this.router.init();
-
-			//validate user token.
-			//validate done on the client-side as it take sometime (~2 seconds)
-			this.user.validate(function(data){
-				if (data.Success === false){
-					//console.log('validation failed');
-				} else {
-					if (data.Token !== that.usertoken) {
-						//update user token on client.
-						that.usertoken = data.Token;
-						that.user.setauthtoken(that.usertoken);
-
-						//reset app state.
-						that.modules.fetch();
-					}
-					
-					var datere = /^\/Date\((.*)+.*\)\//;
-					var match = datere.exec(data.ValidTill);
-					var date = match ? new Date(parseInt(match[1], 10)) : match;
-
-					if (date && (date !== that.bootstrap.date || that.usertoken !== that.bootstrap.token)){
-						//save state
-						$.ajax({
-							type: 'POST',
-							url: "/auth",
-							data: {token : that.usertoken, date: date},
-							success: function(data){
-								//console.log(data);
-							},
-							dataType: 'json'
-						});
-					}
-
-					
-				}
-			}, function(){
-				//error callback.
-			});
+	start: function(){
+		this.bootstrap = bootstrap;
+		this.usertoken = this.bootstrap.token;
+		this.user = new this.ivle.user(this.usertoken);
+		
+		var that = this;
+		if (this.bootstrap.modules) {
+			//modules availible on server
+			var modules = _.map(this.bootstrap.modules, function(module){
+				// console.log(module);
+				var x = new m.Module(module);
+				// console.log(module);
+				x.user = that.user;
+				return x;
+			}, that);
+			this.modules = new m.Modules(modules,{user: this.user});
+			this.modules.update();
 		} else {
-			//not authenticated
-			this.renderlogin();
+			this.loading();
+			this.modules = new m.Modules([],{user: this.user});
+			this.modules.fetch(function(){
+				that.stoploading();
+			});
 		}
+		this.render();
+		this.validateuser();
+	},
+	validateuser: function(){
+		var that = this;
+		this.user.validate(function(data){
+			if (data.Success === false){
+				//console.log('validation failed');
+			} else {
+				if (data.Token !== that.usertoken) {
+					//update user token on client.
+					that.usertoken = data.Token;
+					that.user.setauthtoken(that.usertoken);
+
+					//reset app state.
+					that.modules.fetch();
+				}
+				
+				var datere = /^\/Date\((.*)+.*\)\//;
+				var match = datere.exec(data.ValidTill);
+				var date = match ? new Date(parseInt(match[1], 10)) : match;
+
+				if (date && (date !== that.bootstrap.date || that.usertoken !== that.bootstrap.token)){
+					//save state
+					$.ajax({
+						type: 'POST',
+						url: "/auth",
+						data: {token : that.usertoken, date: date},
+						success: function(data){
+							//console.log(data);
+						},
+						dataType: 'json'
+					});
+				}
+
+				
+			}
+		}, function(){
+			//error callback.
+		});
 	},
 	loading: function(){
 		$('.loading').html("please be patient, loading your modules...");
@@ -189,26 +104,15 @@ var ModIvle = Backbone.View.extend({
 		});
 		this.mainview.render();
 	},
-	renderlogin: function(){
-		var re = new RegExp("^(.+" + window.location.host+ ")");
-		var callbackurl =  re.exec(window.location.href)[1] + "/ivle/auth";
-
-		this.$('#header_container').html(ich.login());
-		this.ivle.auth(this.$('#login'), callbackurl);
-	},
 	logout: function(){
 		var re = new RegExp("^(.+" + window.location.host+ ")");
 		var logout =  re.exec(window.location.href)[1] + "/logout";
 		window.location.href = logout;
 	},
-	navigateto: function(e, hash){
-		this.router.navigate("#!/" + hash);
-	},
 	events: {
-		'click #logout': "logout",
-		'navigateto' : "navigateto"
+		'click #logout': "logout"
 	}
 });
 
-return ModIvle;
+return App;
 });

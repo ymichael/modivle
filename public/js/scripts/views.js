@@ -4,8 +4,28 @@ function($,_,Backbone,ich){
 
 var v = {};
 
-//modules
+v.MainView = Backbone.View.extend({
+	el: "#main_container",
+	initialize: function(options){
+		this.user = options.user;
+		this.modules = options.modules;
+		_.bindAll(this, 'render', 'moduleselected');
+	},
+	render: function(){
+		//populate left bar
+		this.modulesview = new v.ModulesView({collection: this.modules}).render();
+		this.contentview = new v.ContentView({user: this.user}).render();
+		return this;
+	},
+	events: {
+		"moduleselected" : "moduleselected",
+	},
+	moduleselected: function(e, module){
+		this.contentview.changemodule(module);
+	}
+});
 v.ModulesView = Backbone.View.extend({
+	el: "#leftbar",
 	initialize: function(){
 		this.collection.on('reset', this.render, this);
 		this.collection.on('add', this.render, this);
@@ -21,9 +41,6 @@ v.ModulesView = Backbone.View.extend({
 		this.$el.html(fragment);
 		return this;
 	},
-	events: {
-		"moduleselected" : "moduleselected"
-	},
 	moduleselected: function(e, module){
 		this.active(module.simpleinfo.code);
 	},
@@ -34,6 +51,9 @@ v.ModulesView = Backbone.View.extend({
 				view.active();
 			}
 		}, this);
+	},	
+	events: {
+		"moduleselected" : "moduleselected"
 	}
 });
 v.ModuleView = Backbone.View.extend({
@@ -54,62 +74,102 @@ v.ModuleView = Backbone.View.extend({
 		this.$el.addClass("active");
 	}
 });
-
-v.MainView = Backbone.View.extend({
-	el: "#main_container",
+v.ContentView = Backbone.View.extend({
+	el: "#content",
 	initialize: function(options){
 		this.user = options.user;
-		this.modules = options.modules;
-		
-		_.bindAll(this, 'render', 'moduleselected');
+		this.module = null;
+		this.currentview = null;
+		this.defaultview = "workbin";
+		_.bindAll(this, 'render');
 	},
 	render: function(){
-		this.$el.html(ich.mainview());
-		
-		//populate left bar
-		this.modulesview = new v.ModulesView({collection: this.modules});
-		this.$('#leftbar').append(this.modulesview.render().el);
+		if (this.module === null){
+			//home screen
+			this.$el.html(ich.contentview());
+		} else {
+			//show current view + module
+			var view = this.currentview === null ? this.defaultview : this.currentview;
+			var viewobj = this.view(view);
+			var x = new viewobj({model: this.module, user: this.user});
+			this.$("#tabcontent").html(x.render().el);
+		}
 		return this;
 	},
-	events: {
-		"moduleselected" : "moduleselected",
-		"drilldown": "drilldown",
-		"downloadfile" : "downloadfile"
+	changemodule: function(module){
+		this.module = module;
+		this.render();
 	},
-	downloadfile: function(e, file){
-		this.user.file(file.id);
-	},
-	moduleselected: function(e, module){
-		//update hash
-		this.navigateto(module.simpleinfo.code);
-
-		this.workbinview = new v.WorkbinView({currentitem : module.fetchworkbin().workbin});
-		this.$('#contentcontainer').html(this.workbinview.render().el);
-	},
-	drilldown: function(e, model){
-		if (this.workbinview){
-			this.workbinview.off();
-			this.workbinview.remove();
+	view: function(view){
+		if (view === "workbin"){
+			return v.WorkbinView;
+		} else if (view === "announcements"){
+			return v.AnnouncementsView;
+		} else if (view === "forum"){
+			return v.ForumView;
 		}
-		if (e) {
-			this.navigateto(model.filepath());
-		}
-
-		this.workbinview = new v.WorkbinView({currentitem : model});
-		this.$('#contentcontainer').html(this.workbinview.render().el);
-	},
-	home: function(){
-		if (this.workbinview){
-			this.workbinview.off();
-			this.workbinview.remove();
-			this.modulesview.active();
-		}
-	},
-	navigateto: function(hash){
-		this.$el.trigger("navigateto", hash);
 	}
 });
 
+v.ForumView = Backbone.View.extend({
+
+});
+v.AnnouncementsView = Backbone.View.extend({
+
+});
+
+// Workbin View
+v.WorkbinView = Backbone.View.extend({
+	initialize: function(options){
+		this.user = options.user;
+		this.currentitem = this.model.fetchworkbin().workbin;
+		this.currentitem.on('all', this.render, this);
+	},
+	render: function(){
+		//mainframe
+		this.$el.html(ich.workbinview());
+		//render breadcrumbs
+		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
+		this.breadcrumbs.render();
+		if (typeof this.currentitem.get('ID') !== 'undefined'){
+			if(this.currentitem.items.models.length === 0){
+				//empty folder
+				this.$('#filescontainer').html(ich.emptyfolder());
+			} else {
+				//files and folders
+				var fragment = document.createDocumentFragment();
+				//reverse models to show latest files at the top.
+				_.each(this.currentitem.items.models, function(item){
+					var x;
+					if (item.type === 'document'){
+						x = new v.FileView({model: item});
+						fragment.appendChild(x.render().el);
+					} else if (item.type === 'folder'){
+						x = new v.FolderView({model: item});
+						fragment.appendChild(x.render().el);
+					}
+				},this);
+				this.$('#filescontainer').html(fragment);
+
+			}
+		} else {
+			//loading folder
+			this.$('#filescontainer').html(ich.loadingfolder());
+		}
+		return this;
+	},
+	events: {
+		"drilldown": "drilldown",
+		"downloadfile" : "downloadfile"
+	},
+	drilldown: function(e, model){
+		this.currentitem = model;
+		this.render();
+	},
+	downloadfile: function(e, file){
+		this.user.file(file.id);
+	}
+});
 v.WorkbinBreadcrumb = Backbone.View.extend({
 	className: 'breadcrumb',
 	initialize: function(options){
@@ -143,66 +203,6 @@ v.WorkbinBreadcrumbs = Backbone.View.extend({
 		var currentfolder = new v.WorkbinBreadcrumb({model: this.model, type: "current"});
 		this.$el.append(currentfolder.render().el);
 		return this;
-	}
-});
-
-//workbin view
-v.WorkbinView = Backbone.View.extend({
-	initialize: function(options){
-		this.currentitem = options.currentitem;
-		this.currentitem.on('all', this.render, this);
-		_.bindAll(this, 'sortbyname');
-	},
-	render: function(){
-		//mainframe
-		this.$el.html(ich.workbinview());
-
-		//render breadcrumbs
-		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
-		this.breadcrumbs.render();
-		// console.log(this.currentitem);
-		if (typeof this.currentitem.get('ID') !== 'undefined'){
-			if(this.currentitem.items.models.length === 0){
-				//empty folder
-				this.$('#filescontainer').html(ich.emptyfolder());
-			} else {
-				//files and folders
-				var fragment = document.createDocumentFragment();
-				//reverse models to show latest files at the top.
-				_.each(this.currentitem.items.models, function(item){
-					var x;
-					if (item.type === 'document'){
-						x = new v.FileView({model: item});
-						fragment.appendChild(x.render().el);
-					} else if (item.type === 'folder'){
-						x = new v.FolderView({model: item});
-						fragment.appendChild(x.render().el);
-					}
-				},this);
-				this.$('#filescontainer').html(fragment);
-
-			}
-		} else {
-			//loading folder
-			this.$('#filescontainer').html(ich.loadingfolder());
-		}
-		
-		return this;
-	},
-	events: {
-		"click #filescontainertop .itemname": "sortbyname"
-	},
-	sortbyname: function(){
-		if (!this.sorted){
-			this.currentitem.items.reset(_.sortBy(this.currentitem.items.models, function(model){
-				return model.simpleinfo.name;
-			}, this));
-			this.render();
-			this.sorted = true;
-		} else {
-			this.currentitem.items.reset(this.currentitem.items.models.reverse());
-			this.render();
-		}
 	}
 });
 v.FileView = Backbone.View.extend({

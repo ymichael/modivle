@@ -1,6 +1,13 @@
-<script id='mainview' type='text/html'>
-	<div id='leftbar'></div>
-	<div id='contentcontainer'></div>
+<script type="text/html" id="contentview">
+	<div id="tabs">
+		<div class='tab'>Announcements</div>
+		<div class='tab'>Gradebook</div>
+		<div class='tab'>Workbin</div>
+		<div class='tab'>Forum</div>
+	</div>
+	<div id="tabcontent">
+
+	</div>
 </script>
 
 <script id='emptyfolder' type='text/html'>
@@ -23,8 +30,6 @@
 <script id='moduleicon' type='text/html'>
 	<div class='moduleicon {{type}}' title="{{type}}"></div>
 </script>
-
-
 <script id='workbinview' type='text/html'>
 	<div id='workbinheading'>
 		<div class='breadcrumbs'></div>
@@ -46,9 +51,6 @@
 	<div class='arrow'></div>
 	<span>{{name}}</span>
 </script>
-
-
-
 <script id='itemview' type='text/html'>
 	<div class="itemname">
 		<div class='itemicon {{filetype}}'></div>
