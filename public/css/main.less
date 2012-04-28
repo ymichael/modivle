@@ -56,7 +56,7 @@ header, #main, footer {
 	margin: auto;
 }
 #header_container {
-padding-top: 5px;
+	padding: 10px 0px;
 	#logout {
 		float: right;
 		height: 20px;
@@ -69,15 +69,26 @@ padding-top: 5px;
 		cursor: pointer;
 	}
 }
-#footer_container {
-	text-align: right;
-	font-size: 14px;
-	a { 
-		color: black; 
-	}
+footer {
+	position: fixed;
+	bottom: 0;
+	background-color: white;
+	opacity: 0.4;
+	#footer_container {
+		text-align: right;
+		font-size: 14px;
+		a { 
+			color: black; 
+		}
+	}	
 }
+footer:hover{
+	opacity: 0.7;
+}
+
 #main_container {
-margin-bottom: 50px;
+	margin-top: 20px;
+	margin-bottom: 50px;
 }
 #leftbar {
 	width: 200px;
@@ -86,8 +97,9 @@ margin-bottom: 50px;
 	margin: 40px 0px;
 }
 #content {
-	width: 750px;
+	width: 730px;
 	float: right;
+	padding: 25px 10px;
 	#tabs {
 		width: 100%;
 		float: left;
@@ -109,7 +121,7 @@ margin-bottom: 50px;
 		width: 100%;
 		float: left;
 		margin: 10px 0px;
-		min-height: 400px;
+		min-height: 500px;
 	}
 }
 
@@ -117,18 +129,17 @@ margin-bottom: 50px;
 // subviews
 .moduleview {
 	cursor: pointer;
-	padding: 5px;
+	padding: 5px 15px;
 	position: relative;
+	margin-bottom: 5px;
+	border: solid 1px @light;
 	.modulecode {
 		word-wrap: break-word;
 		display: block;
 		position: relative;
-		left: 10px;
-		width: 150px;
 		top: 6px;
 		margin-bottom: 10px;
 		font-size: 20px;
-		letter-spacing: -1px;
 	}
 }
 .moduleview:hover {
@@ -156,7 +167,6 @@ margin-bottom: 50px;
 	.breadcrumbs {
 		padding: 5px 0px;
 		.breadcrumb {
-			border-left: solid 1px #e5e5e5;
 			.arrow {
 			display: inline-block;
 			height: 15px;

@@ -86,9 +86,10 @@ v.ContentView = Backbone.View.extend({
 	render: function(){
 		if (this.module === null){
 			//home screen
-			this.$el.html(ich.contentview());
+			
 		} else {
 			//show current view + module
+			this.$el.html(ich.contentview());
 			var view = this.currentview === null ? this.defaultview : this.currentview;
 			var viewobj = this.view(view);
 			var x = new viewobj({model: this.module, user: this.user});
