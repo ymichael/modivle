@@ -1,10 +1,14 @@
+@pagewidth: 960px;
+
+body {
+	font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
+	font-weight: normal;
+	color: #555;
+	letter-spacing: -1px;
+}
 #overlay {
 	position: fixed;
 	top: 0;
-	
-	/* Fallback for web browsers that doesn't support RGBa */
-	//background: rgb(0, 0, 0);
-	/* RGBa with 0.6 opacity */
 	background: rgba(0, 0, 0, 0.3);
 	z-index: 50;
 	display: none;
@@ -38,37 +42,24 @@
 }
 #container {
 	height: 100%;
-	width: 960px;
-	margin: 0 auto; 
+	width: 100%;
 	padding: 0;
 }
-body {
-font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
-font-weight: normal;
-color: #555;
-letter-spacing: -1px;
-}
-header {
-width: 100%;
-	#header_container {
+header, #main, footer {
+	border-bottom: solid 1px;
 	width: 100%;
+	float: left;
+}
+#header_container, #main_container, #footer_container {
+	width: @pagewidth;
+	margin: auto;
+	border: solid 1px;
+}
+#header_container {
 	height: 50px;
 	margin-top: 20px;
-		#login {
-			position: relative;
-			margin: auto;
-			.loginhere {
-			opacity: 0.5;
-			position: absolute;
-			width: 100px;
-			top: 35px;
-			left: -100px;
-			}
-		}
-		#logout {
-			float: right;
-		}
-		#login, #logout {
+	#logout {
+		float: right;
 		height: 20px;
 		width: 20px;
 		padding: 10px;
@@ -77,28 +68,16 @@ width: 100%;
 		background-repeat: no-repeat;
 		background-image: url(/img/logout.png);
 		cursor: pointer;
-		}
 	}
 }
-footer {
-width: 100%;
-position: fixed;
-bottom: 0;
-left: 0;
-opacity: 0.7;
-background-color: white;
-	#footer_container {
-	width: 960px;
-	margin: auto;
+#footer_container {
 	text-align: right;
 	font-size: 14px;
-		a { color: black; }
+	a { 
+		color: black; 
 	}
 }
-
 #main_container {
-width: 100%;
-float: left;
 margin-bottom: 50px;
 }
 #leftbar {
@@ -106,53 +85,55 @@ margin-bottom: 50px;
 	min-height: 300px;
 	float: left;
 }
-#contentcontainer {
+#content {
 	width: 750px;
 	float: right;
 	min-height: 300px;
 }
 
+
+// subviews
 .moduleview {
-cursor: pointer;
-margin: 5px;
-min-height: 35px;
-padding: 5px;
-border: solid 1px darken(#e5e5e5, 0%);
-position: relative;
-	.modulecode {
-	word-wrap: break-word;
-	display: block;
+	cursor: pointer;
+	margin: 5px;
+	min-height: 35px;
+	padding: 5px;
+	border: solid 1px darken(#e5e5e5, 0%);
 	position: relative;
-	left: 35px;
-	width: 150px;
-	top: 6px;
-	margin-bottom: 10px;
-	font-size: 20px;
-	letter-spacing: -1px;
+	.modulecode {
+		word-wrap: break-word;
+		display: block;
+		position: relative;
+		left: 35px;
+		width: 150px;
+		top: 6px;
+		margin-bottom: 10px;
+		font-size: 20px;
+		letter-spacing: -1px;
 	}
 	.moduleicon {
-	position: absolute;
-	padding: 5px;
-	height: 23px;
-	width: 23px;
-	background-size: 100%;
-	background-origin: content-box;
-	background-repeat: no-repeat;
-	background-image: url(/img/module.png);
+		position: absolute;
+		padding: 5px;
+		height: 23px;
+		width: 23px;
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		background-image: url(/img/module.png);
 	}
 }
-.moduleview:hover{
-border: solid 1px #555;
+.moduleview:hover {
+	border: solid 1px #555;
 }
 .moduleview.active{
-border: solid 1px #555;
-cursor: auto;
-border-right: solid 4px #555;
+	border: solid 1px #555;
+	cursor: auto;
+	border-right: solid 4px #555;
 }
 
 
 #filescontainer {
-border: solid 1px #e5e5e5;
+	border: solid 1px #e5e5e5;
 	.folder {
 		text-align: center;
 		padding: 10px 0px;
@@ -164,9 +145,9 @@ border: solid 1px #e5e5e5;
 #workbinheading {
 	height: 40px;
 	.breadcrumbs {
-	padding: 5px 0px;
+		padding: 5px 0px;
 		.breadcrumb {
-		border-left: solid 1px #e5e5e5;
+			border-left: solid 1px #e5e5e5;
 			.arrow {
 			display: inline-block;
 			height: 15px;
@@ -194,35 +175,35 @@ border: solid 1px #e5e5e5;
 }
 
 #filescontainertop {
-background-color: #e5e5e5;
-border-top: solid 1px darken(#e5e5e5, 30%);
-border-bottom: solid 1px darken(#e5e5e5, 30%);
-height: 30px;
-cursor: auto;
-span {
+	background-color: #e5e5e5;
+	border-top: solid 1px darken(#e5e5e5, 30%);
+	border-bottom: solid 1px darken(#e5e5e5, 30%);
+	height: 30px;
+	cursor: auto;
+	span {
 		position: absolute;
 		bottom: 8px;
 		color: #555;
 		font-size: 14px;
 		display: block;
-}
+	}
 }
 .itemview:hover {
-background-color: lighten(#e5e5e5, 3%);
+	background-color: lighten(#e5e5e5, 3%);
 }
 .itemview {
-width: 100%;
-height: 40px;
-position: relative;
-padding-top: 5px;
-font-size: 14px;
-border-bottom: solid 1px darken(#e5e5e5,10%);
-cursor: pointer;
-	.itemname {
-	float: left;
-	width: 55%;
-	height: 100%;
+	width: 100%;
+	height: 40px;
 	position: relative;
+	padding-top: 5px;
+	font-size: 14px;
+	border-bottom: solid 1px darken(#e5e5e5,10%);
+	cursor: pointer;
+	.itemname {
+		float: left;
+		width: 55%;
+		height: 100%;
+		position: relative;
 		span {
 		position: absolute;
 		bottom: 12px;
@@ -242,6 +223,9 @@ cursor: pointer;
 
 	}
 	.itemtype {
+		float: left;
+		width: 25%;
+		height: 100%;
 		span {
 		position: absolute;
 		bottom: 12px;
@@ -249,11 +233,11 @@ cursor: pointer;
 		font-size: 12px;
 		color: lighten(#555, 20%);
 		}
-	float: left;
-	width: 25%;
-	height: 100%
 	}
 	.itemsize {
+		float: left;
+		width: 20%;
+		height: 100%;
 		span {
 		position: absolute;
 		bottom: 12px;
@@ -261,12 +245,8 @@ cursor: pointer;
 		display: block;
 		color: lighten(#555, 20%);
 		}
-	float: left;
-	width: 20%;
-	height: 100%
 	}
 }
-
 .folderview {
 	.itemicon{
 	background-image: url(/img/folder.png);

@@ -183,9 +183,6 @@ var ModIvle = Backbone.View.extend({
 		$('#overlay').hide();
 	},
 	render: function(){
-		//header
-		this.$('#header_container').html(ich.headeruser());
-
 		this.mainview = new v.MainView({
 			user: this.user,
 			modules: this.modules
