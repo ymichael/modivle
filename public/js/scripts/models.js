@@ -207,7 +207,7 @@ m.Module = Backbone.Model.extend({
 	nicedate: function(date){
 		var pad = function(int){
 			return int > 9 ? int : "0" + int;
-		}
+		};
 		var str = date.getDate() + "/" + date.getMonth() + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
 		return str;
 	},

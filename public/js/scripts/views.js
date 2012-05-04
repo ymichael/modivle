@@ -18,7 +18,7 @@ v.MainView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"moduleselected" : "moduleselected",
+		"moduleselected" : "moduleselected"
 	},
 	moduleselected: function(e, module){
 		this.contentview.changemodule(module);
@@ -51,7 +51,7 @@ v.ModulesView = Backbone.View.extend({
 				view.active();
 			}
 		}, this);
-	},	
+	},
 	events: {
 		"moduleselected" : "moduleselected"
 	}
@@ -135,7 +135,7 @@ v.ContentNavView = Backbone.View.extend({
 			var x = new v.ContentNavItemView({name: view});
 			this.children.push(x);
 			fragment.appendChild(x.render().el);
-		},this)
+		},this);
 		this.$el.html(fragment);
 		this.changeview(null,this.currentview);
 		return this;
@@ -168,7 +168,7 @@ v.ContentNavItemView = Backbone.View.extend({
 	},
 	changeview: function(){
 		if (!this.$el.hasClass("active")){
-			this.$el.trigger("changeview", this.name);	
+			this.$el.trigger("changeview", this.name);
 		}
 	},
 	active: function(){
@@ -211,7 +211,7 @@ v.ContentContainerView = Backbone.View.extend({
 		this.currentview = view;
 		this.render();
 	}
-})
+});
 
 
 /*
