@@ -4,7 +4,7 @@ function($,_,Backbone){
 	
 var m = {};
 /*
-workbin
+WORKBIN
 */
 m.Items = Backbone.Collection.extend({});
 m.Folder = Backbone.Model.extend({
@@ -50,6 +50,16 @@ m.Folder = Backbone.Model.extend({
 		}
 
 		return path + this.simpleinfo.name;
+	},
+	hasnewfiles: function(){
+		var x = _.find(this.items.models, function(item){
+			if (item.type === 'document'){
+				return item.get('dled') === 0;
+			} else if (item.type === 'folder'){
+				return item.hasnewfiles();
+			}
+		}, this);
+		return x;
 	}
 });
 m.File = Backbone.Model.extend({
@@ -111,9 +121,8 @@ m.Workbin = Backbone.Model.extend({
 		return this.simpleinfo.name;
 	}
 });
-
 /*
-announcements
+ANNOUCEMENTS
 */
 m.Announcement = Backbone.Model.extend({});
 m.Announcements = Backbone.Collection.extend({
@@ -128,9 +137,15 @@ m.Announcements = Backbone.Collection.extend({
 		this.loaded = true;
 	}
 });
+/*
+FORUM
+*/
+m.Forum = Backbone.Model.extend({
 
-
-
+});
+/*
+MAIN
+*/
 m.Module = Backbone.Model.extend({
 	initialize: function(options){
 		_.bindAll(this, 'fetchworkbin','thinfolder');
@@ -159,6 +174,7 @@ m.Module = Backbone.Model.extend({
 			y.FileSize = file.FileSize;
 			y.FileType = file.FileType;
 			y.ID = file.ID;
+			y.dled = file.isDownloaded ? 1 : 0;
 			return y;
 		});
 	},
@@ -225,12 +241,36 @@ m.Module = Backbone.Model.extend({
 				announcement.from = x.Creator.Name;
 				return announcement;
 			},that);
-
 			that.announcements.isloaded();
 			that.announcements.add(announcements,{silent: true});
 			that.announcements.trigger('change');
 		});
 		return this;
+	},
+	fetchforumheadings: function(){
+		var that = this;
+		this.user.forumheadings(this.id, function(data){
+			console.log(data);
+			if (data.Results.length === 0) {
+				data.Results[0] = {};
+			}
+
+			//extract relevant data
+			var forum = {};
+			forum.id = data.Results[0].ID || -1;
+			forum.Headings = that.thinheadings(data.Results[0].Headings);
+
+		});
+		return this;
+	},
+	thinheadings: function(headings){
+		return _.map(headings, function(heading){
+			var x = {};
+			x.id = heading.ID;
+			x.title = heading.Title;
+			x.order = heading.HeadingOrder;
+			return x;
+		});
 	}
 });
 m.Modules = Backbone.Collection.extend({

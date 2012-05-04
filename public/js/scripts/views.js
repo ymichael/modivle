@@ -3,7 +3,9 @@ define(['jquery','underscore','backbone', 'ich'],
 function($,_,Backbone,ich){
 
 var v = {};
-
+/*
+MAIN
+*/
 v.MainView = Backbone.View.extend({
 	el: "#main_container",
 	initialize: function(options){
@@ -238,7 +240,9 @@ v.AnnouncementsView = Backbone.View.extend({
 				fragment.appendChild(x.render().el);
 			},this);
 			this.$el.html(fragment);
-		
+			
+			//open latest
+			this.$(".announcementview:first-child").click();
 		}
 		return this;
 	}
