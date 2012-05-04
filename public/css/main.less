@@ -133,7 +133,7 @@ MODULES
 */
 .moduleview {
 	cursor: pointer;
-	padding: 5px 15px;
+	padding: 5px;
 	position: relative;
 	margin-bottom: 5px;
 	border: solid 1px @light;
@@ -147,9 +147,10 @@ MODULES
 	}
 }
 .moduleview:hover {
-	background-color: @light;
+	border: solid 1px #555;
 }
 .moduleview.active{
+	color: black;
 	border: solid 1px #555;
 	cursor: auto;
 	border-right: solid 4px #555;

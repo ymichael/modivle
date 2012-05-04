@@ -184,7 +184,7 @@ m.Module = Backbone.Model.extend({
 			//save space.
 			var relevant = {};
 			relevant.Folders = that.thinfolder(data.Results[0].Folders);
-			relevant.ID = data.Results[0].ID;
+			relevant.ID = data.Results[0].ID || -1;
 			relevant.Title = data.Results[0].Title;
 			
 			//assign relevant to workbin.
