@@ -88,7 +88,6 @@ footer:hover{
 
 #main_container {
 	margin-top: 20px;
-	margin-bottom: 50px;
 }
 #leftbar {
 	width: 200px;
@@ -99,22 +98,26 @@ footer:hover{
 #content {
 	width: 730px;
 	float: right;
-	padding: 25px 10px;
+	margin-bottom: 100px;
+	padding: 5px 10px;
 	#tabs {
 		width: 100%;
 		float: left;
 		border-bottom: solid 1px darken(#e5e5e5, 10%);
+		text-transform: capitalize;
 		.tab {
 			float:left;
-			font-size: 18px;
+			font-size: 15px;
 			padding: 5px 0px;
 			margin-right: 15px;
 			color: darken(#e5e5e5, 20%);
+			cursor: pointer;
 		}
 		.active {
 			font-weight: 600;
 			color: black;
 			border-bottom: solid 2px;
+			cursor: auto;
 		}
 	}
 	#tabcontent {
@@ -125,8 +128,9 @@ footer:hover{
 	}
 }
 
-
-// subviews
+/*
+MODULES
+*/
 .moduleview {
 	cursor: pointer;
 	padding: 5px 15px;
@@ -151,7 +155,18 @@ footer:hover{
 	border-right: solid 4px #555;
 }
 
-
+/*
+ANNOUNCEMENTS
+*/
+.announcementview {
+	font-size: 14px;
+	border: dashed 1px darken(@light,20%);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+/*
+WORKBIN
+*/
 #filescontainer {
 	border: solid 1px #e5e5e5;
 	.folder {
@@ -192,7 +207,6 @@ footer:hover{
 		}
 	}
 }
-
 #filescontainertop {
 	background-color: #e5e5e5;
 	border-top: solid 1px darken(#e5e5e5, 30%);

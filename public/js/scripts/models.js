@@ -3,6 +3,9 @@ define(['jquery', 'underscore', 'backbone'],
 function($,_,Backbone){
 	
 var m = {};
+/*
+workbin
+*/
 m.Items = Backbone.Collection.extend({});
 m.Folder = Backbone.Model.extend({
 	initialize: function(attr, parent){
@@ -109,6 +112,24 @@ m.Workbin = Backbone.Model.extend({
 	}
 });
 
+/*
+announcements
+*/
+m.Announcement = Backbone.Model.extend({});
+m.Announcements = Backbone.Collection.extend({
+	initialize: function(options){
+		this.loaded = false;
+	},
+	model: m.Announcement,
+	isloading: function(){
+		return !this.loaded;
+	},
+	isloaded: function(){
+		this.loaded = true;
+	}
+});
+
+
 
 m.Module = Backbone.Model.extend({
 	initialize: function(options){
@@ -125,10 +146,10 @@ m.Module = Backbone.Model.extend({
 		this.simpleinfo = simpleinfo;
 		this.set({id: this.get('ID')});
 
-		//each module has a workbin.
-		// console.log(this.get('workbin'));
+		
 		this.workbin = new m.Workbin(this.get('workbin'));
 		this.workbin.setname(simpleinfo.code);
+		this.announcements = new m.Announcements(this.get('announcements'));
 	},
 	thinfiles: function(filearray){
 		return _.map(filearray.reverse(), function(file){
@@ -180,6 +201,31 @@ m.Module = Backbone.Model.extend({
 				},
 				dataType: 'json'
 			});
+		});
+		return this;
+	},
+	thincreator: function(creator){
+		var x = {};
+		x.name = creator.Name;
+		x.email = creator.Email;
+		return x;
+	},
+	fetchannouncements: function(){
+		var that = this;
+		this.user.announcements(this.id, function(data){
+			var announcements = _.map(data.Results, function(x){
+				var announcement = {};
+				announcement.id = x.ID;
+				announcement.title = x.Title;
+				announcement.date = x.CreatedDate;
+				announcement.contents = x.Description;
+				announcement.from = that.thincreator(x.Creator);
+				return announcement;
+			},that);
+
+			that.announcements.isloaded();
+			that.announcements.add(announcements,{silent: true});
+			that.announcements.trigger('change');
 		});
 		return this;
 	}

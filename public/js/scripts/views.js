@@ -80,26 +80,117 @@ v.ContentView = Backbone.View.extend({
 		this.user = options.user;
 		this.module = null;
 		this.currentview = null;
-		this.defaultview = "workbin";
-		_.bindAll(this, 'render');
+		this.defaultview = "announcements";
+		_.bindAll(this, 'render','changemodule','changeview');
 	},
 	render: function(){
-		if (this.module === null){
-			//home screen
-			
+		if (this.module === null) {
+			//show home page
+
 		} else {
-			//show current view + module
+			//only called once.
 			this.$el.html(ich.contentview());
-			var view = this.currentview === null ? this.defaultview : this.currentview;
-			var viewobj = this.view(view);
-			var x = new viewobj({model: this.module, user: this.user});
-			this.$("#tabcontent").html(x.render().el);
+			this.contentnav = new v.ContentNavView({
+				view: this.defaultview
+			}).render();
+
+			this.contentcontainer = new v.ContentContainerView({
+				user: this.user,
+				module : this.module,
+				view : this.defaultview
+			}).render();
 		}
 		return this;
 	},
 	changemodule: function(module){
-		this.module = module;
-		this.render();
+		if (this.module === null){
+			//only called the first time.
+			this.module = module;
+			this.render();
+		} else {
+			//subsequently...
+			this.module = module;
+
+			this.contentcontainer.changemodule(this.module);
+		}
+	},
+	changeview: function(e, view){
+		this.currentview = view;
+		this.contentcontainer.changeview(view);
+	},
+	events: {
+		"changeview" : "changeview"
+	}
+});
+v.ContentNavView = Backbone.View.extend({
+	el: "#tabs",
+	initialize: function(options){
+		this.views = ["announcements", "workbin"];
+		this.children = [];
+		this.currentview = options.view;
+	},
+	render: function(){
+		var fragment = document.createDocumentFragment();
+		_.each(this.views, function(view){
+			var x = new v.ContentNavItemView({name: view});
+			this.children.push(x);
+			fragment.appendChild(x.render().el);
+		},this)
+		this.$el.html(fragment);
+		this.changeview(null,this.currentview);
+		return this;
+	},
+	events: {
+		"changeview" : "changeview"
+	},
+	changeview: function(e, view){
+		_.each(this.children, function(navitem){
+			if (navitem.name === view){
+				navitem.active();
+			} else {
+				navitem.inactive();
+			}
+		}, this);
+	}
+});
+v.ContentNavItemView = Backbone.View.extend({
+	tagName: "div",
+	className: "tab",
+	initialize: function(options){
+		this.name = options.name;
+	},
+	render: function(){
+		this.$el.html(this.name);
+		return this;
+	},
+	events: {
+		"click" : "changeview"
+	},
+	changeview: function(){
+		this.$el.trigger("changeview", this.name);
+	},
+	active: function(){
+		this.$el.addClass("active");
+	},
+	inactive: function(){
+		this.$el.removeClass("active");
+	}
+});
+v.ContentContainerView = Backbone.View.extend({
+	el: "#tabcontent",
+	initialize: function(options){
+		this.user = options.user;
+		this.module = options.module;
+		this.currentview = options.view;
+	},
+	render: function(){
+		var backboneview = this.view(this.currentview);
+		var x = new backboneview({
+			user: this.user,
+			model: this.module
+		});
+		this.$el.html(x.render().el);
+		return this;
 	},
 	view: function(view){
 		if (view === "workbin"){
@@ -109,17 +200,60 @@ v.ContentView = Backbone.View.extend({
 		} else if (view === "forum"){
 			return v.ForumView;
 		}
+	},
+	changemodule: function(module){
+		this.module = module;
+		this.render();
+	},
+	changeview: function(view){
+		this.currentview = view;
+		this.render();
+	}
+})
+
+
+/*
+ANNOUNCEMENTS
+*/
+v.AnnouncementsView = Backbone.View.extend({
+	initialize: function(options){
+		this.user = options.user;
+		this.announcements = this.model.fetchannouncements().announcements;
+		this.announcements.on('all', this.render, this);
+	},
+	render: function(){
+		if (this.announcements.isloading()){
+			this.$el.html('loading');
+		} else if (this.announcements.models.length === 0){
+			//no announcements
+			this.$el.html('no announcements');
+		} else {
+			var fragment = document.createDocumentFragment();
+			_.each(this.announcements.models, function(announcement){
+				var x = new v.AnnouncementView({model: announcement});
+				fragment.appendChild(x.render().el);
+			},this);
+			this.$el.html(fragment);
+		
+		}
+		return this;
+	}
+});
+v.AnnouncementView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'announcementview',
+	initialize: function(options){
+
+	},
+	render: function(){
+		this.$el.html(ich.announcementview(this.model.toJSON()));
+		return this;
 	}
 });
 
-v.ForumView = Backbone.View.extend({
-
-});
-v.AnnouncementsView = Backbone.View.extend({
-
-});
-
-// Workbin View
+/*
+WORKBIN
+*/
 v.WorkbinView = Backbone.View.extend({
 	initialize: function(options){
 		this.user = options.user;

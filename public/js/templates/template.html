@@ -1,15 +1,23 @@
+<!-- MAIN -->
+<script id='moduleview' type='text/html'>
+	<div class='modulecode'>{{code}}</div>
+</script>
+<script id='moduleicon' type='text/html'>
+	<div class='moduleicon {{type}}' title="{{type}}"></div>
+</script>
 <script type="text/html" id="contentview">
-	<div id="tabs">
-		<div class='tab'>Announcements</div>
-		<div class='tab'>Gradebook</div>
-		<div class='tab active'>Workbin</div>
-		<div class='tab'>Forum</div>
-	</div>
-	<div id="tabcontent">
-
-	</div>
+	<div id="tabs"></div>
+	<div id="tabcontent"></div>
 </script>
 
+
+<!-- ANNOUNCEMENTS -->
+<script type='text/html' id='announcementview'>
+	<span>{{ title }}</span>
+</script>
+
+
+<!-- WORKBIN -->
 <script id='emptyfolder' type='text/html'>
 	<div class='folder'>
 		<span>this folder is empty.</span>
@@ -19,15 +27,6 @@
 	<div class='folder'>
 		<span>loading...</span>
 	</div>
-</script>
-
-
-<script id='moduleview' type='text/html'>
-	<div class='modulecode'>{{code}}</div>
-</script>
-
-<script id='moduleicon' type='text/html'>
-	<div class='moduleicon {{type}}' title="{{type}}"></div>
 </script>
 <script id='workbinview' type='text/html'>
 	<div id='workbinheading'>
