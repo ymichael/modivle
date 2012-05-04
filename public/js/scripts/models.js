@@ -204,11 +204,12 @@ m.Module = Backbone.Model.extend({
 		});
 		return this;
 	},
-	thincreator: function(creator){
-		var x = {};
-		x.name = creator.Name;
-		x.email = creator.Email;
-		return x;
+	nicedate: function(date){
+		var pad = function(int){
+			return int > 9 ? int : "0" + int;
+		}
+		var str = date.getDate() + "/" + date.getMonth() + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+		return str;
 	},
 	fetchannouncements: function(){
 		var that = this;
@@ -217,9 +218,11 @@ m.Module = Backbone.Model.extend({
 				var announcement = {};
 				announcement.id = x.ID;
 				announcement.title = x.Title;
-				announcement.date = x.CreatedDate;
+				
+				var date = new Date(x.CreatedDate);
+				announcement.date = that.nicedate(date);
 				announcement.contents = x.Description;
-				announcement.from = that.thincreator(x.Creator);
+				announcement.from = x.Creator.Name;
 				return announcement;
 			},that);
 

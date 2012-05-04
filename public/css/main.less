@@ -158,11 +158,53 @@ MODULES
 /*
 ANNOUNCEMENTS
 */
+.announcementsview {
+	border: solid 1px @light;
+}
 .announcementview {
+	border-bottom: solid 1px @light;
+	.title {
+		position: relative;
+		font-size: 16px;
+		padding: 10px 5px;
+		color: lighten(#000,30%);
+		.left {
+			width: 85%;
+		}
+		span.from {
+			font-size: 12px;
+			color: @secondarycolor;
+			opacity: 0.7;
+		}
+		span.date {
+			position: absolute;
+			right: 10px;
+			top: 12px;
+			display: inline-block;
+			font-size: 12px;
+		}
+	}
+	.contents {
+		display: none;
+		// background-color :lighten(@light,6%);
+		// border: dashed 1px darken(@light,20%);
+		padding: 10px 5px;
+		font-size: 13px;
+	}
+}
+.announcementview.active {
+	background-color :lighten(@light,4%);
+	.contents {
+		display: block;
+	}
+}
+.announcementview:hover {
+	background-color: lighten(@light, 4%);
+}
+.announcementinfo {
 	font-size: 14px;
-	border: dashed 1px darken(@light,20%);
+	text-align: center;
 	padding: 10px;
-	margin-bottom: 10px;
 }
 /*
 WORKBIN

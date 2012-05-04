@@ -13,7 +13,17 @@
 
 <!-- ANNOUNCEMENTS -->
 <script type='text/html' id='announcementview'>
-	<span>{{ title }}</span>
+	<div class='title'>
+		<div class='left'>
+			{{ title }} 
+			<span class='from'>{{ from }}</span>
+		</div>
+		<span class='date'>{{ date }}</span>
+	</div>
+	<div class='contents'>{{{ contents }}}</div>
+</script>
+<script type='text/html' id='announcementsinfo'>
+	<div class='announcementinfo'>{{text}}</div>
 </script>
 
 

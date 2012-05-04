@@ -167,7 +167,9 @@ v.ContentNavItemView = Backbone.View.extend({
 		"click" : "changeview"
 	},
 	changeview: function(){
-		this.$el.trigger("changeview", this.name);
+		if (!this.$el.hasClass("active")){
+			this.$el.trigger("changeview", this.name);	
+		}
 	},
 	active: function(){
 		this.$el.addClass("active");
@@ -216,6 +218,8 @@ v.ContentContainerView = Backbone.View.extend({
 ANNOUNCEMENTS
 */
 v.AnnouncementsView = Backbone.View.extend({
+	className: "announcementsview",
+	tagName: "div",
 	initialize: function(options){
 		this.user = options.user;
 		this.announcements = this.model.fetchannouncements().announcements;
@@ -223,10 +227,10 @@ v.AnnouncementsView = Backbone.View.extend({
 	},
 	render: function(){
 		if (this.announcements.isloading()){
-			this.$el.html('loading');
+			this.$el.html(ich.announcementsinfo({text:"loading..."}));
 		} else if (this.announcements.models.length === 0){
 			//no announcements
-			this.$el.html('no announcements');
+			this.$el.html(ich.announcementsinfo({text:"no announcements."}));
 		} else {
 			var fragment = document.createDocumentFragment();
 			_.each(this.announcements.models, function(announcement){
@@ -248,6 +252,12 @@ v.AnnouncementView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(ich.announcementview(this.model.toJSON()));
 		return this;
+	},
+	events : {
+		"click" : "toggleclass"
+	},
+	toggleclass: function(){
+		this.$el.toggleClass("active");
 	}
 });
 
