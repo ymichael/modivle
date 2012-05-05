@@ -7,7 +7,7 @@ define([
 	'ivle',
 	'models',
 	'views',
-	'text!templates/desktop.html'
+	'text!templates/mobile.html'
 ],
 function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
@@ -113,6 +113,5 @@ var App = Backbone.View.extend({
 		'click #logout': "logout"
 	}
 });
-
 return App;
 });
