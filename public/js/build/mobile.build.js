@@ -1,15 +1,15 @@
 ({
   	baseUrl: "../",
-  	name: "mobilemain",
-  	out: "../../../build/js/mobilemain.js",
+  	name: "mobile_main",
+  	out: "../../../build/js/mobile_main.js",
 	paths: {
 		'jquery': "empty:",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
 		'ivle': "libs/ivle",
-		'mainapp' : "mobile/app",
-		'appmodels' : "mobile/models",
-		'appviews' : "mobile/views",
+		'app' : "scripts/mobile_app",
+		'views' : "scripts/mobile_views",
+		'models' : "scripts/models"
 	}
 })

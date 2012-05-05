@@ -7,13 +7,13 @@ require.config({
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
 		'ivle': "libs/ivle",
-		'mainapp' : "scripts/app",
-		'appmodels' : "scripts/models",
-		'appviews' : "scripts/views"
+		'app' : "scripts/mobile_app",
+		'views' : "scripts/mobile_views",
+		'models' : "scripts/models"
 	}
 });
-require(['mainapp'],
+require(['app'],
 function(app){
 	var x = new app();
-	x.start();
+	x.init();
 });

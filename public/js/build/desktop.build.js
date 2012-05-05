@@ -1,15 +1,15 @@
 ({
   	baseUrl: "../",
-  	name: "main",
-  	out: "../../../build/js/main.js",
+  	name: "desktop_main",
+  	out: "../../../build/js/desktop_main.js",
 	paths: {
 		'jquery': "empty:",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
 		'ivle': "libs/ivle",
-		'mainapp' : "scripts/app",
-		'appmodels' : "scripts/models",
-		'appviews' : "scripts/views"
+		'app' : "scripts/desktop_app",
+		'views' : "scripts/desktop_views",
+		'models' : "scripts/models"
 	}
 })

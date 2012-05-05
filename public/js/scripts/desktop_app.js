@@ -5,9 +5,9 @@ define([
 	'backbone',
 	'ich',
 	'ivle',
-	'appmodels',
-	'appviews',
-	'text!templates/template.html'
+	'models',
+	'views',
+	'text!templates/desktop.html'
 ],
 function($,_,Backbone,ich,ivle,m,v,templates){
 $('body').append(templates);
