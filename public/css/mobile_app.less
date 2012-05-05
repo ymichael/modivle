@@ -1,3 +1,5 @@
+@light:#e5e5e5;
+
 #overlay {
 	position: fixed;
 	top: 0;	
@@ -17,7 +19,7 @@
 		background-color: white;
 		display: block;
 		width: 60%;
-		color: #555;
+		color: darken(#555, 30%);
 		border :solid 1px;
 		text-align: center;
 		padding: 10%;
@@ -37,15 +39,106 @@ font-size: 20px;
 letter-spacing: -1px;
 }
 header, #main, footer {
-	border: solid 1px;
 	width :100%;
 }
 header {
+	position: relative;
 	height: 40px;
+	border-bottom: solid 1px darken(@light, 20%);
+	background-color: lighten(@light, 5%);
+	#logo {
+		height: 30px;
+		padding: 5px;
+		float: left;
+	}
+	#logout {
+		float: right;
+		height: 25px;
+		width: 25px;
+		padding: 7px;
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		background-image: url(/img/logout.png);
+	}
+	.headericon {
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		height: 25px;
+		width: 25px;
+		padding: 7px;
+		border: solid 1px;
+	}
+	.left {
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	.right {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.center {
+		margin: auto;
+	}
 }
 #main {
 	min-height: 300px;
 }
 footer {
 	height: 50px;
+}
+
+
+.module {
+	min-height: 70px;
+	float: left;
+	width: 100%;
+	border-bottom: solid 1px @light;
+	.text {
+		padding: 15px 0px;
+		float: left;
+		width: 100%;
+		.code {
+			padding: 0px 10px;
+			width: 80%;
+			letter-spacing: -2px;
+			font-size: 25px;
+			line-height: 25px;	
+		}
+		.desc {
+			padding: 0px 10px;
+			width: 80%;
+			font-size: 15px;
+			line-height: 15px;
+			color: lighten(#555,20%);
+		}
+	}
+}
+
+.title {
+	float: left;
+	width: 100%;
+	padding: 5px 0;
+	font-size: 30px;
+	border-top: solid 1px;
+	border-bottom: solid 1px;
+	text-align: center;
+}
+.nav {
+	float: left;
+	border-bottom: solid 1px;
+	width: 100%;
+	.tab {
+		float:left;
+		font-size: 15px;
+		padding: 10px 5px;
+		text-transform: capitalize;
+	}
+	.active {
+		color: black;
+		font-weight: bold;
+	}
 }
