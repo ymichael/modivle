@@ -38,28 +38,9 @@ app.configure('production', function(){
   app.use(express.static(__dirname + '/build', { maxAge: oneday*7 }));
 });
 
-//Routes
-var ismobile = function(req){
-  var ua = req.header('user-agent');
-  var mobile = /mobile/i.test(ua);
-  var ipad = /ipad/i.test(ua);
-  return !ipad && mobile
-}
-
-app.get('/', function(req, res){
-    if (ismobile(req)){
-      routes.mobile.landing(req, res);
-    } else {
-      routes.desktop.landing(req, res);
-    }
-});
-app.get('/welcome', function(req, res){
-    if (ismobile(req)){
-      routes.mobile.main(req, res);
-    } else {
-      routes.desktop.main(req, res);
-    }
-});
+//Main routes
+app.get('/', routes.landing);
+app.get('/welcome', routes.app);
 
 //Generic routes
 app.get('/ivle/auth', routes.auth);

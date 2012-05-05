@@ -68,18 +68,26 @@ exports.logout = function(req,res){
   });
 }
 
-//DESKTOP
-exports.desktop = {};
-exports.desktop.landing = function(req, res){
+//MOBILE DETECTION
+var ismobile = function(req){
+  var ua = req.header('user-agent');
+  var mobile = /mobile/i.test(ua);
+  var ipad = /ipad/i.test(ua);
+  return !ipad && mobile
+}
+
+//MAIN ROUTES
+exports.landing = function(req, res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     var variables = {};
     variables.env = process.env.NODE_ENV ? "prod" : "dev";
+    variables.useragent = ismobile(req) ? "mobile" : "desktop";
     res.render('landing', variables);
   } else {
     res.redirect(302, '/welcome');
   }
 }
-exports.desktop.main = function(req,res){
+exports.app = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     //not logged in
     res.redirect(302, '/');
@@ -90,32 +98,7 @@ exports.desktop.main = function(req,res){
     var variables = {};
     variables.bootstrap = req.session.bootstrap;
     variables.env = process.env.NODE_ENV ? "prod" : "dev";
-    res.render('main', variables)
-  }
-}
-
-//MOBILE
-exports.mobile = {};
-exports.mobile.landing = function(req, res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    var variables = {};
-    variables.env = process.env.NODE_ENV ? "prod" : "dev";
-    res.render('mobile/landing', variables);
-  } else {
-    res.redirect(302, '/welcome');
-  }
-}
-exports.mobile.main = function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    //not logged in
-    res.redirect(302, '/');
-  } else {
-    if (!req.session.bootstrap){
-      req.session.bootstrap = {};
-    }
-    var variables = {};
-    variables.bootstrap = req.session.bootstrap;
-    variables.env = process.env.NODE_ENV ? "prod" : "dev";
-    res.render('mobile/main', variables)
+    variables.useragent = ismobile(req) ? "mobile" : "desktop";
+    res.render('app', variables)
   }
 }
