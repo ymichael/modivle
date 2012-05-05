@@ -82,7 +82,11 @@ exports.landing = function(req, res){
     var variables = {};
     variables.env = process.env.NODE_ENV ? "prod" : "dev";
     variables.useragent = ismobile(req) ? "mobile" : "desktop";
-    res.render('landing', variables);
+    if (ismobile(req)){
+      res.render('mobile_landing', variables);
+    } else {
+      res.render('desktop_landing', variables);
+    }
   } else {
     res.redirect(302, '/welcome');
   }
@@ -99,6 +103,10 @@ exports.app = function(req,res){
     variables.bootstrap = req.session.bootstrap;
     variables.env = process.env.NODE_ENV ? "prod" : "dev";
     variables.useragent = ismobile(req) ? "mobile" : "desktop";
-    res.render('app', variables)
+    if (ismobile(req)){
+      res.render('mobile_app', variables);
+    } else {
+      res.render('desktop_app', variables);
+    }
   }
 }

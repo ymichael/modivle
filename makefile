@@ -5,16 +5,16 @@ all:
 	r.js -o public/js/build/mobile.build.js
 	
 	#concatenate less files
-	cat public/css/normalize.css public/css/main.less > public/css/tmp/combinemain.less
-	cat public/css/normalize.css public/css/landing.less > public/css/tmp/combinewelcome.less
-	cat public/css/normalize.css public/css/mobilelanding.less > public/css/tmp/mobilecombinelanding.less
-	cat public/css/normalize.css public/css/mobilemain.less > public/css/tmp/mobilecombinemain.less
+	cat public/css/normalize.css public/css/desktop_app.less > public/css/tmp/desktop_app.less
+	cat public/css/normalize.css public/css/desktop_landing.less > public/css/tmp/desktop_landing.less
+	cat public/css/normalize.css public/css/mobile_app.less > public/css/tmp/mobile_app.less
+	cat public/css/normalize.css public/css/mobile_landing.less > public/css/tmp/mobile_landing.less
 	
 	#parse and minify less files
-	lessc public/css/tmp/combinemain.less > build/css/main.css --yui-compress
-	lessc public/css/tmp/combinewelcome.less > build/css/landing.css --yui-compress
-	lessc public/css/tmp/mobilecombinemain.less > build/css/mobilemain.css --yui-compress
-	lessc public/css/tmp/mobilecombinelanding.less > build/css/mobilelanding.css --yui-compress
+	lessc public/css/tmp/desktop_app.less > build/css/desktop_app.css --yui-compress
+	lessc public/css/tmp/desktop_landing.less > build/css/desktop_landing.css --yui-compress
+	lessc public/css/tmp/mobile_app.less > build/css/mobile_app.css --yui-compress
+	lessc public/css/tmp/mobile_landing.less > build/css/mobile_landing.css --yui-compress
 
 	#copy images into build folder
 	cp -R public/img build/

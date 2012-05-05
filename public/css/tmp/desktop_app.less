@@ -503,6 +503,8 @@ table {
     border-spacing: 0;
 }
 @pagewidth: 960px;
+@secondarycolor: darken(#d70000, 10%);
+@light: #e5e5e5;
 
 body {
 	font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
@@ -550,23 +552,20 @@ body {
 	padding: 0;
 }
 header, #main, footer {
-	border-bottom: solid 1px;
 	width: 100%;
 	float: left;
 }
 #header_container, #main_container, #footer_container {
 	width: @pagewidth;
 	margin: auto;
-	border: solid 1px;
 }
 #header_container {
-	height: 50px;
-	margin-top: 20px;
+	padding: 10px 0px;
 	#logout {
 		float: right;
 		height: 20px;
 		width: 20px;
-		padding: 10px;
+		padding: 5px 10px;
 		background-size: 100%;
 		background-origin: content-box;
 		background-repeat: no-repeat;
@@ -574,68 +573,146 @@ header, #main, footer {
 		cursor: pointer;
 	}
 }
-#footer_container {
-	text-align: right;
-	font-size: 14px;
-	a { 
-		color: black; 
-	}
+footer {
+	position: fixed;
+	bottom: 0;
+	background-color: white;
+	opacity: 0.4;
+	#footer_container {
+		text-align: right;
+		font-size: 14px;
+		a { 
+			color: black; 
+		}
+	}	
 }
+footer:hover{
+	opacity: 0.7;
+}
+
 #main_container {
-margin-bottom: 50px;
+	margin-top: 20px;
 }
 #leftbar {
-	width: 200px;
-	min-height: 300px;
+	width: 150px;
 	float: left;
+	margin: 40px 0px;
+	border: solid 1px @light;
 }
 #content {
-	width: 750px;
+	width: 780px;
 	float: right;
-	min-height: 300px;
+	margin-bottom: 100px;
+	padding: 5px 10px;
+	#tabs {
+		width: 100%;
+		float: left;
+		border-bottom: solid 1px darken(#e5e5e5, 10%);
+		text-transform: capitalize;
+		.tab {
+			float:left;
+			font-size: 15px;
+			padding: 5px 0px;
+			margin-right: 15px;
+			color: darken(#e5e5e5, 20%);
+			cursor: pointer;
+		}
+		.active {
+			font-weight: 600;
+			color: black;
+			border-bottom: solid 2px;
+			cursor: auto;
+		}
+	}
+	#tabcontent {
+		width: 100%;
+		float: left;
+		margin: 10px 0px;
+		min-height: 500px;
+	}
 }
 
-
-// subviews
+/*
+MODULES
+*/
 .moduleview {
 	cursor: pointer;
-	margin: 5px;
-	min-height: 35px;
 	padding: 5px;
-	border: solid 1px darken(#e5e5e5, 0%);
 	position: relative;
+	border-bottom: solid 1px @light;
 	.modulecode {
 		word-wrap: break-word;
 		display: block;
 		position: relative;
-		left: 35px;
-		width: 150px;
 		top: 6px;
 		margin-bottom: 10px;
-		font-size: 20px;
-		letter-spacing: -1px;
-	}
-	.moduleicon {
-		position: absolute;
-		padding: 5px;
-		height: 23px;
-		width: 23px;
-		background-size: 100%;
-		background-origin: content-box;
-		background-repeat: no-repeat;
-		background-image: url(/img/module.png);
+		font-size: 17px;
 	}
 }
 .moduleview:hover {
 	border: solid 1px #555;
 }
 .moduleview.active{
+	color: black;
 	border: solid 1px #555;
 	cursor: auto;
 	border-right: solid 4px #555;
 }
 
-
+/*
+ANNOUNCEMENTS
+*/
+.announcementsview {
+	border: solid 1px @light;
+}
+.announcementview {
+	border-bottom: solid 1px @light;
+	.title {
+		position: relative;
+		font-size: 16px;
+		padding: 10px 5px;
+		color: lighten(#000,30%);
+		.left {
+			width: 85%;
+		}
+		span.from {
+			font-size: 12px;
+			color: @secondarycolor;
+			opacity: 0.7;
+		}
+		span.date {
+			position: absolute;
+			right: 10px;
+			top: 12px;
+			display: inline-block;
+			font-size: 12px;
+		}
+	}
+	.contents {
+		display: none;
+		// background-color :lighten(@light,6%);
+		// border: dashed 1px darken(@light,20%);
+		padding: 10px 5px;
+		font-size: 13px;
+	}
+}
+.announcementview.active {
+	background-color :lighten(@light,4%);
+	.contents {
+		display: block;
+	}
+}
+.announcementview:hover {
+	background-color: lighten(@light, 4%);
+}
+.announcementinfo {
+	font-size: 14px;
+	text-align: center;
+	padding: 10px;
+}
+/*
+WORKBIN
+*/
 #filescontainer {
 	border: solid 1px #e5e5e5;
 	.folder {
@@ -651,7 +728,6 @@ margin-bottom: 50px;
 	.breadcrumbs {
 		padding: 5px 0px;
 		.breadcrumb {
-			border-left: solid 1px #e5e5e5;
 			.arrow {
 			display: inline-block;
 			height: 15px;
@@ -677,7 +753,6 @@ margin-bottom: 50px;
 		}
 	}
 }
-
 #filescontainertop {
 	background-color: #e5e5e5;
 	border-top: solid 1px darken(#e5e5e5, 30%);

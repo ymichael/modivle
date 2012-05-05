@@ -16,17 +16,17 @@ html
 		if useragent == "mobile"
 			meta(name="viewport", content="width=device-width, user-scalable=no")
 			if env == "prod"
-				link(rel="stylesheet", href="css/mobilelanding.css")
+				link(rel="stylesheet", href="css/mobile_landing.css")
 			else if env == "dev"
 				link(rel='stylesheet', href='/css/normalize.css')
-				link(rel="stylesheet/less", href="css/mobilelanding.less")
+				link(rel="stylesheet/less", href="css/mobile_landing.less")
 				script(src="js/libs/less-1.1.5.min.js")
 		else if useragent == "desktop"
 			if env == "prod"
-				link(rel="stylesheet", href="css/landing.css")
+				link(rel="stylesheet", href="css/desktop_landing.css")
 			else if env == "dev"
 				link(rel='stylesheet', href='/css/normalize.css')
-				link(rel="stylesheet/less", href="css/landing.less")
+				link(rel="stylesheet/less", href="css/desktop_landing.less")
 				script(src="js/libs/less-1.1.5.min.js")
 
 		script(type="text/javascript").

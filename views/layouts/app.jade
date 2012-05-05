@@ -5,12 +5,22 @@ html
 		meta(charset="utf-8")
 		meta(name='description',content="A NUS IVLE Client")
 
-		if env == "prod"
-			link(rel="stylesheet", href="css/main.css")
-		else if env == "dev"
-			link(rel='stylesheet', href='/css/normalize.css')
-			link(rel="stylesheet/less", href="css/main.less")
-			script(src="js/libs/less-1.1.5.min.js")
+		//- useragent and env specific styles
+		if useragent == "mobile"
+			meta(name="viewport", content="width=device-width, user-scalable=no")
+			if env == "prod"
+				link(rel="stylesheet", href="css/mobile_app.css")
+			else if env == "dev"
+				link(rel='stylesheet', href='/css/normalize.css')
+				link(rel="stylesheet/less", href="css/mobile_app.less")
+				script(src="js/libs/less-1.1.5.min.js")
+		else if useragent == "desktop"
+			if env == "prod"
+				link(rel="stylesheet", href="css/desktop_app.css")
+			else if env == "dev"
+				link(rel='stylesheet', href='/css/normalize.css')
+				link(rel="stylesheet/less", href="css/desktop_app.less")
+				script(src="js/libs/less-1.1.5.min.js")
 
 		script(type="text/javascript").
 			var _gaq = _gaq || [];
