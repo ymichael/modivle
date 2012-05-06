@@ -241,11 +241,145 @@ v.WorkbinView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(ich.workbinview());
 		if (typeof this.currentitem.get('id') !== 'undefined'){
-
+			if (this.currentitem.items.models.length === 0){
+				this.$("#workbincontents").html(ich.workbininfo({msg : "this folder is empty."}));
+			} else {
+				//files and folders
+				var fragment = document.createDocumentFragment();
+				_.each(this.currentitem.items.models, function(item){
+					var x;
+					if (item.get("type") === 'document'){
+						x = new v.FileView({model: item});
+						fragment.appendChild(x.render().el);
+					} else if (item.get("type") === 'folder'){
+						x = new v.FolderView({model: item});
+						fragment.appendChild(x.render().el);
+					}
+				},this);
+				this.$('#workbincontents').html(fragment);
+			}
+			this.nav = new v.WorkbinNav({currentitem: this.currentitem, el : this.$('#workbinnav')}).render();
 		} else {
 			//loading folder...
+			this.$("#workbinnav").html(ich.workbininfo({msg : "loading..."}));
 		}
 		return this;
+	},
+	events: {
+		"drilldown": "drilldown",
+		"downloadfile" : "downloadfile"
+	},
+	drilldown: function(e, model){
+		this.currentitem = model;
+		this.render();
+	},
+	downloadfile: function(e, file){
+		this.user.file(file.id);
+	}
+});
+v.WorkbinNav = Backbone.View.extend({
+	initialize: function(options){
+		this.currentitem = options.currentitem;
+	},
+	render: function(){
+		var parent = this.currentitem.parent;
+		if (!parent){
+			this.$el.html(ich.workbinnavhome());
+		} else {
+			this.$el.html(ich.workbinnav({
+				backitem: parent.parent ? parent.get("name") : "~",
+				label : this.currentitem.get("name")
+			}));
+		}
+		
+		return this;
+	},
+	events: {
+		"click #back" : "back"
+	},
+	back: function(){
+		this.$el.trigger("drilldown", this.currentitem.parent);
+	}
+});
+v.FileView = Backbone.View.extend({
+	className: 'itemview fileview',
+	render: function(){
+		this.$el.html(ich.itemview(this.model.toJSON()));
+		this.itemicon();
+		return this;
+	},
+	itemicon: function(){
+		var type = this.model.get("filetype");
+		var fileTypes = {
+			zip : "zip",
+			doc : "doc",
+			docx : "doc", // Redirect docx to doc's icon.
+			pdf : "pdf",
+			ppt : "ppt",
+			pptx : "ppt", // Redirect pptx to ppt's icon.
+			xls : "xls",
+			xlsx : "xlsx",
+			acc : "acc",
+			avi : "avi",
+			bmp : "bmp",
+			c : "c",
+			cpp : "cpp",
+			dmg : "dmg",
+			exe : "exe",
+			flv : "flv",
+			gif : "gif",
+			h : "h",
+			html : "html",
+			ics : "ics",
+			java : "java",
+			jpg : "jpg",
+			key : "key",
+			mp3 : "mp3",
+			mid : "mid",
+			mp4 : "mp4",
+			mpg : "mpg",
+			php : "php",
+			png : "png",
+			psd : "psd",
+			py : "py",
+			qt : "qt",
+			rar : "rar",
+			rb : "rb",
+			rtf :  "rtf",
+			sql : "sql",
+			tiff : "tiff",
+			txt : "txt",
+			wav : "wav",
+			xml : "xml"
+		};
+
+		var defaultfile = "_blank";
+		var bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
+
+		bg = "url(/img/filetypes/" + bg + ".png)";
+		this.$('.itemicon').css("background-image", bg);
+	},
+	events: {
+		"click" : "downloadfile"
+	},
+	downloadfile: function(){
+		this.$el.trigger('downloadfile', this.model);
+	}
+});
+v.FolderView = Backbone.View.extend({
+	className: 'itemview folderview',
+	initialize: function(){
+		_.bindAll(this,'drilldown');
+	},
+	render: function(){
+		this.$el.html(ich.itemview(this.model.toJSON()));
+		return this;
+	},
+	events: {
+		"click" : "drilldown"
+	},
+	drilldown: function(){
+		this.$el.trigger('drilldown', this.model);
 	}
 });
 return v;

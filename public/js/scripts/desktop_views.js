@@ -299,7 +299,6 @@ v.WorkbinView = Backbone.View.extend({
 					}
 				},this);
 				this.$('#filescontainer').html(fragment);
-
 			}
 		} else {
 			//loading folder

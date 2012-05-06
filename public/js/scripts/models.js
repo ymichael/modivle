@@ -59,8 +59,8 @@ m.File = Backbone.Model.extend({
 	initialize: function(attr, parent){
 		//link to parent folder
 		this.parent = parent;
-		this.set({size: this.calcfilesize(this.get('bytes'))})
-		this.set({kind: this.get("filetype") + " document"})
+		this.set({size: this.calcfilesize(this.get('bytes'))});
+		this.set({kind: this.get("filetype") + " document"});
 	},
 	calcfilesize: function(bytes){
 		var unit, index;
@@ -209,7 +209,6 @@ m.Module = Backbone.Model.extend({
 	fetchforumheadings: function(){
 		var that = this;
 		this.user.forumheadings(this.id, function(data){
-			console.log(data);
 			if (data.Results.length === 0) {
 				data.Results[0] = {};
 			}
