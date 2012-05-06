@@ -11,33 +11,26 @@ m.Folder = Backbone.Model.extend({
 	initialize: function(attr, parent){
 		//link to parent folder
 		this.parent = parent;
-		
-		this.type = "folder";
-		var simpleinfo = {};
-		simpleinfo.name = this.get('FolderName');
-		var count = this.get('FileCount');
-		if (this.get('Folders')) {
-			count = parseInt(count, 10) + this.get('Folders').length;
+		var count = this.get('count');
+		if (this.get('folders')) {
+			count = parseInt(count, 10) + this.get('folders').length;
 		}
 		if (count === 0){
-			simpleinfo.size = "empty";
+			this.set({size: "empty"});
 		} else {
-			simpleinfo.size = count + " items";
+			this.set({size: count+ " items"});
 		}
-		
-		simpleinfo.type = "folder";
-		this.simpleinfo = simpleinfo;
 		this.init();
-		this.set({id : this.get('ID')});
 	},
 	init: function(){
-		this.items = new m.Items();
-		var files = _.map(this.get('Files'), function(file){
+		var files = _.map(this.get('files'), function(file){
 			return new m.File(file, this);
 		}, this);
-		var folders = _.map(this.get('Folders'), function(folder){
+		var folders = _.map(this.get('folders'), function(folder){
 			return new m.Folder(folder, this);
 		}, this);
+
+		this.items = new m.Items();
 		this.items.add(folders);
 		this.items.add(files);
 	},
@@ -45,17 +38,17 @@ m.Folder = Backbone.Model.extend({
 		var path = "";
 		var current = this.parent;
 		while (current) {
-			path = current.simpleinfo.name + "/" + path;
+			path = current.get("name") + "/" + path;
 			current = current.parent;
 		}
 
-		return path + this.simpleinfo.name;
+		return path + current.get("name");
 	},
 	hasnewfiles: function(){
 		var x = _.find(this.items.models, function(item){
 			if (item.type === 'document'){
 				return item.get('dled') === 0;
-			} else if (item.type === 'folder'){
+			} else if (item.get("type") === 'folder'){
 				return item.hasnewfiles();
 			}
 		}, this);
@@ -66,22 +59,8 @@ m.File = Backbone.Model.extend({
 	initialize: function(attr, parent){
 		//link to parent folder
 		this.parent = parent;
-
-		//obj type
-		this.type = "document";
-
-		//relevant info (for display)
-		var simpleinfo = {};
-		simpleinfo.name = this.get('FileName');
-		simpleinfo.description = this.get('FileDescription');
-		var bytes = this.get('FileSize');
-
-		simpleinfo.size = this.calcfilesize(bytes);
-		simpleinfo.filetype = this.get('FileType');
-		simpleinfo.type = this.get('FileType')+ " document";
-		this.simpleinfo = simpleinfo;
-
-		this.set({id : this.get('ID')});
+		this.set({size: this.calcfilesize(this.get('bytes'))})
+		this.set({kind: this.get("filetype") + " document"})
 	},
 	calcfilesize: function(bytes){
 		var unit, index;
@@ -102,23 +81,19 @@ m.File = Backbone.Model.extend({
 m.Workbin = Backbone.Model.extend({
 	initialize: function(){
 		this.fields();
-		var simpleinfo = {};
-		simpleinfo.type = "folder";
-		this.simpleinfo = simpleinfo;
 		this.on('change', this.fields, this);
-		_.bindAll(this, 'setname');
 	},
 	fields: function(){
-		var x = _.map(this.get('Folders'), function(folder){
+		var x = _.map(this.get('folders'), function(folder){
 			return new m.Folder(folder, this);
 		},this);
 		this.items = new m.Items(x);
 	},
 	setname: function(name){
-		this.simpleinfo.name = name;
+		this.set({name: name});
 	},
 	filepath: function(){
-		return this.simpleinfo.name;
+		return this.get("name");
 	}
 });
 /*
@@ -156,11 +131,12 @@ m.Module = Backbone.Model.extend({
 	thinfiles: function(filearray){
 		return _.map(filearray.reverse(), function(file){
 			var y = {};
-			y.FileDescription = file.FileDescription;
-			y.FileName = file.FileName;
-			y.FileSize = file.FileSize;
-			y.FileType = file.FileType;
-			y.ID = file.ID;
+			y.desc = file.FileDescription;
+			y.name = file.FileName;
+			y.bytes = file.FileSize;
+			y.filetype = file.FileType;
+			y.id = file.ID;
+			y.type = "document";
 			y.dled = file.isDownloaded ? 1 : 0;
 			return y;
 		});
@@ -168,11 +144,12 @@ m.Module = Backbone.Model.extend({
 	thinfolder: function(folderarray){
 		return _.map(folderarray, function(folder){
 			var y = {};
-			y.FolderName = folder.FolderName;
-			y.FileCount = folder.FileCount;
-			y.Files = this.thinfiles(folder.Files);
-			y.Folders = this.thinfolder(folder.Folders);
-			y.ID = folder.ID;
+			y.name = folder.FolderName;
+			y.count = folder.FileCount;
+			y.files = this.thinfiles(folder.Files);
+			y.folders = this.thinfolder(folder.Folders);
+			y.id = folder.ID;
+			y.type = y.kind = "folder";
 			return y;
 		}, this);
 	},
@@ -186,19 +163,17 @@ m.Module = Backbone.Model.extend({
 
 			//save space.
 			var relevant = {};
-			relevant.Folders = that.thinfolder(data.Results[0].Folders);
-			relevant.ID = data.Results[0].ID || -1;
-			relevant.Title = data.Results[0].Title;
-			
-			//assign relevant to workbin.
-			var workbin = relevant;
+			relevant.folders = that.thinfolder(data.Results[0].Folders);
+			relevant.id = data.Results[0].ID || -1;
+			relevant.type = relevant.kind = "folder";
+			relevant.title = data.Results[0].Title;
 			that.workbin.set(relevant);
 
 			//save state
 			$.ajax({
 				type: 'POST',
 				url: "/workbin",
-				data: {moduleid : that.id, workbin: workbin},
+				data: {moduleid : that.id, workbin: relevant},
 				success: function(data){
 					//console.log(data);
 				},

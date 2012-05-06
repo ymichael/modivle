@@ -280,7 +280,7 @@ v.WorkbinView = Backbone.View.extend({
 		//render breadcrumbs
 		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
 		this.breadcrumbs.render();
-		if (typeof this.currentitem.get('ID') !== 'undefined'){
+		if (typeof this.currentitem.get('id') !== 'undefined'){
 			if(this.currentitem.items.models.length === 0){
 				//empty folder
 				this.$('#filescontainer').html(ich.emptyfolder());
@@ -290,10 +290,10 @@ v.WorkbinView = Backbone.View.extend({
 				//reverse models to show latest files at the top.
 				_.each(this.currentitem.items.models, function(item){
 					var x;
-					if (item.type === 'document'){
+					if (item.get("type") === 'document'){
 						x = new v.FileView({model: item});
 						fragment.appendChild(x.render().el);
-					} else if (item.type === 'folder'){
+					} else if (item.get("type") === 'folder'){
 						x = new v.FolderView({model: item});
 						fragment.appendChild(x.render().el);
 					}
@@ -325,7 +325,7 @@ v.WorkbinBreadcrumb = Backbone.View.extend({
 		this.type = options.type;
 	},
 	render: function(){
-		this.$el.html(ich.breadcrumb(this.model.simpleinfo));
+		this.$el.html(ich.breadcrumb(this.model.toJSON()));
 		this.$el.addClass(this.type);
 		return this;
 	},
@@ -358,12 +358,12 @@ v.FileView = Backbone.View.extend({
 	className: 'itemview fileview',
 	initialize: function(){},
 	render: function(){
-		this.$el.html(ich.itemview(this.model.simpleinfo));
+		this.$el.html(ich.itemview(this.model.toJSON()));
 		this.itemicon();
 		return this;
 	},
 	itemicon: function(){
-		var type = this.model.simpleinfo.filetype;
+		var type = this.model.get("filetype");
 		var fileTypes = {
 			zip : "zip",
 			doc : "doc",
@@ -426,7 +426,7 @@ v.FolderView = Backbone.View.extend({
 		_.bindAll(this,'drilldown');
 	},
 	render: function(){
-		this.$el.html(ich.itemview(this.model.simpleinfo));
+		this.$el.html(ich.itemview(this.model.toJSON()));
 		return this;
 	},
 	events: {

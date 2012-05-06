@@ -15,7 +15,7 @@ v.MainView = Backbone.View.extend({
 	},
 	render: function(){
 		//header
-		this.header = new v.HeaderView().render();
+		this.header = new v.HeaderView();
 		//contents
 		this.modulesview = new v.ModulesView({collection: this.modules}).render();
 		this.$("#main").html(this.modulesview.el);
@@ -32,12 +32,16 @@ v.MainView = Backbone.View.extend({
 			user: this.user
 		});
 		this.$("#main").html(singlemoduleview.render().el);
+	},
+	home: function(){
+		this.header.home();
+		this.$("#main").html(this.modulesview.render().el);
 	}
 });
 v.HeaderView = Backbone.View.extend({
 	el: "header",
-	render: function(){
-		return this;
+	home: function(){
+		this.$el.html(ich.headerhome());
 	},
 	modulepage: function(code){
 		this.$el.html(ich.singlemoduleheader({code : code}));
@@ -81,20 +85,18 @@ SINGLE MODULE VIEW
 */
 v.SingleModuleView = Backbone.View.extend({
 	initialize: function(options){
-		this.defaultview = "announcements";
+		this.currentview = "announcements";
 		this.user = options.user;
 	},
 	render: function(){
-		this.nav = new v.SingleModuleNav({current: this.defaultview});
+		this.nav = new v.SingleModuleNav({current: this.currentview});
 		this.$el.append(this.nav.render().el);
 
-		var view = this.view(this.defaultview);
-
-
-		this.content = new view({
+		var viewobj = this.view(this.currentview);
+		this.content = new viewobj({
 			model: this.model,
 			user: this.user
-		})
+		});
 		this.$el.append(this.content.render().el);
 
 		return this;
@@ -105,6 +107,21 @@ v.SingleModuleView = Backbone.View.extend({
 		} else if (view === "workbin"){
 			return v.WorkbinView;
 		}
+	},
+	events: {
+		"changeview" : "changeview"
+	},
+	changeview: function(e, view){
+		this.currentview = view;
+		this.nav.active(this.currentview);
+
+		this.content.remove();
+		var viewobj = this.view(this.currentview);
+		this.content = new viewobj({
+			model: this.model,
+			user: this.user
+		});
+		this.$el.append(this.content.render().el);
 	}
 });
 v.SingleModuleNav = Backbone.View.extend({
@@ -152,6 +169,14 @@ v.SingleModuleNavTab = Backbone.View.extend({
 	},
 	inactive: function(){
 		this.$el.removeClass("active");
+	},
+	events: {
+		"click" : "changeview"
+	},
+	changeview: function(){
+		if (!this.$el.hasClass("active")){
+			this.$el.trigger("changeview", this.name);
+		}
 	}
 });
 
@@ -194,8 +219,34 @@ v.AnnouncementView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(ich.announcementtitle(this.model.toJSON()));
 		return this;
+	},
+	events: {
+		"click": "showannouncement"
+	},
+	showannouncement: function(){
+		this.$el.toggleClass("active");
 	}
 });
 
+/*
+WORKBIN
+*/
+v.WorkbinView = Backbone.View.extend({
+	className: "workbinview",
+	initialize: function(options){
+		this.user = options.user;
+		this.currentitem = this.model.fetchworkbin().workbin;
+		this.currentitem.on('all', this.render, this);
+	},
+	render: function(){
+		this.$el.html(ich.workbinview());
+		if (typeof this.currentitem.get('id') !== 'undefined'){
+
+		} else {
+			//loading folder...
+		}
+		return this;
+	}
+});
 return v;
 });

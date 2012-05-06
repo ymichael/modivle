@@ -1,7 +1,9 @@
+<script type="text/html" id="headerhome">
+		<img id='logo' src='img/logo/modivleblack.png'></div>
+		<div id='logout'></div>
+</script>
 <script type="text/html" id="singlemoduleheader">
-		<div id='back'>
-			<div class='home icon'></div>
-		</div>
+		<div id='home'></div>
 		<div id='headerlabel'>{{ code }}</div>
 		<div id='logout'></div>
 </script>
@@ -16,28 +18,27 @@
 	</div>
 </script>
 
-<script type="text/html" id='announcementsview'>
-	<div class='announcement'>
-		<div class='title'>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</div>
-		<div class='author'>Praesent commodo</div>
-
-	</div>
-	<div class='announcement'></div>
-	<div class='announcement'></div>
-	<div class='announcement'></div>
-	<div class='announcement'></div>
-	<div class='announcement'></div>
-	<div class='announcement'></div>
-	<div class='announcement'></div>
-</script>
 <script type="text/html" id='announcementtitle'>
 	<div class='title'>{{ title }}</div>
 	<div class='info'>
 		<span class='author'>{{ from }}</span>
 		<span class='date'>{{ date }}</span>
 	</div>
+	<div class='content'>{{{ contents }}</div>
 
 </script>
 <script type='text/html' id='announcementsinfo'>
 	<div class='announcementinfo'>{{text}}</div>
+</script>
+
+
+
+<script type='text/html' id='workbinview'>
+	<div id='workbinnav'></div>
+	<div id='workbincontents'></div>
+</script>
+<script type="text/html" id='workbinfolder'>
+	<div class='icon'></div>
+		<div class='title'>{{name}}</div>
+		<div class='info'>{{type}}, {{size}}</div>
 </script>

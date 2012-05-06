@@ -109,8 +109,12 @@ var App = Backbone.View.extend({
 		var logout =  re.exec(window.location.href)[1] + "/logout";
 		window.location.href = logout;
 	},
+	home: function(){
+		this.mainview.home();
+	},
 	events: {
-		'click #logout': "logout"
+		'click #logout': "logout",
+		'click #home' : "home"
 	}
 });
 return App;
