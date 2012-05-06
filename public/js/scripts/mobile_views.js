@@ -268,7 +268,11 @@ v.WorkbinView = Backbone.View.extend({
 	},
 	events: {
 		"drilldown": "drilldown",
-		"downloadfile" : "downloadfile"
+		"downloadfile" : "downloadfile",
+		"click #back" : "back"
+	},
+	back: function(){
+		this.nav.back();
 	},
 	drilldown: function(e, model){
 		this.currentitem = model;
@@ -292,11 +296,7 @@ v.WorkbinNav = Backbone.View.extend({
 				label : this.currentitem.get("name")
 			}));
 		}
-		
 		return this;
-	},
-	events: {
-		"click #back" : "back"
 	},
 	back: function(){
 		this.$el.trigger("drilldown", this.currentitem.parent);
