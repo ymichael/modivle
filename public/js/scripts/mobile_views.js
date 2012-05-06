@@ -49,7 +49,8 @@ v.HeaderView = Backbone.View.extend({
 });
 v.ModulesView = Backbone.View.extend({
 	initialize: function(){
-
+		this.collection.on('reset', this.render, this);
+		this.collection.on('add', this.render, this);
 	},
 	render: function(){
 		var fragment = document.createDocumentFragment();
