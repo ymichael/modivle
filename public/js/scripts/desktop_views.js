@@ -44,12 +44,12 @@ v.ModulesView = Backbone.View.extend({
 		return this;
 	},
 	moduleselected: function(e, module){
-		this.active(module.simpleinfo.code);
+		this.active(module.get("code"));
 	},
 	active: function(modcode){
 		this.$(".active").removeClass("active");
 		_.each(this.views, function(view){
-			if (view.model.simpleinfo.code === modcode){
+			if (view.model.get("code") === modcode){
 				view.active();
 			}
 		}, this);
@@ -63,7 +63,7 @@ v.ModuleView = Backbone.View.extend({
 	initialize: function(){
 	},
 	render: function(){
-		this.$el.html(ich.moduleview(this.model.simpleinfo));
+		this.$el.html(ich.moduleview(this.model.toJSON()));
 		return this;
 	},
 	events: {

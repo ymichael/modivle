@@ -149,21 +149,8 @@ MAIN
 m.Module = Backbone.Model.extend({
 	initialize: function(options){
 		_.bindAll(this, 'fetchworkbin','thinfolder');
-		var simpleinfo = {};
-		simpleinfo.code = this.get('CourseCode');
-		simpleinfo.name = this.get('CourseName');
-		simpleinfo.semester = this.get('CourseSemester');
-		simpleinfo.year = this.get('CourseAcadYear');
-		// simpleinfo.workbin = this.get('Workbins');
-		// simpleinfo.gradebook = this.get('Gradebooks');
-		// simpleinfo.webcast = this.get('Webcasts');
-		// simpleinfo.forum = this.get('Forums');
-		this.simpleinfo = simpleinfo;
-		this.set({id: this.get('ID')});
-
-		
 		this.workbin = new m.Workbin(this.get('workbin'));
-		this.workbin.setname(simpleinfo.code);
+		this.workbin.setname(this.get("code"));
 		this.announcements = new m.Announcements(this.get('announcements'));
 	},
 	thinfiles: function(filearray){
@@ -221,10 +208,9 @@ m.Module = Backbone.Model.extend({
 		return this;
 	},
 	nicedate: function(date){
-		var pad = function(int){
-			return int > 9 ? int : "0" + int;
-		};
-		var str = date.getDate() + "/" + date.getMonth() + " " + pad(date.getHours()) + ":" + pad(date.getMinutes());
+		var datere = /^(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d:\d\d):\d\d$/;
+		var res = datere.exec(date);
+		var str = res[3] + "/" + res[2] + " " + res[4];
 		return str;
 	},
 	fetchannouncements: function(){
@@ -234,9 +220,7 @@ m.Module = Backbone.Model.extend({
 				var announcement = {};
 				announcement.id = x.ID;
 				announcement.title = x.Title;
-				
-				var date = new Date(x.CreatedDate);
-				announcement.date = that.nicedate(date);
+				announcement.date = that.nicedate(x.CreatedDate);
 				announcement.contents = x.Description;
 				announcement.from = x.Creator.Name;
 				return announcement;
@@ -282,25 +266,21 @@ m.Modules = Backbone.Collection.extend({
 	fetch: function(callback){
 		var that = this;
 		this.user.modules(function(data){
-			var modules = _.map(data.Results, function(module){
-				var x = new m.Module(module);
-				x.user = that.user;
-				return x;
-			}, that);
-			that.reset(modules);
-			callback();
-			
 			//save space.
-			modules = _.map(data.Results, function(mod){
+			var modules = _.map(data.Results, function(mod){
 				//keep relevant variables
 				var relevant = {};
-				relevant.CourseCode = mod.CourseCode;
-				relevant.CourseName = mod.CourseName;
-				relevant.CourseSemester = mod.CourseSemester;
-				relevant.CourseAcadYear = mod.CourseAcadYear;
-				relevant.ID = mod.ID;
+				relevant.code = mod.CourseCode;
+				relevant.name = mod.CourseName;
+				relevant.sem = mod.CourseSemester;
+				relevant.year = mod.CourseAcadYear;
+				relevant.id = mod.ID;
 				return relevant;
 			});
+
+			that.reset(modules);
+			callback();
+
 			//save state
 			$.ajax({
 				type: 'POST',
