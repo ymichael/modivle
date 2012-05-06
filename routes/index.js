@@ -55,7 +55,7 @@ exports.workbin = function(req,res){
     res.redirect(302, '/');
   } else {
     _.each(req.session.bootstrap.modules, function(module){
-      if (module.ID == req.body.moduleid){
+      if (module.id == req.body.moduleid){
         module.workbin = req.body.workbin;
       }
     });
