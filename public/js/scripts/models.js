@@ -123,7 +123,7 @@ MAIN
 */
 m.Module = Backbone.Model.extend({
 	initialize: function(options){
-		_.bindAll(this, 'fetchworkbin','thinfolder');
+		_.bindAll(this, 'fetchworkbin','thinfolder','fetchannouncements');
 		this.workbin = new m.Workbin(this.get('workbin'));
 		this.workbin.setname(this.get("code"));
 		this.announcements = new m.Announcements(this.get('announcements'));
