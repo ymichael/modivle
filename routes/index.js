@@ -23,13 +23,13 @@ exports.auth = function(req,res){
       if (!req.session.bootstrap) req.session.bootstrap = {};
       var token = req.query.token;
       req.session.bootstrap.token = token;
-      res.redirect('/', 302);
+      res.redirect(302, '/');
     }
   });
 }
 exports.token = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
-    res.redirect('/', 302);
+    res.redirect(302, '/');
   } else {
     var newtoken = req.body.token;
     var date = req.body.date;
@@ -41,7 +41,7 @@ exports.token = function(req,res){
 }
 exports.modules = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
-    res.redirect('/', 302);
+    res.redirect(302, '/');
   } else {
     var modules = req.body.modules;
     //session is not updating occasionally
@@ -52,7 +52,7 @@ exports.modules = function(req,res){
 }
 exports.workbin = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
-    res.redirect('/', 302);
+    res.redirect(302, '/');
   } else {
     _.each(req.session.bootstrap.modules, function(module){
       if (module.ID == req.body.moduleid){
@@ -64,93 +64,49 @@ exports.workbin = function(req,res){
 }
 exports.logout = function(req,res){
   req.session.destroy(function(err){
-    res.redirect('/', 302);
+    res.redirect(302, '/');
   });
 }
 
-//USER AGENT ROUTER
-exports.route = function(req, res){
-
+//MOBILE DETECTION
+var ismobile = function(req){
+  var ua = req.header('user-agent');
+  var mobile = /mobile/i.test(ua);
+  var ipad = /ipad/i.test(ua);
+  return !ipad && mobile
 }
 
-
-
-//DESKTOP
-exports.desktop = {};
-exports.desktop.login = function(req, res){
+//MAIN ROUTES
+exports.landing = function(req, res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
     var variables = {};
-    variables.title = "MODIVLE";
-    if (production){
-      variables.layout = "layoutprodlogin";
+    variables.env = process.env.NODE_ENV ? "prod" : "dev";
+    variables.useragent = ismobile(req) ? "mobile" : "desktop";
+    if (ismobile(req)){
+      res.render('mobile_landing', variables);
     } else {
-      variables.layout = "layoutdevlogin";  
+      res.render('desktop_landing', variables);
     }
-    res.render('login', variables);
   } else {
-    res.redirect('/welcome', 302);
+    res.redirect(302, '/welcome');
   }
 }
-exports.desktop.welcome = function(req,res){
+exports.app = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     //not logged in
-    res.redirect('/', 302);
+    res.redirect(302, '/');
   } else {
-    var variables = {};
-    variables.title = "MODIVLE";
     if (!req.session.bootstrap){
       req.session.bootstrap = {};
     }
-    variables.bootstrap = req.session.bootstrap;
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
-    if (production){
-      variables.layout = "layoutprod";
-    } else {
-      variables.layout = "layoutdev";  
-    }
-    res.render('index', variables)
-  }
-}
-
-//MOBILE
-exports.mobile = {};
-exports.mobile.login = function(req, res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
     var variables = {};
-    variables.title = "MODIVLE";
-    if (production){
-      variables.layout = "mobile/layoutprodlogin";
-    } else {
-      variables.layout = "mobile/layoutdevlogin";  
-    }
-    res.render('mobile/login', variables);
-  } else {
-    res.redirect('/welcome', 302);
-  }
-}
-exports.mobile.welcome = function(req,res){
-  if (!req.session.bootstrap || !req.session.bootstrap.token){
-    //not logged in
-    res.redirect('/', 302);
-  } else {
-    var variables = {};
-    variables.title = "MODIVLE";
-    if (!req.session.bootstrap){
-      req.session.bootstrap = {};
-    }
     variables.bootstrap = req.session.bootstrap;
-    var production = process.env.NODE_ENV;
-    // $ NODE_ENV=production node app.js
-    if (production){
-      variables.layout = "mobile/layoutprod";
+    variables.env = process.env.NODE_ENV ? "prod" : "dev";
+    variables.useragent = ismobile(req) ? "mobile" : "desktop";
+    if (ismobile(req)){
+      res.render('mobile_app', variables);
     } else {
-      variables.layout = "mobile/layoutdev";  
+      res.render('desktop_app', variables);
     }
-    res.render('mobile/index', variables)
   }
 }

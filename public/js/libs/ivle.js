@@ -119,6 +119,23 @@ var ivle = (function($){
 				var url = "https://ivle.nus.edu.sg/api/downloadfile.ashx?APIKey=" + apikey + "&AuthToken=" + this.authtoken + "&ID=" + fileId + "&target=workbin";
 				window.location.href = url;
 			}
+
+			//announcements
+			this.announcements = function(courseId, success, error){
+				var endpoint = 'Announcements';
+				var params = {
+					"APIKey" : apikey,
+					"AuthToken" : this.authtoken,
+					"CourseId" : courseId,
+					"Duration" : 0,
+					//whether to display basic info or all or it.
+					// "TitleOnly" : true,
+					"TitleOnly" : false,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
 		}
 	}
 	return ivle;

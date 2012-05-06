@@ -1,0 +1,15 @@
+extends layouts/app
+
+block content
+	#overlay
+		.loading
+			#close
+	#container
+		header
+			img#logo(src='img/logo/modivleblack.png')
+			#logout
+		#main
+		footer
+	script(type='text/javascript') 
+		var bootstrap = !{JSON.stringify(bootstrap)};
+	script(data-main="js/mobile_main", src="js/libs/require.js")

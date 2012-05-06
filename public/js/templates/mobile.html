@@ -1,54 +1,48 @@
-<script id='headeruser' type='text/html'>
-	<div id='home' title='home'></div>
-	<div id='logout' title='logout'></div>
+<script type="text/html" id="headerhome">
+		<img id='logo' src='img/logo/modivleblack.png'></div>
+		<div id='logout'></div>
 </script>
-
-
-<script id='mainview' type='text/html'>
-	<div id='leftbar'></div>
-	<div id='contentcontainer'></div>
+<script type="text/html" id="singlemoduleheader">
+		<div id='home'></div>
+		<div id='headerlabel'>{{ code }}</div>
+		<div id='logout'></div>
 </script>
-
-<script id='emptyfolder' type='text/html'>
-	<div class='folder'>
-		<span>this folder is empty.</span>
+<script type="text/html" id='moduleview'>
+	<div class='text'>
+		<div class='code'>{{ code }}</div>
+		<div class='desc'>{{ name }}</div>
 	</div>
 </script>
-<script id='loadingfolder' type='text/html'>
-	<div class='folder'>
-		<span>loading...</span>
+<script type="text/html" id='announcementtitle'>
+	<div class='title'>{{ title }}</div>
+	<div class='info'>
+		<span class='author'>{{ from }}</span>
+		<span class='date'>{{ date }}</span>
 	</div>
+	<div class='content'>{{{ contents }}</div>
 </script>
-
-
-<script id='moduleview' type='text/html'>
-	<div class='moduletap'></div>
-	<div class='modulecode'>{{code}}</div>
+<script type='text/html' id='announcementsinfo'>
+	<div class='announcementinfo'>{{text}}</div>
 </script>
-
-<script id='moduleicon' type='text/html'>
-	<div class='moduleicon {{type}}' title="{{type}}"></div>
+<script type='text/html' id='workbinview'>
+	<div id='workbinnav'></div>
+	<div id='workbincontents'></div>
 </script>
-
-
-<script id='workbinview' type='text/html'>
-	<div id='workbinheading'>
-		<div id='back'></div>
+<script type='text/html' id='workbinnavhome'>
+	<div class='currentitem'>~</div>
+</script>
+<script type='text/html' id='workbinnav'>
+	<div id='back'>
+		<div class='backicon'></div>
+		<div class='backitem'>{{backitem}}</div>
 	</div>
-	<div id='filescontainer'><div>
+	<div class='currentitem'>{{label}}</div>
 </script>
-<script id='breadcrumb' type='text/html'>
-	<span>{{name}}</span>
+<script type='text/html' id='workbininfo'>
+	<div class='workbininfo'>{{ msg }}</div>
 </script>
-
-
-
-<script id='itemview' type='text/html'>
-	<div class="itemname">
-		<div class='itemicon {{filetype}}'></div>
-		<span>{{name}}</span>
-	</div>
-	<div class="itemdesc"> 
-		<span>{{type}}</span> : <span>{{size}}</span>
-	</div>
+<script type="text/html" id='itemview'>
+	<div class='itemicon'></div>
+	<div class='title'>{{name}}</div>
+	<div class='info'>{{kind}}, {{size}}</div>
 </script>

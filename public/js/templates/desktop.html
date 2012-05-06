@@ -1,0 +1,73 @@
+<!-- MAIN -->
+<script id='moduleview' type='text/html'>
+	<div class='modulecode'>{{code}}</div>
+</script>
+<script id='moduleicon' type='text/html'>
+	<div class='moduleicon {{type}}' title="{{type}}"></div>
+</script>
+<script type="text/html" id="contentview">
+	<div id="tabs"></div>
+	<div id="tabcontent"></div>
+</script>
+
+
+<!-- ANNOUNCEMENTS -->
+<script type='text/html' id='announcementview'>
+	<div class='title'>
+		<div class='left'>
+			{{ title }} 
+			<span class='from'>{{ from }}</span>
+		</div>
+		<span class='date'>{{ date }}</span>
+	</div>
+	<div class='contents'>{{{ contents }}}</div>
+</script>
+<script type='text/html' id='announcementsinfo'>
+	<div class='announcementinfo'>{{text}}</div>
+</script>
+
+
+<!-- WORKBIN -->
+<script id='emptyfolder' type='text/html'>
+	<div class='folder'>
+		<span>this folder is empty.</span>
+	</div>
+</script>
+<script id='loadingfolder' type='text/html'>
+	<div class='folder'>
+		<span>loading...</span>
+	</div>
+</script>
+<script id='workbinview' type='text/html'>
+	<div id='workbinheading'>
+		<div class='breadcrumbs'></div>
+	</div>
+	<div id='filescontainertop' class='itemview'>
+		<div class="itemname">
+			<span>Name</span>
+		</div>
+		<div class="itemtype">
+			<span>Kind</span>
+		</div>
+		<div class="itemsize">
+			<span>Size</span>
+		</div>
+	</div>
+	<div id='filescontainer'><div>
+</script>
+<script id='breadcrumb' type='text/html'>
+	<div class='arrow'></div>
+	<span>{{name}}</span>
+</script>
+<script id='itemview' type='text/html'>
+	<div class="itemname">
+		<div class='itemicon {{filetype}}'></div>
+		<span>{{name}}</span>
+	</div>
+	<div class="itemtype">
+		<span>{{kind}}</span>
+	</div>
+	<div class="itemsize">
+		<span>{{size}}</span>
+	</div>
+</script>

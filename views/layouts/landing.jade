@@ -1,0 +1,49 @@
+!!! 5
+html
+	head
+		title MODIVLE
+		meta(charset="utf-8")
+		meta(property="og:title", content="MODIVLE")
+		meta(property="og:type", content="website")
+		meta(property="og:description", content="A NUS IVLE Client")
+		meta(property="og:url", content="http://modivle.yrmichael.com")
+		meta(property="og:image", content="http://modivle.yrmichael.com/img/logo/fbimg2.png")
+		meta(property="og:site_name", content="MODIVLE")
+		meta(property="fb:admins", content="1046605279")
+		meta(name='description',content="A NUS IVLE Client")
+		
+		//- useragent and env specific styles
+		if useragent == "mobile"
+			meta(name="viewport", content="width=device-width, user-scalable=no")
+			if env == "prod"
+				link(rel="stylesheet", href="css/mobile_landing.css")
+			else if env == "dev"
+				link(rel='stylesheet', href='/css/normalize.css')
+				link(rel="stylesheet/less", href="css/mobile_landing.less")
+				script(src="js/libs/less-1.1.5.min.js")
+		else if useragent == "desktop"
+			if env == "prod"
+				link(rel="stylesheet", href="css/desktop_landing.css")
+			else if env == "dev"
+				link(rel='stylesheet', href='/css/normalize.css')
+				link(rel="stylesheet/less", href="css/desktop_landing.less")
+				script(src="js/libs/less-1.1.5.min.js")
+
+		script(type="text/javascript").
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-30405365-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+			// ADD THIS AT THE BOTTOM OF YOUR GOOGLE ANALYTICS TRACKING CODE //
+			window.onerror = function(message, file, line) { 
+			var sFormattedMessage = '[' + file + ' (' + line + ')] ' + message; 
+			_gaq.push(['_trackEvent', 'Exceptions', 'Application', sFormattedMessage, null, true]);
+			}
+	body
+		block content
