@@ -502,7 +502,7 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-@pagewidth: 960px;
+@pagewidth: 900px;
 @secondarycolor: darken(#d70000, 10%);
 @light: #e5e5e5;
 
@@ -599,7 +599,7 @@ footer:hover{
 	margin: 40px 0px;
 }
 #content {
-	width: 780px;
+	width: 720px;
 	float: right;
 	margin-bottom: 100px;
 	padding: 5px 10px;
@@ -639,7 +639,8 @@ MODULES
 	padding: 5px;
 	position: relative;
 	margin-bottom: 3px;
-	border: solid 1px @light;
+	border: solid 1px white;
+	color: lighten(#555,20%);
 	.modulecode {
 		word-wrap: break-word;
 		display: block;
@@ -651,12 +652,13 @@ MODULES
 }
 .moduleview:hover {
 	border: solid 1px #555;
+	color: black;
 }
 .moduleview.active{
 	color: black;
-	border: solid 1px #555;
+	border: solid 1px;
 	cursor: auto;
-	border-right: solid 4px #555;
+	border-right: solid 4px;
 }
 
 /*
