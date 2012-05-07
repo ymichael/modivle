@@ -122,7 +122,8 @@ m.Forum = Backbone.Model.extend({
 MAIN
 */
 m.Module = Backbone.Model.extend({
-	initialize: function(options){
+	initialize: function(models, options){
+		this.user = options.user;
 		_.bindAll(this, 'fetchworkbin','thinfolder','fetchannouncements');
 		this.workbin = new m.Workbin(this.get('workbin'));
 		this.workbin.setname(this.get("code"));
@@ -234,12 +235,24 @@ m.Module = Backbone.Model.extend({
 m.Modules = Backbone.Collection.extend({
 	initialize: function(models, options){
 		this.user = options.user;
-		_.bindAll(this, 'fetch', 'update');
+		_.bindAll(this, 'fetch');
 	},
 	model: m.Module,
 	fetch: function(callback){
 		var that = this;
 		this.user.modules(function(data){
+			//remove inactive modules
+			var activemodule = function(module){
+				return _.find(data.Results, function(mod){
+					return module.id === mod.ID;
+				});
+			};
+			_.each(that.models, function(module){
+				if (!activemodule(module)){
+					this.remove(module);
+				}
+			},that);
+
 			//save space.
 			var modules = _.map(data.Results, function(mod){
 				//keep relevant variables
@@ -252,8 +265,14 @@ m.Modules = Backbone.Collection.extend({
 				return relevant;
 			});
 
-			that.reset(modules);
-			callback();
+			var models = _.map(modules, function(mod){
+				var x = new m.Module(mod, {user: this.user});
+				return x;
+			},that);
+			that.reset(models);
+			if (callback) {
+				callback();
+			}
 
 			//save state
 			$.ajax({
@@ -265,62 +284,6 @@ m.Modules = Backbone.Collection.extend({
 				},
 				dataType: 'json'
 			});
-		});
-	},
-	update: function(callback){
-		var that = this;
-		this.user.modules(function(data){
-			if (data.Comments === "Invalid login!"){
-				//handle error.
-			}
-			var changes = _.filter(data.Results,function(module){
-				return ! that.get(module.ID);
-			},that);
-
-			//remove inactive modules
-			var activemodule = function(module){
-				return _.find(data.Results, function(mod){
-					return module.id === mod.ID;
-				});
-			};
-			_.each(that.models, function(module){
-				if (!activemodule(module)){
-					that.remove(module);
-				}
-			},that);
-			
-			if (changes.length > 0){
-				var modules = _.map(changes, function(module){
-					var x = new m.Module(module);
-					x.user = that.user;
-					return x;
-				}, that);
-	
-				that.add(modules);
-				
-				//save space.
-				modules = _.map(data.Results, function(mod){
-					//keep relevant variables
-					var relevant = {};
-					relevant.CourseCode = mod.CourseCode;
-					relevant.CourseName = mod.CourseName;
-					relevant.CourseSemester = mod.CourseSemester;
-					relevant.CourseAcadYear = mod.CourseAcadYear;
-					relevant.ID = mod.ID;
-					return relevant;
-				});
-
-				//save state
-				$.ajax({
-					type: 'POST',
-					url: "/modules",
-					data: {modules : modules},
-					success: function(data){
-						//console.log(data);
-					},
-					dataType: 'json'
-				});
-			}
 		});
 	}
 });

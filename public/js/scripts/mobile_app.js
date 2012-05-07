@@ -24,19 +24,15 @@ var App = Backbone.View.extend({
 		this.bootstrap = bootstrap;
 		this.usertoken = this.bootstrap.token;
 		this.user = new this.ivle.user(this.usertoken);
-		
 		var that = this;
 		if (this.bootstrap.modules) {
 			//modules availible on server
 			var modules = _.map(this.bootstrap.modules, function(module){
-				// console.log(module);
-				var x = new m.Module(module);
-				// console.log(module);
-				x.user = that.user;
+				var x = new m.Module(module,{user: this.user});
 				return x;
-			}, that);
+			}, this);
 			this.modules = new m.Modules(modules,{user: this.user});
-			this.modules.update();
+			this.modules.fetch();
 		} else {
 			this.loading();
 			this.modules = new m.Modules([],{user: this.user});
