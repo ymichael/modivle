@@ -3,7 +3,7 @@
 Application hosted [here](http://modivle.yrmichael.com)
 
 ## Requirements:
-- [Nodejs](nodejs.org), [npm](http://npmjs.org/)
+- [Nodejs](http://nodejs.org), [npm](http://npmjs.org/)
 - [Redis](http://redis.io/download)
 
 ## Setting up the development environment
