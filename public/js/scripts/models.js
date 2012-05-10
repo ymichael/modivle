@@ -196,7 +196,7 @@ m.Module = Backbone.Model.extend({
 				var announcement = {};
 				announcement.id = x.ID;
 				announcement.title = x.Title;
-				announcement.date = that.nicedate(x.CreatedDate);
+				announcement.date = that.nicedate(x.CreatedDate_js);
 				announcement.contents = x.Description;
 				announcement.from = x.Creator.Name;
 				return announcement;
