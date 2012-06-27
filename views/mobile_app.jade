@@ -12,4 +12,8 @@ block content
 		footer
 	script(type='text/javascript') 
 		var bootstrap = !{JSON.stringify(bootstrap)};
-	script(data-main="js/mobile_main", src="js/libs/require.js")
+	
+	if env == "dev"
+		script(data-main="js/mobile_main", src="js/libs/require.js")
+	else
+		script(src="js/mobile_main.js")

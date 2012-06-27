@@ -1,9 +1,12 @@
 ({
-  	baseUrl: "../",
-  	name: "desktop_main",
-  	out: "../../../build/js/desktop_main.js",
+	baseUrl: "../",
+	name: "libs/almond",
+	wrap: true,
+	include: "desktop_main",
+	out: "../../../build/js/desktop_main.js",
 	paths: {
-		'jquery': "empty:",
+		// 'jquery': "empty:",
+		'jquery': "libs/jquery-1.7.2",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",

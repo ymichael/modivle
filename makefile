@@ -17,10 +17,6 @@ all:
 	lessc public/css/tmp/mobile_app.less > build/css/mobile_app.css --yui-compress
 	lessc public/css/tmp/mobile_landing.less > build/css/mobile_landing.css --yui-compress
 
-	#copy images into build folder
-	cp -R public/img build/
-	cp public/favicon.ico build/favicon.ico
-
 clean:
 	#remove concatenated less files
 	rm -rf public/css/tmp
@@ -41,10 +37,6 @@ clean:
 	rm -R build/img
 	rm build/favicon.ico
 
-test:
-	#copy latest js files into test folder.
-	cp -R public/js tests/
-
 jshint:
 	#scripts
 	jshint public/js/scripts/
@@ -55,7 +47,11 @@ jshint:
 	jshint public/js/mobile_main.js
 
 images:
-#optimise pngs
+	#copy images into build folder
+	cp -R public/img build/
+	cp public/favicon.ico build/favicon.ico
+	
+	#optimise pngs
 	optipng build/img/*.png --strip all
 	optipng build/img/filetypes/*.png --strip all
 	optipng build/img/logo/*.png --strip all

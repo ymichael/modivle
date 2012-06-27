@@ -507,7 +507,7 @@ table {
 @light: #e5e5e5;
 
 body {
-	font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana, "lucida sans unicode", tahoma, sans-serif;
+	font-family: "Open Sans", arial, sans-serif;
 	font-weight: normal;
 	color: #555;
 	letter-spacing: -1px;
@@ -606,20 +606,21 @@ footer:hover{
 	#tabs {
 		width: 100%;
 		float: left;
-		border-bottom: solid 1px darken(#e5e5e5, 10%);
+		border-bottom: solid 2px #e5e5e5;
 		text-transform: capitalize;
 		.tab {
 			float:left;
 			font-size: 15px;
 			padding: 5px 0px;
 			margin-right: 15px;
-			color: darken(#e5e5e5, 20%);
+			color: #888;
 			cursor: pointer;
 		}
 		.active {
 			font-weight: 600;
 			color: black;
 			border-bottom: solid 2px;
+			margin-bottom: -2px;
 			cursor: auto;
 		}
 	}
@@ -640,7 +641,8 @@ MODULES
 	position: relative;
 	margin-bottom: 3px;
 	border: solid 1px white;
-	color: lighten(#555,20%);
+	color: #888;
+	font-weight: 300;
 	.modulecode {
 		word-wrap: break-word;
 		display: block;
@@ -648,6 +650,7 @@ MODULES
 		top: 6px;
 		margin-bottom: 10px;
 		font-size: 17px;
+
 	}
 }
 .moduleview:hover {
@@ -656,9 +659,10 @@ MODULES
 }
 .moduleview.active{
 	color: black;
+	font-weight: 400;
 	border: solid 1px;
 	cursor: auto;
-	border-right: solid 4px;
+	border-right: solid 3px;
 }
 
 /*
@@ -694,8 +698,12 @@ ANNOUNCEMENTS
 		display: none;
 		// background-color :lighten(@light,6%);
 		// border: dashed 1px darken(@light,20%);
-		padding: 10px 5px;
+		padding: 0px 5px 10px 5px;
 		font-size: 13px;
+		letter-spacing: 0;
+	}
+	a {
+		color: black;
 	}
 }
 .announcementview.active {
@@ -732,15 +740,15 @@ WORKBIN
 		.breadcrumb {
 			.arrow {
 			display: inline-block;
-			height: 15px;
-			width: 15px;
+			height: 12px;
+			width: 12px;
 			background-origin: content-box;
 			background-repeat: no-repeat;
 			background-size: 100%;
 			background-image: url(/img/next.png);
 			}
 			float: left;
-			font-size: 18px;
+			font-size: 16px;
 			padding: 5px;
 			padding-left: 5px;
 		}

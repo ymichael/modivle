@@ -54,4 +54,8 @@ block content
 						.label <a href="http://twitter.com/_ymichael" target="_blank">@_ymichael</a>				
 	footer
 		#footer_container
-	script(data-main="js/login", src="js/libs/require.js")
+	
+	if env == "dev"
+		script(data-main="js/login", src="js/libs/require.js")
+	else
+		script(src="js/login.js")
