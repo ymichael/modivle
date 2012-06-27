@@ -2,20 +2,13 @@ all:
 	#optimise js files
 	r.js -o public/js/build/desktop.build.js
 	r.js -o public/js/build/mobile.build.js
-
 	r.js -o public/js/build/login.build.js
 	
-	#concatenate less files
-	cat public/css/normalize.css public/css/desktop_app.less > public/css/tmp/desktop_app.less
-	cat public/css/normalize.css public/css/desktop_landing.less > public/css/tmp/desktop_landing.less
-	cat public/css/normalize.css public/css/mobile_app.less > public/css/tmp/mobile_app.less
-	cat public/css/normalize.css public/css/mobile_landing.less > public/css/tmp/mobile_landing.less
-	
 	#parse and minify less files
-	lessc public/css/tmp/desktop_app.less > build/css/desktop_app.css --yui-compress
-	lessc public/css/tmp/desktop_landing.less > build/css/desktop_landing.css --yui-compress
-	lessc public/css/tmp/mobile_app.less > build/css/mobile_app.css --yui-compress
-	lessc public/css/tmp/mobile_landing.less > build/css/mobile_landing.css --yui-compress
+	lessc public/css/desktop_app.less > build/css/desktop_app.css --yui-compress
+	lessc public/css/desktop_landing.less > build/css/desktop_landing.css --yui-compress
+	lessc public/css/mobile_app.less > build/css/mobile_app.css --yui-compress
+	lessc public/css/mobile_landing.less > build/css/mobile_landing.css --yui-compress
 
 clean:
 	#remove concatenated less files
