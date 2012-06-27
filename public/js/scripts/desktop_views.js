@@ -188,8 +188,8 @@ v.ContentContainerView = Backbone.View.extend({
 		this.currentview = options.view;
 	},
 	render: function(){
-		var backboneview = this.view(this.currentview);
-		var x = new backboneview({
+		var Backboneview = this.view(this.currentview);
+		var x = new Backboneview({
 			user: this.user,
 			model: this.module
 		});

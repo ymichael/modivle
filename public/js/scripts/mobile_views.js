@@ -93,8 +93,8 @@ v.SingleModuleView = Backbone.View.extend({
 		this.nav = new v.SingleModuleNav({current: this.currentview});
 		this.$el.append(this.nav.render().el);
 
-		var viewobj = this.view(this.currentview);
-		this.content = new viewobj({
+		var Viewobj = this.view(this.currentview);
+		this.content = new Viewobj({
 			model: this.model,
 			user: this.user
 		});
@@ -117,8 +117,8 @@ v.SingleModuleView = Backbone.View.extend({
 		this.nav.active(this.currentview);
 
 		this.content.remove();
-		var viewobj = this.view(this.currentview);
-		this.content = new viewobj({
+		var Viewobj = this.view(this.currentview);
+		this.content = new Viewobj({
 			model: this.model,
 			user: this.user
 		});

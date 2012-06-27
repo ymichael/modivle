@@ -9,7 +9,7 @@ define([
 	'views',
 	'text!templates/desktop.html'
 ],
-function($,_,Backbone,ich,ivle,m,v,templates){
+function($,_,Backbone,ich,Ivle,m,v,templates){
 $('body').append(templates);
 ich.grabTemplates();
 
@@ -17,7 +17,7 @@ var App = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
 		var apikey = "ba1ge5NQ9cl76KQNI1Suc";
-		this.ivle = new ivle(apikey, '/proxy/');
+		this.ivle = new Ivle(apikey, '/proxy/');
 		_.bindAll(this, 'start');
 	},
 	start: function(){

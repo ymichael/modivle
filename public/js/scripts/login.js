@@ -1,10 +1,10 @@
 /*global define:true */
 define(['jquery','ivle'],
-function($,ivle){
+function($,Ivle){
 
 var login = {};
 login.apikey = "ba1ge5NQ9cl76KQNI1Suc";
-login.ivle = new ivle(login.apikey, '/proxy/');
+login.ivle = new Ivle(login.apikey, '/proxy/');
 
 login.init = function(){
 	var re = new RegExp("^(.+" + window.location.host+ ")");
