@@ -112,7 +112,6 @@ v.ContentView = Backbone.View.extend({
 		} else {
 			//subsequently...
 			this.module = module;
-
 			this.contentcontainer.changemodule(this.module);
 		}
 	},
@@ -127,7 +126,7 @@ v.ContentView = Backbone.View.extend({
 v.ContentNavView = Backbone.View.extend({
 	el: "#tabs",
 	initialize: function(options){
-		this.views = ["announcements", "workbin"];
+		this.views = ["announcements", "workbin", "forum"];
 		this.children = [];
 		this.currentview = options.view;
 	},
@@ -215,6 +214,100 @@ v.ContentContainerView = Backbone.View.extend({
 	}
 });
 
+/*
+FORUM
+*/
+v.ForumView = Backbone.View.extend({
+	id: "forum",
+	tagName: "div",
+	initialize: function(options){
+		this.user = options.user;
+		this.forum = this.model.fetchforums().forum;
+		console.log(this.forum);
+		this.forum.headings.on("reset", this.render, this);
+	},
+	render: function(){
+		//main frame
+		this.$el.html(ich.forumview());
+		this.headingsview = new v.ForumHeadingsView({collection: this.forum.headings});
+		this.$("#forumcontainer").html(this.headingsview.render().el);
+		return this;
+	},
+	events: {
+		"forumheadingselected" : "forumheadingselected"
+	},
+	forumheadingselected: function(e, heading){
+		//update title/breadcrumb
+
+		//showthreadsview
+		var threadsview = new v.ForumThreadsView({model: heading});
+		this.$("#forumcontainer").append(threadsview.render().el);
+	}
+});
+v.ForumHeadingsView = Backbone.View.extend({
+	id: "forumheadingsview",
+	initialize: function(){
+
+	},
+	render: function(){
+		var fragment = document.createDocumentFragment();
+		_.each(this.collection.models, function(heading){
+			var x = new v.ForumHeadingView({model: heading});
+			fragment.appendChild(x.render().el);
+		});
+		this.$el.html(fragment);
+		return this;
+	}
+});
+v.ForumHeadingView = Backbone.View.extend({
+	className: "row",
+	initialize: function(){
+
+	},
+	render: function(){
+		this.$el.html(ich.forumheadingview(this.model.toJSON()));
+		return this;
+	},
+	events: {
+		"click" : "forumheadingselected"
+	},
+	forumheadingselected: function(){
+		this.$el.trigger("forumheadingselected", this.model);
+	}
+});
+v.ForumThreadsView = Backbone.View.extend({
+	id: "forumthreadsview",
+	tagName: "div",
+	initialize: function(){
+
+	},
+	render: function(){
+		var fragment = document.createDocumentFragment();
+		_.each(this.model.threads.models, function(thread){
+			var x = new v.ForumThreadsThreadView({model: thread});
+			fragment.appendChild(x.render().el);
+		});
+		this.$el.html(fragment);
+		return this;
+	}
+});
+v.ForumThreadsThreadView = Backbone.View.extend({
+	initialize: function(){
+
+	},
+	render: function(){
+		this.$el.html(ich.forumthreadsthreadview(this.model.toJSON()));
+		return this;
+	}
+});
+v.ForumSingleThreadView = Backbone.View.extend({
+	initialize: function(){
+
+	},
+	render: function(){
+		return this;
+	}
+});
 
 /*
 ANNOUNCEMENTS
@@ -225,7 +318,7 @@ v.AnnouncementsView = Backbone.View.extend({
 	initialize: function(options){
 		this.user = options.user;
 		this.announcements = this.model.fetchannouncements().announcements;
-		this.announcements.on('all', this.render, this);
+		this.announcements.on('change', this.render, this);
 	},
 	render: function(){
 		if (this.announcements.isloading()){

@@ -1,35 +1,38 @@
 var request = require('request'),
-	_ = require('underscore');
+	_ = require('underscore'),
+  utils = require('../utils');
 
-//GENERAL ROUTES
+//POST
 exports.proxy = function(req,res){
-  	var proxyreq = req.query.request;
-  	request(proxyreq, function (error, response, body) {
-  		  if (!error && response.statusCode == 200) {
-  			res.json(body);
-  		  } else {
-  		  	res.json({error: error});
-  		  }
-  	});
-}
-exports.auth = function(req,res){  
+  var proxyreq = req.body.request;
+  request(proxyreq, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      res.json(body);
+    } else {
+      res.json({error: error});
+    }
+  });
+};
+exports.auth = function(req,res){
   //regenerate new session
   req.session.regenerate(function(err){
     //tmp measure. todo.
     if (err) {
-      res.redirect('/');
+      res.redirect(403, '/welcome');
     } else {
       //add token to session variable
-      if (!req.session.bootstrap) req.session.bootstrap = {};
+      if (!req.session.bootstrap) {
+        req.session.bootstrap = {};
+      }
       var token = req.query.token;
       req.session.bootstrap.token = token;
       res.redirect(302, '/');
     }
   });
-}
+};
 exports.token = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
-    res.redirect(302, '/');
+    res.redirect(403, '/welcome');
   } else {
     var newtoken = req.body.token;
     var date = req.body.date;
@@ -38,10 +41,10 @@ exports.token = function(req,res){
     req.session.bootstrap.date = date;
     res.json({updatestatus: "Success"});
   }
-}
+};
 exports.modules = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
-    res.redirect(302, '/');
+    res.redirect(403, '/welcome');
   } else {
     var modules = req.body.modules;
     //session is not updating occasionally
@@ -49,64 +52,66 @@ exports.modules = function(req,res){
     req.session.bootstrap.modules = modules;
     res.json({updatestatus: "Success"});
   }
-}
-exports.workbin = function(req,res){
+};
+exports.forum = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
-    res.redirect(302, '/');
+    res.redirect(403, '/welcome');
   } else {
     _.each(req.session.bootstrap.modules, function(module){
-      if (module.id == req.body.moduleid){
+      if (module.id === req.body.moduleid){
+        module.forum = req.body.forum;
+      }
+    });
+    res.json({updatestatus: "Success"});
+  }
+};
+exports.workbin = function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
+    res.redirect(403, '/welcome');
+  } else {
+    _.each(req.session.bootstrap.modules, function(module){
+      if (module.id === req.body.moduleid){
         module.workbin = req.body.workbin;
       }
     });
     res.json({updatestatus: "Success"});
   }
-}
-exports.logout = function(req,res){
-  req.session.destroy(function(err){
-    res.redirect(302, '/');
-  });
-}
+};
 
-//MOBILE DETECTION
-var ismobile = function(req){
-  var ua = req.header('user-agent');
-  var mobile = /mobile/i.test(ua);
-  var ipad = /ipad/i.test(ua);
-  return !ipad && mobile
-}
 
-//MAIN ROUTES
+//GET
 exports.landing = function(req, res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
-    var variables = {};
-    variables.env = process.env.NODE_ENV ? "prod" : "dev";
-    variables.useragent = ismobile(req) ? "mobile" : "desktop";
-    if (ismobile(req)){
+    var variables = utils.bootstrap(req);
+    if (variables.useragent === "mobile"){
       res.render('mobile_landing', variables);
     } else {
       res.render('desktop_landing', variables);
     }
   } else {
-    res.redirect(302, '/welcome');
+    res.redirect(302, '/');
   }
-}
+};
 exports.app = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     //not logged in
-    res.redirect(302, '/');
+    res.redirect(401, '/welcome');
   } else {
     if (!req.session.bootstrap){
       req.session.bootstrap = {};
     }
-    var variables = {};
+    var variables = utils.bootstrap(req);
     variables.bootstrap = req.session.bootstrap;
-    variables.env = process.env.NODE_ENV ? "prod" : "dev";
-    variables.useragent = ismobile(req) ? "mobile" : "desktop";
-    if (ismobile(req)){
+    
+    if (variables.useragent === "mobile"){
       res.render('mobile_app', variables);
     } else {
       res.render('desktop_app', variables);
     }
   }
-}
+};
+exports.logout = function(req,res){
+  req.session.destroy(function(err){
+    res.redirect(302, '/welcome');
+  });
+};

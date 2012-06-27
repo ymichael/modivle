@@ -13,6 +13,28 @@ function($,_,Backbone,ich,Ivle,m,v,templates){
 $('body').append(templates);
 ich.grabTemplates();
 
+var AppRouter = Backbone.Router.extend({
+	initialize: function(options){
+		this.parent = options.parent;
+	},
+	routes: {
+		":mod/workbin" : "workbin",
+		":mod/announcements" : "announcements",
+		":mod/forum" : "forum"
+	},
+	workbin: function(mod){
+
+	},
+	announcements: function(mod){
+
+	},
+	forum: function(mod){
+		this.parent.mainview.modulesview.views[0].moduleselected();
+		this.parent.mainview.contentview.contentnav.changeview(null, "forum");
+		this.parent.mainview.contentview.changeview(null, "forum");
+	}
+});
+
 var App = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
@@ -43,6 +65,9 @@ var App = Backbone.View.extend({
 		}
 		this.render();
 		this.validateuser();
+
+		var router = new AppRouter({parent: this});
+		Backbone.history.start({pushState: true});
 	},
 	validateuser: function(){
 		var that = this;

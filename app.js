@@ -35,16 +35,17 @@ app.configure('production', function(){
   app.use(express["static"](__dirname + '/build', { maxAge: oneday*7 }));
 });
 
-//Main routes
-app.get('/', routes.landing);
-app.get('/welcome', routes.app);
-
-//Generic routes
+//GET
+app.get('/welcome', routes.landing);
+app.get('/logout', routes.logout);
 app.get('/ivle/auth', routes.auth);
+app.get(/^\/(?!(css)|(js)|(img)).*/, routes.app);
+
+//POST
 app.post('/modules', routes.modules);
 app.post('/workbin', routes.workbin);
-app.get('/logout', routes.logout);
-app.get('/proxy', routes.proxy);
+app.post('/forum', routes.forum);
+app.post('/proxy', routes.proxy);
 app.post('/auth', routes.token);
 
 var port = process.env.PORT || 9002;

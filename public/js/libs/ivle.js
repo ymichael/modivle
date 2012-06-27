@@ -1,6 +1,7 @@
+/*global define */
 define([
-	  'jquery'
-	, 'underscore'
+	'jquery',
+	'underscore'
 ],function($, _){
 //main library obj
 var ivle = (function($){
@@ -22,7 +23,7 @@ var ivle = (function($){
 				//console.log(request);
 				if (proxyurl){
 					$.ajax({
-						type: 'GET',
+						type: 'POST',
 						dataType: 'json',
 						data:{request: request},
 						url: proxyurl,
@@ -39,12 +40,9 @@ var ivle = (function($){
 				}
 			}
 		});
-	}
+	};
 	//public
 	var ivle = function(apikey, proxy){
-		var apikey = apikey;
-		var proxy = proxy;
-		
 		this.auth = function($el, callbackurl){
 			$el.click(function(){
 				var authUrl = "https://ivle.nus.edu.sg/api/login/?apikey=" + apikey + "&url=" + encodeURIComponent(callbackurl);
@@ -56,13 +54,12 @@ var ivle = (function($){
 		this.user = function(authtoken){
 			this.authtoken = authtoken;
 			/*
-			 * 	APICALLS (work in progress)
-			 */
-
+			* APICALLS (work in progress)
+			*/
 			//set auth token
 			this.setauthtoken = function(newauthtoken){
 				this.authtoken = newauthtoken;
-			}
+			};
 
 			//validate user
 			this.validate = function(success, error){
@@ -74,7 +71,7 @@ var ivle = (function($){
 				};
 				var url = baseurl + endpoint;
 				jsonp(url, params, success, error, proxy);
-			}
+			};
 
 			//modules
 			this.modules = function(success, error){
@@ -91,7 +88,7 @@ var ivle = (function($){
 				};
 				var url = baseurl + endpoint;
 				jsonp(url, params, success, error, proxy);
-			}
+			};
 
 			//workbin
 			this.workbin = function(courseId, success, error){
@@ -111,14 +108,14 @@ var ivle = (function($){
 				};
 				var url = baseurl + endpoint;
 				jsonp(url, params, success, error, proxy);
-			}
+			};
 
 			//file download
 			this.file = function(fileId){
 				//dont like this. but it works
 				var url = "https://ivle.nus.edu.sg/api/downloadfile.ashx?APIKey=" + apikey + "&AuthToken=" + this.authtoken + "&ID=" + fileId + "&target=workbin";
 				window.location.href = url;
-			}
+			};
 
 			//announcements
 			this.announcements = function(courseId, success, error){
@@ -136,8 +133,39 @@ var ivle = (function($){
 				var url = baseurl + endpoint;
 				jsonp(url, params, success, error, proxy);
 			};
-		}
-	}
+
+			//forum
+			this.forums = function(courseId, success ,error){
+				var endpoint = 'Forums';
+				var params = {
+					"APIKey" : apikey,
+					"AuthToken" : this.authtoken,
+					"CourseId" : courseId,
+					"Duration" : 0,
+					//whether to display basic info or all or it.
+					"IncludeThreads" : false,
+					"TitleOnly" : false,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
+			this.forumheadingthreads = function(headingId, success, error){
+				var endpoint = 'Forum_HeadingThreads';
+				var params = {
+					"APIKey" : apikey,
+					"AuthToken" : this.authtoken,
+					"HeadingID" : headingId,
+					"Duration" : 0,
+					//whether to display basic info or all or it.
+					"GetMainTopicsOnly" : true,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
+		};
+	};
 	return ivle;
 })($);
 

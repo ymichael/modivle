@@ -115,19 +115,68 @@ m.Announcements = Backbone.Collection.extend({
 /*
 FORUM
 */
+m.Thread = Backbone.Model.extend({});
+m.Threads = Backbone.Collection.extend({ model: m.Thread });
+m.Heading = Backbone.Model.extend({
+	initialize: function(model, options){
+		this.user = options.user;
+		this.threads = new m.Threads();
+		var that = this;
+		this.user.forumheadingthreads(this.id, function(data){
+			var threads = _.map(data.Results, function(thread){
+				return {
+					id: thread.ID,
+					title: thread.PostTitle,
+					poster: {
+						name: thread.Poster.Name,
+						email: thread.Poster.Email,
+						uid: thread.Poster.UserID
+					},
+					body: thread.PostBody,
+					date: thread.PostDate_js
+				};
+			});
+			that.threads.reset(threads);
+		});
+	}
+});
+m.Headings = Backbone.Collection.extend({ model: m.Heading });
 m.Forum = Backbone.Model.extend({
-
+	initialize: function(model, options){
+		this.user = options.user;
+		// each forum has multiple headings.
+		// each heading has multiple threads
+		// each thread has multiple posts
+		var headings = [];
+		if (this.get("headings")){
+			_.each(this.get("headings"), function(heading){
+				var x = new m.Heading(heading, {user: this.user});
+				headings.push(x);
+			}, this);
+		}
+		this.headings = new m.Headings(headings);
+		_.bindAll(this ,"update");
+	},
+	update: function(obj){
+		this.set(obj);
+		_.each(obj.headings, function(heading){
+			var x = new m.Heading(heading, {user: this.user});
+			this.headings.add(x);
+		}, this);
+		this.headings.trigger("reset");
+	}
 });
 /*
 MAIN
 */
 m.Module = Backbone.Model.extend({
-	initialize: function(models, options){
+	initialize: function(model, options){
 		this.user = options.user;
 		_.bindAll(this, 'fetchworkbin','thinfolder','fetchannouncements');
 		this.workbin = new m.Workbin(this.get('workbin'));
 		this.workbin.setname(this.get("code"));
 		this.announcements = new m.Announcements(this.get('announcements'));
+		this.forum = new m.Forum(this.get('forum'), {user: this.user});
 	},
 	thinfiles: function(filearray){
 		return _.map(filearray.reverse(), function(file){
@@ -154,6 +203,21 @@ m.Module = Backbone.Model.extend({
 			return y;
 		}, this);
 	},
+	nicedate: function(date){
+		var datere = /^(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d:\d\d):\d\d$/;
+		var res = datere.exec(date);
+		var str = res[3] + "/" + res[2] + " " + res[4];
+		return str;
+	},
+	thinheadings: function(headings){
+		return _.map(headings, function(heading){
+			return {
+				id: heading.ID,
+				title: heading.Title,
+				order: heading.HeadingOrder
+			};
+		});
+	},
 	fetchworkbin: function(){
 		var that = this;
 		this.user.workbin(this.id, function(data){
@@ -161,7 +225,6 @@ m.Module = Backbone.Model.extend({
 			if (data.Results.length === 0) {
 				data.Results[0] = {};
 			}
-
 			//save space.
 			var relevant = {};
 			relevant.folders = that.thinfolder(data.Results[0].Folders);
@@ -183,12 +246,6 @@ m.Module = Backbone.Model.extend({
 		});
 		return this;
 	},
-	nicedate: function(date){
-		var datere = /^(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d:\d\d):\d\d$/;
-		var res = datere.exec(date);
-		var str = res[3] + "/" + res[2] + " " + res[4];
-		return str;
-	},
 	fetchannouncements: function(){
 		var that = this;
 		this.user.announcements(this.id, function(data){
@@ -207,29 +264,30 @@ m.Module = Backbone.Model.extend({
 		});
 		return this;
 	},
-	fetchforumheadings: function(){
+	fetchforums: function(){
 		var that = this;
-		this.user.forumheadings(this.id, function(data){
-			if (data.Results.length === 0) {
-				data.Results[0] = {};
-			}
+		this.user.forums(this.id, function(data){
+			//assume only one forum.
+			var result = data.Results.length > 0 ? data.Results[0] : {};
+			var forum = {
+				id: result.ID,
+				title: result.Title,
+				headings: that.thinheadings(result.Headings)
+			};
+			that.forum.update(forum);
 
-			//extract relevant data
-			var forum = {};
-			forum.id = data.Results[0].ID || -1;
-			forum.Headings = that.thinheadings(data.Results[0].Headings);
-
+			//save state
+			$.ajax({
+				type: 'POST',
+				url: "/forum",
+				data: {moduleid : that.id, forum: forum},
+				success: function(data){
+					//console.log(data);
+				},
+				dataType: 'json'
+			});
 		});
 		return this;
-	},
-	thinheadings: function(headings){
-		return _.map(headings, function(heading){
-			var x = {};
-			x.id = heading.ID;
-			x.title = heading.Title;
-			x.order = heading.HeadingOrder;
-			return x;
-		});
 	}
 });
 m.Modules = Backbone.Collection.extend({
@@ -289,5 +347,3 @@ m.Modules = Backbone.Collection.extend({
 });
 return m;
 });
-
-
