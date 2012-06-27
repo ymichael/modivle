@@ -234,7 +234,12 @@ v.ForumView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"forumheadingselected" : "forumheadingselected"
+		"forumheadingselected" : "forumheadingselected",
+		"forumthreadselected" : "forumthreadselected"
+	},
+	forumthreadselected: function(e, thread){
+		var singlethreadview = new v.ForumSingleThreadView({model: thread});
+		this.$("#forumcontainer").append(singlethreadview.render().el);
 	},
 	forumheadingselected: function(e, heading){
 		//update title/breadcrumb
@@ -298,13 +303,21 @@ v.ForumThreadsThreadView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(ich.forumthreadsthreadview(this.model.toJSON()));
 		return this;
+	},
+	events: {
+		"click" : "forumthreadselected"
+	},
+	forumthreadselected: function(){
+		this.$el.trigger("forumthreadselected", this.model);
 	}
 });
 v.ForumSingleThreadView = Backbone.View.extend({
+	id: "forumsinglethreadview",
 	initialize: function(){
 
 	},
 	render: function(){
+		this.$el.html(ich.forumsinglethreadview());
 		return this;
 	}
 });
