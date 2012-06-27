@@ -5,7 +5,8 @@
 
     // Predefined globals whom JSHint will ignore.
     "browser"       : true,   // Standard browser globals e.g. `window`, `document`.
-    "define"       : true,   // requirejs
+    "node"          : true,
+    "define"        : true,   // requirejs
 
     // The Good Parts.
     "bitwise"       : true,   // Prohibit bitwise operators (&, |, ^, etc.).
@@ -18,5 +19,6 @@
     "undef"         : true,   // Require all non-global variables be declared before they are used.
     
     // others
-    "trailing"      : true   // Prohibit trailing whitespaces.
+    "trailing"      : true,  // Prohibit trailing whitespaces.
+    "strict"        : false
 }

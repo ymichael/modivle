@@ -1,10 +1,8 @@
-var express = require('express')
-  , routes = require('./routes')
-  , http = require('http')
-  , _ = require('underscore')
-  , redisstore = require('connect-redis')(express); // redis sessions
-
-
+var express = require('express'),
+  routes = require('./routes'),
+  http = require('http'),
+  _ = require('underscore'),
+  redisstore = require('connect-redis')(express); // redis sessions
 
 var app = module.exports = express();
 
@@ -17,11 +15,10 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser("5{6?8j6^@%$R^Q+"));
   // redis session store.
-  var sessionstore = new redisstore;
+  var sessionstore = new redisstore();
   app.use(express.session({
     store: sessionstore,
-    cookie: 
-      {maxAge: 1000*60*60*24*14}
+    cookie: {maxAge: 1000*60*60*24*14}
     }));
   app.use(app.router);
 });
@@ -29,13 +26,13 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   app.use(express.logger('dev'));
-  app.use(express.static(__dirname + '/public'));
+  app.use(express["static"](__dirname + '/public'));
 });
 app.configure('production', function(){
   app.use(express.errorHandler());
   app.use(express.compress());
   var oneday = 86400000;
-  app.use(express.static(__dirname + '/build', { maxAge: oneday*7 }));
+  app.use(express["static"](__dirname + '/build', { maxAge: oneday*7 }));
 });
 
 //Main routes
