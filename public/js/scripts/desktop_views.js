@@ -14,7 +14,6 @@ v.MainView = Backbone.View.extend({
 		_.bindAll(this, 'render', 'moduleselected');
 	},
 	render: function(){
-		//populate left bar
 		this.modulesview = new v.ModulesView({collection: this.modules}).render();
 		this.contentview = new v.ContentView({user: this.user}).render();
 		return this;
@@ -362,13 +361,13 @@ v.AnnouncementView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(ich.announcementview(this.model.toJSON()));
 		return this;
-	},
-	events : {
-		"click" : "toggleclass"
-	},
-	toggleclass: function(){
-		this.$el.toggleClass("active");
 	}
+	// events : {
+	// 	"click" : "toggleclass"
+	// },
+	// toggleclass: function(){
+	// 	this.$el.toggleClass("active");
+	// }
 });
 
 /*
@@ -430,7 +429,11 @@ v.WorkbinBreadcrumb = Backbone.View.extend({
 		this.type = options.type;
 	},
 	render: function(){
-		this.$el.html(ich.breadcrumb(this.model.toJSON()));
+		if (this.model.parent){
+			this.$el.html(ich.breadcrumb(this.model.toJSON()));
+		} else {
+			this.$el.html(ich.breadcrumbworkbin());
+		}
 		this.$el.addClass(this.type);
 		return this;
 	},
@@ -447,6 +450,11 @@ v.WorkbinBreadcrumbs = Backbone.View.extend({
 	initialize: function(){},
 	render: function(){
 		var current = this.model.parent;
+		
+		if (!current) {
+			return this;
+		}
+
 		while (current){
 			var x = new v.WorkbinBreadcrumb({model: current, type: "parent"});
 			this.$el.prepend(x.render().el);

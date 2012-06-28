@@ -1,14 +1,71 @@
 @import "base.less";
 
-@pagewidth: 900px;
+@pagewidth: 960px;
 @secondarycolor: darken(#d70000, 10%);
 @light: #e5e5e5;
 
 body {
 	font-family: "Open Sans", arial, sans-serif;
 	font-weight: normal;
-	color: #555;
+	color: #333;
 	letter-spacing: -1px;
+	font-size: 18px;
+}
+
+/*
+MODULES
+*/
+.moduleview {
+	margin: 3px;
+	height: 30px;
+	padding: 5px;
+	.modulecode {
+		word-wrap: break-word;
+		display: block;		
+		font-size: 19px;
+		line-height: 30px;
+		color: #999;
+		font-weight:300;
+		letter-spacing: -1px;
+
+	}
+}
+.moduleview.active{
+	.modulecode {
+		color: black;
+		font-weight: 600;
+	}
+}
+
+/*
+TABS
+*/
+#tabs {
+	width: 100%;
+	float: left;
+	border-bottom: solid 1px @light;
+	text-transform: capitalize;
+	.tab {
+		float:left;
+		font-size: 18px;
+		padding: 5px 0px;
+		margin-right: 15px;
+		margin-bottom: -1px;
+		cursor: pointer;
+		color: #999;
+		font-weight: 300;
+	}
+	.active {
+		font-weight: 600;
+		color: black;
+		border-bottom: solid 1px;
+	}
+}
+#tabcontent {
+	width: 100%;
+	float: left;
+	margin: 10px 0px;
+	min-height: 500px;
 }
 #overlay {
 	position: fixed;
@@ -31,16 +88,16 @@ body {
 		text-align: center;
 		padding: 50px;
 		#close {
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		height: 15px;
-		width: 15px;
-		background-size: 100%;
-		background-origin: content-box;
-		background-repeat: no-repeat;
-		background-image: url(/img/close.png);
-		cursor: pointer;
+			position: absolute;
+			top: 5px;
+			right: 5px;
+			height: 15px;
+			width: 15px;
+			background-size: 100%;
+			background-origin: content-box;
+			background-repeat: no-repeat;
+			background-image: url(/img/close.png);
+			cursor: pointer;
 		}
 	}
 }
@@ -63,7 +120,7 @@ header, #main, footer {
 		float: right;
 		height: 20px;
 		width: 20px;
-		padding: 5px 10px;
+		padding: 5px 0px;
 		background-size: 100%;
 		background-origin: content-box;
 		background-repeat: no-repeat;
@@ -89,80 +146,19 @@ footer:hover{
 }
 
 #main_container {
-	margin-top: 20px;
+
 }
 #leftbar {
-	width: 150px;
+	width: 180px;
 	float: left;
 	margin: 40px 0px;
 }
 #content {
-	width: 720px;
+	min-height: 700px;
+	width: 780px;
 	float: right;
 	margin-bottom: 100px;
-	padding: 5px 10px;
-	#tabs {
-		width: 100%;
-		float: left;
-		border-bottom: solid 2px #e5e5e5;
-		text-transform: capitalize;
-		.tab {
-			float:left;
-			font-size: 15px;
-			padding: 5px 0px;
-			margin-right: 15px;
-			color: #888;
-			cursor: pointer;
-		}
-		.active {
-			font-weight: 600;
-			color: black;
-			border-bottom: solid 2px;
-			margin-bottom: -2px;
-			cursor: auto;
-		}
-	}
-	#tabcontent {
-		width: 100%;
-		float: left;
-		margin: 10px 0px;
-		min-height: 500px;
-	}
 }
-
-/*
-MODULES
-*/
-.moduleview {
-	cursor: pointer;
-	padding: 5px;
-	position: relative;
-	margin-bottom: 3px;
-	border: solid 1px white;
-	color: #888;
-	font-weight: 300;
-	.modulecode {
-		word-wrap: break-word;
-		display: block;
-		position: relative;
-		top: 6px;
-		margin-bottom: 10px;
-		font-size: 17px;
-
-	}
-}
-.moduleview:hover {
-	border: solid 1px #555;
-	color: black;
-}
-.moduleview.active{
-	color: black;
-	font-weight: 400;
-	border: solid 1px;
-	cursor: auto;
-	border-right: solid 3px;
-}
-
 /*
 FORUM
 */
@@ -209,51 +205,59 @@ FORUM
 ANNOUNCEMENTS
 */
 .announcementsview {
-	border: solid 1px @light;
+	
+	//border: solid 1px @light;
 }
 .announcementview {
-	border-bottom: solid 1px @light;
+	margin: 5px 0;
+	padding: 10px 10px 20px 10px;
+	border: solid 1px @light;
 	.title {
+		border-bottom: dashed 1px @light;
 		position: relative;
-		font-size: 16px;
-		padding: 10px 5px;
-		color: lighten(#000,30%);
+		padding: 5px 0;
+		margin-bottom: 5px;
+		font-size: 20px;
+		font-weight: 300;
 		.left {
 			width: 85%;
 		}
+		span {
+			font-size: 15px;
+			line-height: 20px;
+			display: inline-block;
+		}
 		span.from {
-			font-size: 12px;
+			text-transform: uppercase;
 			color: @secondarycolor;
-			opacity: 0.7;
 		}
 		span.date {
 			position: absolute;
-			right: 10px;
-			top: 12px;
-			display: inline-block;
-			font-size: 12px;
+			right: 0px;
+			bottom: 5px;
 		}
 	}
 	.contents {
-		display: none;
-		// background-color :lighten(@light,6%);
-		// border: dashed 1px darken(@light,20%);
-		padding: 0px 5px 10px 5px;
-		font-size: 13px;
-		letter-spacing: 0;
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: 300;
+		p {
+			font-size: inherit;
+			font-weight: inherit;
+			margin: 10px 0;
+		}
 	}
 	a {
 		color: black;
 	}
 }
 .announcementview.active {
-	background-color :lighten(@light,4%);
 	.contents {
-		display: block;
+		
 	}
 }
 .announcementview:hover {
-	background-color: lighten(@light, 4%);
+
 }
 .announcementinfo {
 	font-size: 14px;
@@ -264,7 +268,6 @@ ANNOUNCEMENTS
 WORKBIN
 */
 #filescontainer {
-	border: solid 1px #e5e5e5;
 	.folder {
 		text-align: center;
 		padding: 10px 0px;
@@ -274,23 +277,31 @@ WORKBIN
 	}
 }
 #workbinheading {
-	height: 40px;
+	margin-bottom: 5px;
+	.clearfix();
 	.breadcrumbs {
-		padding: 5px 0px;
 		.breadcrumb {
-			.arrow {
-			display: inline-block;
-			height: 12px;
-			width: 12px;
-			background-origin: content-box;
-			background-repeat: no-repeat;
-			background-size: 100%;
-			background-image: url(/img/next.png);
-			}
+			font-size: 15px;
+			line-height: 30px;
 			float: left;
-			font-size: 16px;
-			padding: 5px;
-			padding-left: 5px;
+			.arrow {
+				margin: 2px 3px 2px 7px;
+				display: inline-block;
+				width: 0; 
+				height: 0; 
+				border-top: 4px solid transparent;
+				border-bottom: 4px solid transparent;
+				border-left: 7px solid #888;
+			}
+			.breadcrumbworkbin {
+				height: 30px;
+				width: 30px;
+				padding: 0px;
+				background-origin: content-box;
+				background-repeat: no-repeat;
+				background-size: 100%;
+				background-image: url(/img/folder.png);
+			}
 		}
 		.parent {
 			cursor: pointer;
@@ -310,23 +321,22 @@ WORKBIN
 	height: 30px;
 	cursor: auto;
 	span {
-		position: absolute;
-		bottom: 8px;
 		color: #555;
 		font-size: 14px;
 		display: block;
 	}
 }
 .itemview:hover {
-	background-color: lighten(#e5e5e5, 3%);
+	background-color: lighten(#eee, 3%);
 }
 .itemview {
 	width: 100%;
-	height: 40px;
+	height: 32px;
 	position: relative;
-	padding-top: 5px;
-	font-size: 14px;
-	border-bottom: solid 1px darken(#e5e5e5,10%);
+	font-size: 15px;
+	line-height: 32px;
+	padding: 5px 0px;
+	border-bottom: solid 1px #eee;
 	cursor: pointer;
 	.itemname {
 		float: left;
@@ -334,17 +344,14 @@ WORKBIN
 		height: 100%;
 		position: relative;
 		span {
-		position: absolute;
-		bottom: 12px;
 		display: block;
-		margin-left: 45px;
+		margin-left: 40px;
 		}
 		.itemicon {
 		position: absolute;
 		left: 0;
-		padding: 5px;
-		height: 25px;
-		width: 25px;
+		height: 30px;
+		width: 30px;
 		background-size: 100%;
 		background-origin: content-box;
 		background-repeat: no-repeat;
@@ -356,9 +363,6 @@ WORKBIN
 		width: 25%;
 		height: 100%;
 		span {
-		position: absolute;
-		bottom: 12px;
-		display: block;
 		font-size: 12px;
 		color: lighten(#555, 20%);
 		}
@@ -368,10 +372,7 @@ WORKBIN
 		width: 20%;
 		height: 100%;
 		span {
-		position: absolute;
-		bottom: 12px;
 		font-size: 12px;
-		display: block;
 		color: lighten(#555, 20%);
 		}
 	}
