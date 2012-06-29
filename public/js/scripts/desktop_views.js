@@ -243,6 +243,7 @@ v.ForumView = Backbone.View.extend({
 		this.$("#forumcontainer").html(threadsview.render().el);
 	}
 });
+//FORUM HEADINGS
 v.ForumHeadingsView = Backbone.View.extend({
 	id: "forumheadingsview",
 	className: "forumsheet",
@@ -250,12 +251,18 @@ v.ForumHeadingsView = Backbone.View.extend({
 		this.collection.on("reset", this.render, this);
 	},
 	render: function(){
-		var fragment = document.createDocumentFragment();
-		_.each(this.collection.models, function(heading){
-			var x = new v.ForumHeadingView({model: heading});
-			fragment.appendChild(x.render().el);
-		});
-		this.$el.html(fragment);
+		if (this.collection.isloading()){
+			this.$el.html(ich.inforow({text:"loading..."}));
+		} else if (this.collection.models.length === 0){
+			this.$el.html(ich.inforow({text:"no headings"}));
+		} else {
+			var fragment = document.createDocumentFragment();
+			_.each(this.collection.models, function(heading){
+				var x = new v.ForumHeadingView({model: heading});
+				fragment.appendChild(x.render().el);
+			});
+			this.$el.html(fragment);
+		}
 		return this;
 	}
 });
@@ -275,20 +282,27 @@ v.ForumHeadingView = Backbone.View.extend({
 		this.$el.trigger("forumheadingselected", this.model);
 	}
 });
+//FORUM THREADS
 v.ForumThreadsView = Backbone.View.extend({
 	id: "forumthreadsview",
 	className: "forumsheet",
 	tagName: "div",
 	initialize: function(){
-		this.model.on("reset", this.render, this);
+		this.model.threads.on("reset", this.render, this);
 	},
 	render: function(){
-		var fragment = document.createDocumentFragment();
-		_.each(this.model.threads.models, function(thread){
-			var x = new v.ForumThreadsThreadView({model: thread});
-			fragment.appendChild(x.render().el);
-		});
-		this.$el.html(fragment);
+		if (this.model.threads.isloading()){
+			this.$el.html(ich.inforow({text:"loading..."}));
+		} else if (this.model.threads.models.length === 0){
+			this.$el.html(ich.inforow({text:"zero threads."}));
+		} else {
+			var fragment = document.createDocumentFragment();
+			_.each(this.model.threads.models, function(thread){
+				var x = new v.ForumThreadsThreadView({model: thread});
+				fragment.appendChild(x.render().el);
+			});
+			this.$el.html(fragment);
+		}
 		return this;
 	}
 });
@@ -308,6 +322,7 @@ v.ForumThreadsThreadView = Backbone.View.extend({
 		this.$el.trigger("forumthreadselected", this.model);
 	}
 });
+//FORUM SINGLE THREAD VIEW
 v.ForumSingleThreadView = Backbone.View.extend({
 	id: "forumsinglethreadview",
 	className: "forumsheet",
@@ -325,7 +340,7 @@ v.ForumSingleThreadView = Backbone.View.extend({
 v.ForumSingleThreadThreadView = Backbone.View.extend({
 	className: "tabpost forumpost",
 	initialize: function(){
-		console.log(this.model.toJSON());
+
 	},
 	render: function(){
 		this.$el.html(ich.forumpost(this.model.toJSON()));
@@ -353,10 +368,10 @@ v.AnnouncementsView = Backbone.View.extend({
 	},
 	render: function(){
 		if (this.announcements.isloading()){
-			this.$el.html(ich.announcementsinfo({text:"loading..."}));
+			this.$el.html(ich.inforow({text:"loading..."}));
 		} else if (this.announcements.models.length === 0){
 			//no announcements
-			this.$el.html(ich.announcementsinfo({text:"no announcements."}));
+			this.$el.html(ich.inforow({text:"no announcements."}));
 		} else {
 			var fragment = document.createDocumentFragment();
 			_.each(this.announcements.models, function(announcement){

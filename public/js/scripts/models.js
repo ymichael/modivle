@@ -167,7 +167,18 @@ m.Thread = Backbone.Model.extend({
 		};
 	}
 });
-m.Threads = Backbone.Collection.extend({ model: m.Thread });
+m.Threads = Backbone.Collection.extend({
+	initialize: function(){
+		this.loaded = false;
+	},
+	model: m.Thread,
+	isloading: function(){
+		return !this.loaded;
+	},
+	isloaded: function(){
+		this.loaded = true;
+	}
+});
 m.Heading = Backbone.Model.extend({
 	initialize: function(model, options){
 		this.user = options.user;
@@ -190,17 +201,26 @@ m.Heading = Backbone.Model.extend({
 				var x = new m.Thread(thread, {user: that.user});
 				that.threads.add(x, {silent: true});
 			});
+			that.threads.isloaded();
 			that.threads.trigger("reset");
 		});
 	}
 });
-m.Headings = Backbone.Collection.extend({ model: m.Heading });
+m.Headings = Backbone.Collection.extend({
+	initialize: function(models){
+		this.loaded = models.length === 0 ? false : true;
+	},
+	model: m.Heading,
+	isloading: function(){
+		return !this.loaded;
+	},
+	isloaded: function(){
+		this.loaded = true;
+	}
+});
 m.Forum = Backbone.Model.extend({
 	initialize: function(model, options){
 		this.user = options.user;
-		// each forum has multiple headings.
-		// each heading has multiple threads
-		// each thread has multiple posts
 		var headings = [];
 		if (this.get("headings")){
 			_.each(this.get("headings"), function(heading){
@@ -217,6 +237,7 @@ m.Forum = Backbone.Model.extend({
 			var x = new m.Heading(heading, {user: this.user});
 			this.headings.add(x, {silent: true});
 		}, this);
+		this.headings.isloaded();
 		this.headings.trigger("reset");
 	}
 });
