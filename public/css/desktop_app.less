@@ -29,14 +29,13 @@ MODULES
 		letter-spacing: -1px;
 
 	}
-}
-.moduleview.active{
-	.modulecode {
-		color: black;
-		font-weight: 600;
+	&.active{
+		.modulecode {
+			color: black;
+			font-weight: 400;
+		}
 	}
 }
-
 /*
 TABS
 */
@@ -60,12 +59,6 @@ TABS
 		color: black;
 		border-bottom: solid 1px;
 	}
-}
-#tabcontent {
-	width: 100%;
-	float: left;
-	margin: 10px 0px;
-	min-height: 500px;
 }
 #overlay {
 	position: fixed;
@@ -135,36 +128,101 @@ footer {
 	opacity: 0.4;
 	#footer_container {
 		text-align: right;
+		height: 50px;
 		font-size: 14px;
 		a { 
 			color: black; 
 		}
-	}	
+	}
+	&:hover{
+		opacity: 0.7;
+	}
 }
-footer:hover{
-	opacity: 0.7;
-}
-
 #main_container {
+	#leftbar {
+		width: 180px;
+		float: left;
+		margin: 40px 0px;
+	}
+	#content {
+		width: 780px;
+		float: right;
+		margin-bottom: 100px;
+	}
+}
 
-}
-#leftbar {
-	width: 180px;
+
+/*
+GENERIC STYLES
+*/
+#tabcontent {
+	width: 100%;
 	float: left;
-	margin: 40px 0px;
+	margin: 10px 0px;
+	min-height: 500px;
 }
-#content {
-	min-height: 700px;
-	width: 780px;
-	float: right;
-	margin-bottom: 100px;
+.tabheading {
+	margin-bottom: 5px;
+	font-size: 17px;
+	line-height: 30px;
+	.clearfix();
 }
+.tabrow {
+	overflow: hidden;
+	padding: 5px 0px;
+	width: 100%;
+	min-height: 32px;
+	position: relative;
+	font-size: 15px;
+	line-height: 32px;
+	border-bottom: solid 1px #eee;
+	cursor: pointer;
+	&:hover {
+		background-color: lighten(#eee, 3%);
+	}
+	.rowname {
+		float: left;
+		width: 55%;
+		height: 100%;
+		position: relative;
+		span {
+			padding-left: 5px;
+			display: block;
+		}
+		.rowicon {
+			height: 30px;
+			width: 30px;
+			margin-right: 5px;
+			float: left;
+			background-size: 100%;
+			background-origin: content-box;
+			background-repeat: no-repeat;
+		}
+	}
+	.rowcol2 {
+		float: left;
+		width: 25%;
+		height: 100%;
+		font-size: 12px;
+		color: lighten(#555, 20%);
+	}
+	.rowcol3 {
+		float: left;
+		width: 20%;
+		height: 100%;
+		font-size: 12px;
+		color: lighten(#555, 20%);
+	}
+}
+
 /*
 FORUM
 */
-#forum {
-	#forumcontainer {
-		position: relative;	
+#forumcontainer {
+	position: relative;
+	.forumsheet {
+		border: solid 1px @light;
+		background-color: white;
 	}
 }
 #forumheadingsview {
@@ -172,97 +230,79 @@ FORUM
 	top: 0;
 	left: 0;
 	width: 100%;
-	border: solid 1px;
-	background-color: #e5e5e5;
+	.rowicon {
+		// background-image: url(/img/pilcrow.png);
+	}
 }
 #forumthreadsview {
 	position: absolute;
 	top: 10px;
 	left: 5%;
 	width: 95%;
-	border: solid 1px;
-	background-color: #eee;
-	height: 500px;
 }
 #forumsinglethreadview {
 	position: absolute;
 	top: 30px;
 	left: 10%;
 	width: 90%;
-	border: solid 1px;
-	background-color: #eee;
-	height: 500px;
 }
 .forumview {
 	
 }
-.row {
-	height: 30px;
-	padding: 5px 10px;
-}
+
 
 /*
 ANNOUNCEMENTS
 */
 .announcementsview {
-	
-	//border: solid 1px @light;
-}
-.announcementview {
-	margin: 5px 0;
-	padding: 10px 10px 20px 10px;
-	border: solid 1px @light;
-	.title {
-		border-bottom: dashed 1px @light;
-		position: relative;
-		padding: 5px 0;
-		margin-bottom: 5px;
-		font-size: 20px;
-		font-weight: 300;
-		.left {
-			width: 85%;
+	.announcementview {
+		margin: 5px 0;
+		padding: 10px 10px 20px 10px;
+		border: solid 1px @light;
+		.title {
+			border-bottom: dashed 1px @light;
+			position: relative;
+			padding: 5px 0;
+			margin-bottom: 5px;
+			font-size: 20px;
+			font-weight: 300;
+			.left {
+				width: 85%;
+			}
+			span {
+				font-size: 15px;
+				line-height: 20px;
+				display: inline-block;
+			}
+			span.from {
+				text-transform: uppercase;
+				color: @secondarycolor;
+			}
+			span.date {
+				position: absolute;
+				right: 0px;
+				bottom: 5px;
+			}
 		}
-		span {
-			font-size: 15px;
+		.contents {
+			font-size: 18px;
 			line-height: 20px;
-			display: inline-block;
+			font-weight: 300;
+			p {
+				font-size: inherit;
+				font-weight: inherit;
+				margin: 10px 0;
+			}
 		}
-		span.from {
-			text-transform: uppercase;
-			color: @secondarycolor;
-		}
-		span.date {
-			position: absolute;
-			right: 0px;
-			bottom: 5px;
-		}
-	}
-	.contents {
-		font-size: 18px;
-		line-height: 20px;
-		font-weight: 300;
-		p {
-			font-size: inherit;
-			font-weight: inherit;
-			margin: 10px 0;
+		a {
+			color: black;
 		}
 	}
-	a {
-		color: black;
+	.announcementinfo {
+		font-size: 14px;
+		text-align: center;
+		padding: 10px;
 	}
-}
-.announcementview.active {
-	.contents {
-		
-	}
-}
-.announcementview:hover {
-
-}
-.announcementinfo {
-	font-size: 14px;
-	text-align: center;
-	padding: 10px;
 }
 /*
 WORKBIN
@@ -279,111 +319,47 @@ WORKBIN
 #workbinheading {
 	margin-bottom: 5px;
 	.clearfix();
-	.breadcrumbs {
-		.breadcrumb {
-			font-size: 15px;
-			line-height: 30px;
-			float: left;
-			.arrow {
-				margin: 2px 3px 2px 7px;
-				display: inline-block;
-				width: 0; 
-				height: 0; 
-				border-top: 4px solid transparent;
-				border-bottom: 4px solid transparent;
-				border-left: 7px solid #888;
-			}
-			.breadcrumbworkbin {
-				height: 30px;
-				width: 30px;
-				padding: 0px;
-				background-origin: content-box;
-				background-repeat: no-repeat;
-				background-size: 100%;
-				background-image: url(/img/folder.png);
-			}
+	.breadcrumb {
+		float: left;
+		.arrow {
+			margin: 2px 3px 2px 7px;
+			display: inline-block;
+			width: 0; 
+			height: 0; 
+			border-top: 4px solid transparent;
+			border-bottom: 4px solid transparent;
+			border-left: 7px solid #888;
 		}
-		.parent {
-			cursor: pointer;
+		.breadcrumbworkbin {
+			height: 30px;
+			width: 30px;
+			padding: 0px;
+			background-origin: content-box;
+			background-repeat: no-repeat;
+			background-size: 100%;
+			background-image: url(/img/folder.png);
 		}
-		.parent:hover span{ 
-			text-decoration: underline;
-		}
-		.current {
-			color: black;
-		}
+	}
+	.parent {
+		cursor: pointer;
+	}
+	.parent:hover span{ 
+		text-decoration: underline;
+	}
+	.current {
+		color: black;
 	}
 }
 #filescontainertop {
-	background-color: #e5e5e5;
-	border-top: solid 1px darken(#e5e5e5, 30%);
-	border-bottom: solid 1px darken(#e5e5e5, 30%);
-	height: 30px;
+	background-color: @light;
+	border-top: solid 1px darken(@light, 30%);
+	border-bottom: solid 1px darken(@light, 30%);
 	cursor: auto;
-	span {
-		color: #555;
-		font-size: 14px;
-		display: block;
-	}
+	font-size: 14px;
 }
-.itemview:hover {
-	background-color: lighten(#eee, 3%);
-}
-.itemview {
-	width: 100%;
-	height: 32px;
-	position: relative;
-	font-size: 15px;
-	line-height: 32px;
-	padding: 5px 0px;
-	border-bottom: solid 1px #eee;
-	cursor: pointer;
-	.itemname {
-		float: left;
-		width: 55%;
-		height: 100%;
-		position: relative;
-		span {
-		display: block;
-		margin-left: 40px;
-		}
-		.itemicon {
-		position: absolute;
-		left: 0;
-		height: 30px;
-		width: 30px;
-		background-size: 100%;
-		background-origin: content-box;
-		background-repeat: no-repeat;
-		}
-
-	}
-	.itemtype {
-		float: left;
-		width: 25%;
-		height: 100%;
-		span {
-		font-size: 12px;
-		color: lighten(#555, 20%);
-		}
-	}
-	.itemsize {
-		float: left;
-		width: 20%;
-		height: 100%;
-		span {
-		font-size: 12px;
-		color: lighten(#555, 20%);
-		}
-	}
-}
-.folderview {
-	.itemicon{
+.folderview .rowicon{
 	background-image: url(/img/folder.png);
-	}
 }
-.fileview {
-	.itemicon {
+.fileview .rowicon {
 	background-image: url(/img/filetypes/_blank.png);
-	}
 }

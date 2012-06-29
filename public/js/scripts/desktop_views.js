@@ -217,17 +217,14 @@ v.ContentContainerView = Backbone.View.extend({
 FORUM
 */
 v.ForumView = Backbone.View.extend({
-	id: "forum",
-	tagName: "div",
 	initialize: function(options){
 		this.user = options.user;
 		this.forum = this.model.fetchforums().forum;
-		console.log(this.forum);
 		this.forum.headings.on("reset", this.render, this);
 	},
 	render: function(){
 		//main frame
-		this.$el.html(ich.forumview());
+		this.$el.html(ich.forumview(this.forum.toJSON()));
 		this.headingsview = new v.ForumHeadingsView({collection: this.forum.headings});
 		this.$("#forumcontainer").html(this.headingsview.render().el);
 		return this;
@@ -250,6 +247,7 @@ v.ForumView = Backbone.View.extend({
 });
 v.ForumHeadingsView = Backbone.View.extend({
 	id: "forumheadingsview",
+	className: "forumsheet",
 	initialize: function(){
 
 	},
@@ -264,7 +262,7 @@ v.ForumHeadingsView = Backbone.View.extend({
 	}
 });
 v.ForumHeadingView = Backbone.View.extend({
-	className: "row",
+	className: "tabrow",
 	initialize: function(){
 
 	},
@@ -281,6 +279,7 @@ v.ForumHeadingView = Backbone.View.extend({
 });
 v.ForumThreadsView = Backbone.View.extend({
 	id: "forumthreadsview",
+	className: "forumsheet",
 	tagName: "div",
 	initialize: function(){
 
@@ -296,6 +295,7 @@ v.ForumThreadsView = Backbone.View.extend({
 	}
 });
 v.ForumThreadsThreadView = Backbone.View.extend({
+	className: "tabrow",
 	initialize: function(){
 
 	},
@@ -312,8 +312,9 @@ v.ForumThreadsThreadView = Backbone.View.extend({
 });
 v.ForumSingleThreadView = Backbone.View.extend({
 	id: "forumsinglethreadview",
+	className: "forumsheet",
 	initialize: function(){
-
+		this.model.fetch();
 	},
 	render: function(){
 		this.$el.html(ich.forumsinglethreadview());
@@ -383,7 +384,7 @@ v.WorkbinView = Backbone.View.extend({
 		//mainframe
 		this.$el.html(ich.workbinview());
 		//render breadcrumbs
-		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('.breadcrumbs')});
+		this.breadcrumbs = new v.WorkbinBreadcrumbs({model: this.currentitem, el: this.$('#workbinheading')});
 		this.breadcrumbs.render();
 		if (typeof this.currentitem.get('id') !== 'undefined'){
 			if(this.currentitem.items.models.length === 0){
@@ -468,7 +469,7 @@ v.WorkbinBreadcrumbs = Backbone.View.extend({
 	}
 });
 v.FileView = Backbone.View.extend({
-	className: 'itemview fileview',
+	className: 'tabrow itemview fileview',
 	initialize: function(){},
 	render: function(){
 		this.$el.html(ich.itemview(this.model.toJSON()));
@@ -524,7 +525,7 @@ v.FileView = Backbone.View.extend({
 		var bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
 
 		bg = "url(/img/filetypes/" + bg + ".png)";
-		this.$('.itemicon').css("background-image", bg);
+		this.$('.rowicon').css("background-image", bg);
 	},
 	events: {
 		"click" : "downloadfile"
@@ -534,7 +535,7 @@ v.FileView = Backbone.View.extend({
 	}
 });
 v.FolderView = Backbone.View.extend({
-	className: 'itemview folderview',
+	className: 'tabrow itemview folderview',
 	initialize: function(){
 		_.bindAll(this,'drilldown');
 	},

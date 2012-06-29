@@ -9,24 +9,27 @@
 
 
 <!-- FORUM -->
+<!-- <div class='tabheading' id='forumheader'>{{ title }}</div> -->
 <script type='text/html' id='forumview'>
-	<div id='forumheader'>HEADER</div>
+	
 	<div id='forumcontainer'></div>
 </script>
 <script type='text/html' id='forumheadingview'>
-	<span>{{title}}</span>
+	<div class="rowname">
+		<span>{{title}}</span>
+	</div>
+	<div class="rowcol2"></div>
+	<div class="rowcol3"></div>
 </script>
 <script type='text/html' id='forumthreadsthreadview'>
-	<div>{{title}}</div>
+	<div class="rowname">
+		<span>{{title}}</span>
+	</div>
+	<div class="rowcol2"></div>
+	<div class="rowcol3"></div>
 </script>
 <script type='text/html' id='forumsinglethreadview'>
-	<div>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas faucibus mollis interdum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam porta sem malesuada magna mollis euismod.
 
-Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies vehicula ut id elit. Cras mattis consectetur purus sit amet fermentum. Donec sed odio dui.
-
-Maecenas faucibus mollis interdum. Maecenas faucibus mollis interdum. Donec sed odio dui. Nullam id dolor id nibh ultricies vehicula ut id elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam quis risus eget urna mollis ornare vel eu leo.
-
-Maecenas sed diam eget risus varius blandit sit amet non magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
 </script>
 
 
@@ -58,19 +61,14 @@ Maecenas sed diam eget risus varius blandit sit amet non magna. Cum sociis natoq
 	</div>
 </script>
 <script id='workbinview' type='text/html'>
-	<div id='workbinheading'>
-		<div class='breadcrumbs'></div>
-	</div>
-	<div id='filescontainertop' class='itemview'>
-		<div class="itemname">
+	<div class='tabheading' id='workbinheading'></div>
+	<div id='filescontainertop' class='tabrow itemview'>
+		<div class="rowname">
+			<div class='rowicon'></div>
 			<span>Name</span>
 		</div>
-		<div class="itemtype">
-			<span>Kind</span>
-		</div>
-		<div class="itemsize">
-			<span>Size</span>
-		</div>
+		<div class="rowcol2">Kind</div>
+		<div class="rowcol3">Size</div>
 	</div>
 	<div id='filescontainer'><div>
 </script>
@@ -82,14 +80,10 @@ Maecenas sed diam eget risus varius blandit sit amet non magna. Cum sociis natoq
 	<div class='breadcrumbworkbin'></div>
 </script>
 <script id='itemview' type='text/html'>
-	<div class="itemname">
-		<div class='itemicon {{filetype}}'></div>
+	<div class="rowname">
+		<div class='rowicon {{filetype}}'></div>
 		<span>{{name}}</span>
 	</div>
-	<div class="itemtype">
-		<span>{{kind}}</span>
-	</div>
-	<div class="itemsize">
-		<span>{{size}}</span>
-	</div>
+	<div class="rowcol2">{{kind}}</div>
+	<div class="rowcol3">{{size}}</div>
 </script>

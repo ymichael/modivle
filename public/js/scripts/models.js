@@ -115,7 +115,38 @@ m.Announcements = Backbone.Collection.extend({
 /*
 FORUM
 */
-m.Thread = Backbone.Model.extend({});
+m.Thread = Backbone.Model.extend({
+	initialize: function(model, options){
+		this.user = options.user;
+	},
+	fetch: function(){
+		var that = this;
+		this.user.forumthread(this.id, function(data){
+			var thread = data.Results.length !== 0 ? data.Results[0] : null;
+			thread = that.thinthread(thread);
+			console.log(thread);
+		});
+	},
+	thinthread: function(thread){
+		if (!thread) {
+			return;
+		}
+		return {
+			id: thread.ID,
+			title: thread.PostTitle,
+			poster: {
+				name: thread.Poster.Name,
+				email: thread.Poster.Email,
+				uid: thread.Poster.UserID
+			},
+			body: thread.PostBody,
+			date: thread.PostDate_js,
+			threads: _.map(thread.Threads, function(thread){
+				return this.thinthread(thread);
+			},this)
+		};
+	}
+});
 m.Threads = Backbone.Collection.extend({ model: m.Thread });
 m.Heading = Backbone.Model.extend({
 	initialize: function(model, options){
@@ -136,7 +167,12 @@ m.Heading = Backbone.Model.extend({
 					date: thread.PostDate_js
 				};
 			});
-			that.threads.reset(threads);
+			
+			_.each(threads, function(thread){
+				var x = new m.Thread(thread, {user: that.user});
+				that.threads.add(x, {silent: true});
+			});
+			that.threads.trigger("reset");
 		});
 	}
 });
@@ -161,7 +197,7 @@ m.Forum = Backbone.Model.extend({
 		this.set(obj);
 		_.each(obj.headings, function(heading){
 			var x = new m.Heading(heading, {user: this.user});
-			this.headings.add(x);
+			this.headings.add(x, {silent: true});
 		}, this);
 		this.headings.trigger("reset");
 	}

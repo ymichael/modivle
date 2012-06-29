@@ -164,6 +164,19 @@ var ivle = (function($){
 				var url = baseurl + endpoint;
 				jsonp(url, params, success, error, proxy);
 			};
+			this.forumthread = function(threadId, success, error){
+				var endpoint = 'Forum_Threads';
+				var params = {
+					"APIKey" : apikey,
+					"AuthToken" : this.authtoken,
+					"GetSubThreads": true,
+					"Duration": 0,
+					"ThreadID" : threadId,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
 		};
 	};
 	return ivle;
