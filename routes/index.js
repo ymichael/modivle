@@ -47,9 +47,18 @@ exports.modules = function(req,res){
     res.redirect(403, '/welcome');
   } else {
     var modules = req.body.modules;
-    //session is not updating occasionally
-    req.session.bootstrap.update = "1";
-    req.session.bootstrap.modules = modules;
+
+    //add those that dont exist. update those that do.
+    req.session.bootstrap.modules = _.map(modules, function(mod){
+      var existing = _.find(req.session.bootstrap.modules, function(module){
+        return module.id === mod.id;
+      });
+      if (existing) {
+        return _.extend(existing, mod);
+      } else {
+        return mod;
+      }
+    });
     res.json({updatestatus: "Success"});
   }
 };

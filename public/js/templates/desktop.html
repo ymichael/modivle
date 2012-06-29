@@ -7,16 +7,35 @@
 	<div id="tabcontent"></div>
 </script>
 
+<!-- BREADCRUMBS -->
+<script id='breadcrumb' type='text/html'>
+	<div class='arrow'></div>
+	<span>{{name}}</span>
+</script>
+<script id='breadcrumbicon' type='text/html'>
+	<div class='icon {{type}}icon'></div>
+</script>
+
 
 <!-- FORUM -->
-<!-- <div class='tabheading' id='forumheader'>{{ title }}</div> -->
 <script type='text/html' id='forumview'>
-	
-	<div id='forumcontainer'></div>
+	<div class='tabheading' id='forumheader'></div>
+	<div class='tabcontents'>
+		<!-- <div class='tabrowinfo tabrow'>
+			<div class="rowname">
+				<div class='rowicon'></div>
+				<span>Title</span>
+			</div>
+			<div class="rowcol2"></div> 
+			<div class="rowcol3"></div>
+		</div> -->
+		<div id='forumcontents'></div>
+	</div>
 </script>
-<script type='text/html' id='forumheadingview'>
+<script type='text/html' id='forumitemview'>
 	<div class="rowname">
-		<span>{{title}}</span>
+		<div class='rowicon {{type}}icon'></div>
+		<span>{{name}}</span>
 	</div>
 	<div class="rowcol2"></div>
 	<div class="rowcol3"></div>
@@ -30,8 +49,8 @@
 </script>
 <script type='text/html' id='forumpost'>
 	<div class='posttitle'>
-		<span class='main'>{{ title }} </span>
-		<span class='author'>{{ name }}</span>
+		<span class='main'>{{ name }} </span>
+		<span class='author'>{{ author }}</span>
 		<span class='date'>{{ date }}</span>
 	</div>
 	<div class='postbody'>{{{ body }}}</div>
@@ -66,7 +85,7 @@
 </script>
 <script id='workbinview' type='text/html'>
 	<div class='tabheading' id='workbinheading'></div>
-	<div id='filescontainertop' class='tabrow itemview'>
+	<div class='tabrowinfo tabrow'>
 		<div class="rowname">
 			<div class='rowicon'></div>
 			<span>Name</span>
@@ -75,13 +94,6 @@
 		<div class="rowcol3">Size</div>
 	</div>
 	<div id='filescontainer'><div>
-</script>
-<script id='breadcrumb' type='text/html'>
-	<div class='arrow'></div>
-	<span>{{name}}</span>
-</script>
-<script id='breadcrumbworkbin' type='text/html'>
-	<div class='breadcrumbworkbin'></div>
 </script>
 <script id='itemview' type='text/html'>
 	<div class="rowname">

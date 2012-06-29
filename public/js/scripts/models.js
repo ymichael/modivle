@@ -89,6 +89,7 @@ m.File = Backbone.Model.extend({
 });
 m.Workbin = Backbone.Model.extend({
 	initialize: function(){
+		this.type = "workbin";
 		this.fields();
 		this.on('change', this.fields, this);
 	},
@@ -127,7 +128,9 @@ FORUM
 m.Thread = Backbone.Model.extend({
 	initialize: function(model, options){
 		_.bindAll(this, "setthreads", "fetch", "thinthread");
+		this.parent = options.parent;
 		this.user = options.user;
+		this.type = "thread";
 		this.threads = [];
 		if (this.get("threads")){
 			this.setthreads(this.get("threads"));
@@ -144,7 +147,7 @@ m.Thread = Backbone.Model.extend({
 	},
 	setthreads: function(threads){
 		threads = _.map(threads, function(thread){
-			var x = new m.Thread(thread, {user: this.user});
+			var x = new m.Thread(thread, {parent: this, user: this.user});
 			return x;
 		}, this);
 		this.threads = threads;
@@ -155,8 +158,8 @@ m.Thread = Backbone.Model.extend({
 		}
 		return {
 			id: thread.ID,
-			title: thread.PostTitle,
-			name: thread.Poster.Name,
+			name: thread.PostTitle,
+			author: thread.Poster.Name,
 			email: thread.Poster.Email,
 			uid: thread.Poster.UserID,
 			body: thread.PostBody,
@@ -181,6 +184,8 @@ m.Threads = Backbone.Collection.extend({
 });
 m.Heading = Backbone.Model.extend({
 	initialize: function(model, options){
+		this.type = "heading";
+		this.parent = options.parent;
 		this.user = options.user;
 		this.threads = new m.Threads();
 		var that = this;
@@ -188,8 +193,8 @@ m.Heading = Backbone.Model.extend({
 			var threads = _.map(data.Results, function(thread){
 				return {
 					id: thread.ID,
-					title: thread.PostTitle,
-					name: thread.Poster.Name,
+					name: thread.PostTitle,
+					author: thread.Poster.Name,
 					email: thread.Poster.Email,
 					uid: thread.Poster.UserID,
 					body: thread.PostBody,
@@ -198,9 +203,9 @@ m.Heading = Backbone.Model.extend({
 			});
 			
 			_.each(threads, function(thread){
-				var x = new m.Thread(thread, {user: that.user});
+				var x = new m.Thread(thread, {parent: this, user: that.user});
 				that.threads.add(x, {silent: true});
-			});
+			}, that);
 			that.threads.isloaded();
 			that.threads.trigger("reset");
 		});
@@ -220,11 +225,12 @@ m.Headings = Backbone.Collection.extend({
 });
 m.Forum = Backbone.Model.extend({
 	initialize: function(model, options){
+		this.type = "forum";
 		this.user = options.user;
 		var headings = [];
 		if (this.get("headings")){
 			_.each(this.get("headings"), function(heading){
-				var x = new m.Heading(heading, {user: this.user});
+				var x = new m.Heading(heading, {parent: this, user: this.user});
 				headings.push(x);
 			}, this);
 		}
@@ -234,7 +240,7 @@ m.Forum = Backbone.Model.extend({
 	update: function(obj){
 		this.set(obj);
 		_.each(obj.headings, function(heading){
-			var x = new m.Heading(heading, {user: this.user});
+			var x = new m.Heading(heading, {parent: this, user: this.user});
 			this.headings.add(x, {silent: true});
 		}, this);
 		this.headings.isloaded();
@@ -282,7 +288,7 @@ m.Module = Backbone.Model.extend({
 		return _.map(headings, function(heading){
 			return {
 				id: heading.ID,
-				title: heading.Title,
+				name: heading.Title,
 				order: heading.HeadingOrder
 			};
 		});
@@ -392,11 +398,17 @@ m.Modules = Backbone.Collection.extend({
 				return relevant;
 			});
 
-			var models = _.map(modules, function(mod){
-				var x = new m.Module(mod, {user: this.user});
-				return x;
+			//add those that dont exist. update those that do.
+			_.each(modules, function(mod){
+				var existing = this.get(mod.id);
+				if (existing) {
+					existing.set(mod, {silent: true});
+				} else {
+					var x = new m.Module(mod, {user: this.user});
+					this.add(x, {silent: true});
+				}
 			},that);
-			that.reset(models);
+			that.trigger("reset");
 			if (callback) {
 				callback();
 			}

@@ -162,7 +162,7 @@ GENERIC STYLES
 	min-height: 500px;
 }
 .tabheading {
-	margin-bottom: 5px;
+	padding-bottom: 7px;
 	font-size: 17px;
 	line-height: 30px;
 	.clearfix();
@@ -177,17 +177,14 @@ GENERIC STYLES
 	line-height: 32px;
 	border-bottom: solid 1px #eee;
 	cursor: pointer;
-	&:hover {
-		background-color: lighten(#eee, 3%);
-	}
 	.rowname {
 		float: left;
 		width: 55%;
 		height: 100%;
 		position: relative;
 		span {
-			padding-left: 5px;
 			display: block;
+			padding-left: 5px;
 		}
 		.rowicon {
 			height: 30px;
@@ -214,6 +211,23 @@ GENERIC STYLES
 		color: lighten(#555, 20%);
 	}
 }
+.tabrowinfo {
+	background-color: @light;
+	border-top: solid 1px darken(@light, 30%);
+	// border-bottom: solid 1px darken(@light, 30%);
+	.box-shadow(0 4px 2px -2px darken(@light, 30%));
+	z-index: 2;
+	cursor: auto;
+	font-size: 14px;
+}
+.itemview {
+	&:hover {
+		margin-top: -1px;
+		background-color: #eee;
+		border-top: solid 1px #bbb;
+		border-bottom: solid 1px #bbb;
+	}
+}
 .inforow {
 	text-align: center;
 }
@@ -231,7 +245,7 @@ GENERIC STYLES
 	}
 }
 .tabpost {
-	margin: 5px 0;
+	margin: 3px 0;
 	padding: 10px 7px;
 	border: solid 1px @light;
 	.posttitle {
@@ -264,45 +278,89 @@ GENERIC STYLES
 		font-size: 18px;
 		line-height: 20px;
 		font-weight: 300;
-		display: none;
 	}
 }
+.breadcrumbs {
+	.breadcrumb {
+		float: left;
+		.arrow {
+			margin: 2px 3px 2px 7px;
+			display: inline-block;
+			width: 0; 
+			height: 0; 
+			border-top: 4px solid transparent;
+			border-bottom: 4px solid transparent;
+			border-left: 7px solid #888;
+		}
+		.icon {
+			padding: 0px;
+			background-origin: content-box;
+			background-repeat: no-repeat;
+			background-size: 100%;
+		}
+		.workbinicon {
+			height: 30px;
+			width: 30px;
+			background-image: url(/img/folder.png);
+		}
+		.forumicon {
+			height: 30px;
+			width: 30px;
+			background-image: url(/img/speech.png);
+		}
+	}
+	.parent {
+		cursor: pointer;
+	}
+	.parent:hover span{ 
+		text-decoration: underline;
+	}
+	.current {
+		color: black;
+	}
+}
+
+
 /*
 FORUM
 */
 #forumcontainer {
 	position: relative;
-	.forumsheet {
-		background-color: white;
+	.tabheading {
+		margin-bottom: 0;
+		.box-shadow(0 4px 2px -2px rgba(0,0,0,.25));
 	}
-}
-#forumheadingsview {
-	// position: absolute;
-	// top: 0;
-	// left: 0;
-	// width: 100%;
-}
-#forumthreadsview {
-	// position: absolute;
-	// top: 10px;
-	// left: 5%;
-	// width: 95%;
-}
-#forumsinglethreadview {
-	// position: absolute;
-	// top: 30px;
-	// left: 10%;
-	// width: 90%;
-}
-.forumpost {
-	&.tabrow {
-		border: none;
-		&:hover {
-			background-color: white;
+	.itemview {
+		overflow: hidden;
+		.rowname{
+			width: 90%;
+		}
+		.rowicon {
+			&.headingicon {
+				background-image: url(/img/speech.png);
+			}
+			&.threadicon{
+				background-image: url(/img/speech2.png);
+			}
 		}
 	}
+}
+#forumsinglethreadview {
+	margin-top: -2px;
+}
+.subthreads .forumpost {
+	margin-right: -8px;
+}
+.forumpost {
+	// border: none;
+	.posttitle {
+		border: none;
+	}
+	.postbody {
+		// border-bottom: solid 1px #aaa;
+	}
 	.subthreads {
-		padding-left: 20px;
+		padding-left: 50px;
 	}
 }
 
@@ -323,47 +381,6 @@ WORKBIN
 			font-size: 14px;
 		}
 	}
-}
-#workbinheading {
-	margin-bottom: 5px;
-	.clearfix();
-	.breadcrumb {
-		float: left;
-		.arrow {
-			margin: 2px 3px 2px 7px;
-			display: inline-block;
-			width: 0; 
-			height: 0; 
-			border-top: 4px solid transparent;
-			border-bottom: 4px solid transparent;
-			border-left: 7px solid #888;
-		}
-		.breadcrumbworkbin {
-			height: 30px;
-			width: 30px;
-			padding: 0px;
-			background-origin: content-box;
-			background-repeat: no-repeat;
-			background-size: 100%;
-			background-image: url(/img/folder.png);
-		}
-	}
-	.parent {
-		cursor: pointer;
-	}
-	.parent:hover span{ 
-		text-decoration: underline;
-	}
-	.current {
-		color: black;
-	}
-}
-#filescontainertop {
-	background-color: @light;
-	border-top: solid 1px darken(@light, 30%);
-	border-bottom: solid 1px darken(@light, 30%);
-	cursor: auto;
-	font-size: 14px;
 }
 .folderview .rowicon{
 	background-image: url(/img/folder.png);
