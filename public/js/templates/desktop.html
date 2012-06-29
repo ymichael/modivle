@@ -28,24 +28,28 @@
 	<div class="rowcol2"></div>
 	<div class="rowcol3"></div>
 </script>
-<script type='text/html' id='forumsinglethreadview'>
-
+<script type='text/html' id='forumpost'>
+	<div class='posttitle'>
+		<span class='main'>{{ title }} </span>
+		<span class='author'>{{ name }}</span>
+		<span class='date'>{{ date }}</span>
+	</div>
+	<div class='postbody'>{{{ body }}}</div>
+	<div class='subthreads'></div>
 </script>
 
 
 <!-- ANNOUNCEMENTS -->
 <script type='text/html' id='announcementview'>
-	<div class='title'>
-		<div class='left'>
-			{{ title }} 
-			<span class='from'>{{ from }}</span>
-		</div>
+	<div class='posttitle'>
+		<span class='main'>{{ title }} </span>
+		<span class='author'>{{ from }}</span>
 		<span class='date'>{{ date }}</span>
 	</div>
-	<div class='contents'>{{{ contents }}}</div>
+	<div class='postbody'>{{{ contents }}}</div>
 </script>
 <script type='text/html' id='announcementsinfo'>
-	<div class='announcementinfo'>{{text}}</div>
+	<div class='inforow tabrow'>{{text}}</div>
 </script>
 
 

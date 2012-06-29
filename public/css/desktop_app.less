@@ -214,96 +214,103 @@ GENERIC STYLES
 		color: lighten(#555, 20%);
 	}
 }
-
+.inforow {
+	text-align: center;
+}
+//unique markup display. (add as encountered)
+.postbody {
+	//when announncement is wrapped in p tags.
+	p {
+		font-size: inherit;
+		font-weight: inherit;
+		margin: 10px 0;
+	}
+	//link colors
+	a {
+		color: black;
+	}
+}
+.tabpost {
+	margin: 5px 0;
+	padding: 10px 7px;
+	border: solid 1px @light;
+	.posttitle {
+		border-bottom: dashed 1px @light;
+		position: relative;
+		padding: 5px 0;
+		margin-bottom: 5px;
+		font-size: 20px;
+		font-weight: 300;
+			span {
+				display: inline-block;
+			}
+			span.main {
+				line-height: 20px;
+			}
+			span.author {
+				font-size: 15px;
+				text-transform: uppercase;
+				color: @secondarycolor;
+			}
+			span.date {
+				font-size: 15px;
+				position: absolute;
+				right: 0px;
+				bottom: 5px;
+			}
+	}
+	.postbody {
+		padding-bottom: 10px;
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: 300;
+	}
+}
 /*
 FORUM
 */
 #forumcontainer {
 	position: relative;
 	.forumsheet {
-		border: solid 1px @light;
 		background-color: white;
 	}
 }
 #forumheadingsview {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	.rowicon {
-		// background-image: url(/img/pilcrow.png);
-	}
+	// position: absolute;
+	// top: 0;
+	// left: 0;
+	// width: 100%;
 }
 #forumthreadsview {
-	position: absolute;
-	top: 10px;
-	left: 5%;
-	width: 95%;
+	// position: absolute;
+	// top: 10px;
+	// left: 5%;
+	// width: 95%;
 }
 #forumsinglethreadview {
-	position: absolute;
-	top: 30px;
-	left: 10%;
-	width: 90%;
+	// position: absolute;
+	// top: 30px;
+	// left: 10%;
+	// width: 90%;
 }
-.forumview {
-	
+.forumpost {
+	&.tabrow {
+		border: none;
+		&:hover {
+			background-color: white;
+		}
+	}
+	.subthreads {
+		padding-left: 20px;
+	}
 }
 
 
 /*
 ANNOUNCEMENTS
 */
-.announcementsview {
-	.announcementview {
-		margin: 5px 0;
-		padding: 10px 10px 20px 10px;
-		border: solid 1px @light;
-		.title {
-			border-bottom: dashed 1px @light;
-			position: relative;
-			padding: 5px 0;
-			margin-bottom: 5px;
-			font-size: 20px;
-			font-weight: 300;
-			.left {
-				width: 85%;
-			}
-			span {
-				font-size: 15px;
-				line-height: 20px;
-				display: inline-block;
-			}
-			span.from {
-				text-transform: uppercase;
-				color: @secondarycolor;
-			}
-			span.date {
-				position: absolute;
-				right: 0px;
-				bottom: 5px;
-			}
-		}
-		.contents {
-			font-size: 18px;
-			line-height: 20px;
-			font-weight: 300;
-			p {
-				font-size: inherit;
-				font-weight: inherit;
-				margin: 10px 0;
-			}
-		}
-		a {
-			color: black;
-		}
-	}
-	.announcementinfo {
-		font-size: 14px;
-		text-align: center;
-		padding: 10px;
-	}
-}
+
+
 /*
 WORKBIN
 */

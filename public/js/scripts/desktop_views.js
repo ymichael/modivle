@@ -220,7 +220,7 @@ v.ForumView = Backbone.View.extend({
 	initialize: function(options){
 		this.user = options.user;
 		this.forum = this.model.fetchforums().forum;
-		this.forum.headings.on("reset", this.render, this);
+		this.currentview = "headings";
 	},
 	render: function(){
 		//main frame
@@ -235,21 +235,19 @@ v.ForumView = Backbone.View.extend({
 	},
 	forumthreadselected: function(e, thread){
 		var singlethreadview = new v.ForumSingleThreadView({model: thread});
-		this.$("#forumcontainer").append(singlethreadview.render().el);
+		this.$("#forumcontainer").html(singlethreadview.render().el);
 	},
 	forumheadingselected: function(e, heading){
-		//update title/breadcrumb
-
 		//showthreadsview
 		var threadsview = new v.ForumThreadsView({model: heading});
-		this.$("#forumcontainer").append(threadsview.render().el);
+		this.$("#forumcontainer").html(threadsview.render().el);
 	}
 });
 v.ForumHeadingsView = Backbone.View.extend({
 	id: "forumheadingsview",
 	className: "forumsheet",
 	initialize: function(){
-
+		this.collection.on("reset", this.render, this);
 	},
 	render: function(){
 		var fragment = document.createDocumentFragment();
@@ -282,7 +280,7 @@ v.ForumThreadsView = Backbone.View.extend({
 	className: "forumsheet",
 	tagName: "div",
 	initialize: function(){
-
+		this.model.on("reset", this.render, this);
 	},
 	render: function(){
 		var fragment = document.createDocumentFragment();
@@ -315,9 +313,29 @@ v.ForumSingleThreadView = Backbone.View.extend({
 	className: "forumsheet",
 	initialize: function(){
 		this.model.fetch();
+		this.model.on("reset", this.render, this);
 	},
 	render: function(){
-		this.$el.html(ich.forumsinglethreadview());
+		//this post.
+		var root = new v.ForumSingleThreadThreadView({model: this.model});
+		this.$el.html(root.render().el);
+		return this;
+	}
+});
+v.ForumSingleThreadThreadView = Backbone.View.extend({
+	className: "tabpost forumpost",
+	initialize: function(){
+		console.log(this.model.toJSON());
+	},
+	render: function(){
+		this.$el.html(ich.forumpost(this.model.toJSON()));
+		
+		if (this.model.threads.length !== 0) {
+			_.each(this.model.threads, function(subthread){
+				var x = new v.ForumSingleThreadThreadView({model: subthread});
+				this.$(".subthreads").append(x.render().el);
+			}, this);
+		}
 		return this;
 	}
 });
@@ -355,7 +373,7 @@ v.AnnouncementsView = Backbone.View.extend({
 });
 v.AnnouncementView = Backbone.View.extend({
 	tagName: 'div',
-	className: 'announcementview',
+	className: 'announcementview tabpost',
 	initialize: function(options){
 
 	},
@@ -363,12 +381,6 @@ v.AnnouncementView = Backbone.View.extend({
 		this.$el.html(ich.announcementview(this.model.toJSON()));
 		return this;
 	}
-	// events : {
-	// 	"click" : "toggleclass"
-	// },
-	// toggleclass: function(){
-	// 	this.$el.toggleClass("active");
-	// }
 });
 
 /*

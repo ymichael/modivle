@@ -4,6 +4,15 @@ function($,_,Backbone){
 	
 var m = {};
 /*
+UTIL
+*/
+m.nicedate = function(date){
+	var datere = /^(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d:\d\d):\d\d/;
+	var res = datere.exec(date);
+	var str = res[3] + "/" + res[2] + " " + res[4];
+	return str;
+};
+/*
 WORKBIN
 */
 m.Items = Backbone.Collection.extend({});
@@ -117,15 +126,28 @@ FORUM
 */
 m.Thread = Backbone.Model.extend({
 	initialize: function(model, options){
+		_.bindAll(this, "setthreads", "fetch", "thinthread");
 		this.user = options.user;
+		this.threads = [];
+		if (this.get("threads")){
+			this.setthreads(this.get("threads"));
+		}
 	},
 	fetch: function(){
 		var that = this;
 		this.user.forumthread(this.id, function(data){
 			var thread = data.Results.length !== 0 ? data.Results[0] : null;
 			thread = that.thinthread(thread);
-			console.log(thread);
+			that.setthreads(thread.threads);
+			that.trigger("reset");
 		});
+	},
+	setthreads: function(threads){
+		threads = _.map(threads, function(thread){
+			var x = new m.Thread(thread, {user: this.user});
+			return x;
+		}, this);
+		this.threads = threads;
 	},
 	thinthread: function(thread){
 		if (!thread) {
@@ -134,13 +156,11 @@ m.Thread = Backbone.Model.extend({
 		return {
 			id: thread.ID,
 			title: thread.PostTitle,
-			poster: {
-				name: thread.Poster.Name,
-				email: thread.Poster.Email,
-				uid: thread.Poster.UserID
-			},
+			name: thread.Poster.Name,
+			email: thread.Poster.Email,
+			uid: thread.Poster.UserID,
 			body: thread.PostBody,
-			date: thread.PostDate_js,
+			date: m.nicedate(thread.PostDate_js),
 			threads: _.map(thread.Threads, function(thread){
 				return this.thinthread(thread);
 			},this)
@@ -158,13 +178,11 @@ m.Heading = Backbone.Model.extend({
 				return {
 					id: thread.ID,
 					title: thread.PostTitle,
-					poster: {
-						name: thread.Poster.Name,
-						email: thread.Poster.Email,
-						uid: thread.Poster.UserID
-					},
+					name: thread.Poster.Name,
+					email: thread.Poster.Email,
+					uid: thread.Poster.UserID,
 					body: thread.PostBody,
-					date: thread.PostDate_js
+					date: m.nicedate(thread.PostDate_js)
 				};
 			});
 			
@@ -239,12 +257,6 @@ m.Module = Backbone.Model.extend({
 			return y;
 		}, this);
 	},
-	nicedate: function(date){
-		var datere = /^(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d:\d\d):\d\d$/;
-		var res = datere.exec(date);
-		var str = res[3] + "/" + res[2] + " " + res[4];
-		return str;
-	},
 	thinheadings: function(headings){
 		return _.map(headings, function(heading){
 			return {
@@ -289,7 +301,7 @@ m.Module = Backbone.Model.extend({
 				var announcement = {};
 				announcement.id = x.ID;
 				announcement.title = x.Title;
-				announcement.date = that.nicedate(x.CreatedDate_js);
+				announcement.date = m.nicedate(x.CreatedDate_js);
 				announcement.contents = x.Description;
 				announcement.from = x.Creator.Name;
 				return announcement;
