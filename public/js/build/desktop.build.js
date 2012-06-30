@@ -6,7 +6,8 @@
 	out: "../../../build/js/desktop_main.js",
 	paths: {
 		// 'jquery': "empty:",
-		'jquery': "libs/jquery-1.7.2",
+		// 'jquery': "libs/jquery-1.7.2",
+		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",

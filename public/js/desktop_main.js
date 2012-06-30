@@ -1,7 +1,8 @@
 /*global require:true */
 require.config({
 	paths: {
-		'jquery': "libs/jquery-1.7.2",
+		// 'jquery': "libs/jquery-1.7.2",
+		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",

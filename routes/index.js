@@ -81,7 +81,7 @@ exports.workbin = function(req,res){
     _.each(req.session.bootstrap.modules, function(module){
       if (module.id === req.body.moduleid){
         module.workbin = req.body.workbin;
-        console.log(module.workbin.folders[2]);
+        // console.log(module.workbin.folders[2]);
       }
     });
     res.json({updatestatus: "Success"});
