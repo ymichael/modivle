@@ -6,11 +6,46 @@ var m = {};
 /*
 UTIL
 */
+var relativeTime = {
+	future : "in %s",
+	past : "%s ago",
+	s : "a few seconds",
+	m : "a minute",
+	mm : "%d minutes",
+	h : "an hour",
+	hh : "%d hours",
+	d : "a day",
+	dd : "%d days",
+	M : "a month",
+	MM : "%d months",
+	y : "a year",
+	yy : "%d years"
+};
+
+
+m.readabledate = function(dateobj){
+	var milliseconds = Date.now() - dateobj.getTime(),
+		seconds = Math.round(Math.abs(milliseconds) / 1000),
+		minutes = Math.round(seconds / 60),
+		hours = Math.round(minutes / 60),
+		days = Math.round(hours / 24),
+		years = Math.round(days / 365),
+		
+		args =	seconds < 45 && "a few seconds" ||
+				minutes === 1 && "a minute" ||
+				minutes < 45 && minutes + " minutes" ||
+				hours === 1 && "an hour" ||
+				hours < 22 && hours + " hours" ||
+				days === 1 && "a day" ||
+				days <= 25 && days + " days" ||
+				days <= 45 && "a month" ||
+				days < 345 && Math.round(days / 30) + " months" ||
+				years === 1 && "a year" || years + " years";
+	return args + " ago";
+};
 m.nicedate = function(date){
-	var datere = /^(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d:\d\d):\d\d/;
-	var res = datere.exec(date);
-	var str = res[3] + "/" + res[2] + " " + res[4];
-	return str;
+	var dateobj = new Date(date);
+	return dateobj;
 };
 /*
 WORKBIN
@@ -109,7 +144,15 @@ m.Workbin = Backbone.Model.extend({
 /*
 ANNOUCEMENTS
 */
-m.Announcement = Backbone.Model.extend({});
+m.Announcement = Backbone.Model.extend({
+	initialize: function(){
+		//check date.
+		if (this.get("date")){
+			this.set({"nicedate": m.readabledate(this.get("date"))});
+		}
+		//update when necessary.
+	}
+});
 m.Announcements = Backbone.Collection.extend({
 	initialize: function(options){
 		this.loaded = false;
@@ -135,6 +178,7 @@ m.Thread = Backbone.Model.extend({
 		if (this.get("threads")){
 			this.setthreads(this.get("threads"));
 		}
+		this.set({"nicedate": m.readabledate(this.get("date"))});
 	},
 	fetch: function(){
 		var that = this;
@@ -164,7 +208,7 @@ m.Thread = Backbone.Model.extend({
 			uid: thread.Poster.UserID,
 			body: thread.PostBody,
 			date: m.nicedate(thread.PostDate_js),
-			threads: _.map(thread.Threads, function(thread){
+			threads: _.map(thread.Threads.reverse(), function(thread){
 				return this.thinthread(thread);
 			},this)
 		};

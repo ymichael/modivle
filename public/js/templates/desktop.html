@@ -32,13 +32,24 @@
 		<div id='forumcontents'></div>
 	</div>
 </script>
-<script type='text/html' id='forumitemview'>
+<script type='text/html' id='forumheadingview'>
 	<div class="rowname">
-		<div class='rowicon {{type}}icon'></div>
+		<div class='rowicon headingicon'></div>
 		<span>{{name}}</span>
 	</div>
 	<div class="rowcol2"></div>
 	<div class="rowcol3"></div>
+</script>
+<script type='text/html' id='forumthreadview'>
+	<div class='rowicon threadicon'></div>
+	<div class='posttitle'>
+		<div class='posttitlemain'>
+			<span class='main'>{{ name }}</span>
+			<span class='dot'>&middot;</span>
+			<span class='author'>{{ author }}</span>
+		</div>
+		<span class='date'>{{ nicedate }}</span>
+	</div>
 </script>
 <script type='text/html' id='forumthreadsthreadview'>
 	<div class="rowname">
@@ -48,10 +59,14 @@
 	<div class="rowcol3"></div>
 </script>
 <script type='text/html' id='forumpost'>
+	<div class='subthreadicon'></div>
 	<div class='posttitle'>
-		<span class='main'>{{ name }} </span>
-		<span class='author'>{{ author }}</span>
-		<span class='date'>{{ date }}</span>
+		<div class='posttitlemain'>
+			<span class='main'>{{ name }}</span>
+			<span class='dot'>&middot;</span>
+			<span class='author'>{{ author }}</span>
+		</div>
+		<span class='date'>{{ nicedate }}</span>
 	</div>
 	<div class='postbody'>{{{ body }}}</div>
 	<div class='subthreads'></div>
@@ -60,10 +75,13 @@
 
 <!-- ANNOUNCEMENTS -->
 <script type='text/html' id='announcementview'>
-	<div class='posttitle'>
-		<span class='main'>{{ title }} </span>
-		<span class='author'>{{ from }}</span>
-		<span class='date'>{{ date }}</span>
+<div class='posttitle'>
+		<div class='posttitlemain'>
+			<span class='main'>{{ title }}</span>
+			<span class='dot'>&middot;</span>
+			<span class='author'>{{ from }}</span>
+		</div>
+		<span class='date'>{{ nicedate }}</span>
 	</div>
 	<div class='postbody'>{{{ contents }}}</div>
 </script>

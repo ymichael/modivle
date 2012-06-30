@@ -355,7 +355,11 @@ v.ForumItemView = Backbone.View.extend({
 	initialize: function(){
 	},
 	render: function(){
-		this.$el.html(ich.forumitemview(_.extend({type: this.model.type},this.model.toJSON())));
+		if (this.model.type === "heading"){
+			this.$el.html(ich.forumheadingview(this.model.toJSON()));
+		} else if (this.model.type === "thread"){
+			this.$el.html(ich.forumthreadview(this.model.toJSON()));
+		}
 		return this;
 	},
 	events: {
