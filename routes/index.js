@@ -46,7 +46,7 @@ exports.modules = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     res.redirect(403, '/welcome');
   } else {
-    var modules = req.body.modules;
+    var modules = JSON.parse(req.body.modules);
 
     //add those that dont exist. update those that do.
     req.session.bootstrap.modules = _.map(modules, function(mod){
@@ -68,7 +68,7 @@ exports.forum = function(req,res){
   } else {
     _.each(req.session.bootstrap.modules, function(module){
       if (module.id === req.body.moduleid){
-        module.forum = req.body.forum;
+        module.forum = JSON.parse(req.body.forum);
       }
     });
     res.json({updatestatus: "Success"});
@@ -80,7 +80,7 @@ exports.workbin = function(req,res){
   } else {
     _.each(req.session.bootstrap.modules, function(module){
       if (module.id === req.body.moduleid){
-        module.workbin = req.body.workbin;
+        module.workbin = JSON.parse(req.body.workbin);
         // console.log(module.workbin.folders[2]);
       }
     });
@@ -105,7 +105,7 @@ exports.landing = function(req, res){
 exports.app = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     //not logged in
-    res.redirect(401, '/welcome');
+    res.redirect(302, '/welcome');
   } else {
     if (!req.session.bootstrap){
       req.session.bootstrap = {};

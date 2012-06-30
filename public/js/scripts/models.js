@@ -176,7 +176,10 @@ m.Workbin = Backbone.Model.extend({
 		$.ajax({
 			type: 'POST',
 			url: "/workbin",
-			data: {moduleid : this.get("modid"), workbin: workbin},
+			data: {
+				moduleid : this.get("modid"),
+				workbin: JSON.stringify(workbin)
+			},
 			success: function(data){
 				//console.log(data);
 			},
@@ -344,11 +347,15 @@ MAIN
 m.Module = Backbone.Model.extend({
 	initialize: function(model, options){
 		this.user = options.user;
-		_.bindAll(this, 'fetchworkbin','thinfolder','fetchannouncements');
 		this.workbin = new m.Workbin(this.get('workbin'));
 		this.workbin.setname(this.get("code"));
 		this.announcements = new m.Announcements(this.get('announcements'));
 		this.forum = new m.Forum(this.get('forum'), {user: this.user});
+		_.bindAll(this, 'fetchworkbin','thinfolder','fetchannouncements');
+	},
+	//to prevent zeptojs ajax post method from triggering the same error again.
+	defaults: {
+		id: ""
 	},
 	thinfiles: function(filearray){
 		return _.map(filearray.reverse(), function(file){
@@ -437,7 +444,10 @@ m.Module = Backbone.Model.extend({
 			$.ajax({
 				type: 'POST',
 				url: "/forum",
-				data: {moduleid : that.id, forum: forum},
+				data: {
+					moduleid : that.id,
+					forum: JSON.stringify(forum)
+				},
 				success: function(data){
 					//console.log(data);
 				},
@@ -481,6 +491,8 @@ m.Modules = Backbone.Collection.extend({
 			});
 
 			//add those that dont exist. update those that do.
+			console.log(that.models);
+			console.log(modules);
 			_.each(modules, function(mod){
 				var existing = this.get(mod.id);
 				if (existing) {
@@ -490,6 +502,7 @@ m.Modules = Backbone.Collection.extend({
 					this.add(x, {silent: true});
 				}
 			},that);
+			console.log(that.models);
 			that.trigger("reset");
 			if (callback) {
 				callback();
@@ -499,7 +512,9 @@ m.Modules = Backbone.Collection.extend({
 			$.ajax({
 				type: 'POST',
 				url: "/modules",
-				data: {modules : modules},
+				data: {
+					modules : JSON.stringify(modules)
+				},
 				success: function(data){
 					//console.log(data);
 				},

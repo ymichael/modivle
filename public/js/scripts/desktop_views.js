@@ -29,7 +29,7 @@ v.ModulesView = Backbone.View.extend({
 	el: "#leftbar",
 	initialize: function(){
 		this.collection.on('reset', this.render, this);
-		this.collection.on('add', this.render, this);
+		// this.collection.on('add', this.render, this);
 	},
 	render: function(){
 		this.views = [];
