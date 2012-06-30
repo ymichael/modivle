@@ -89,14 +89,15 @@ m.Folder = Backbone.Model.extend({
 		return path + current.get("name");
 	},
 	hasnewfiles: function(){
-		var x = _.find(this.items.models, function(item){
-			if (item.type === 'document'){
-				return item.get('dled') === 0;
+		var x = _.filter(this.items.models, function(item){
+			if (item.get("type") === 'document'){
+				//issues with json (to fix)
+				return item.isnotdled();
 			} else if (item.get("type") === 'folder'){
 				return item.hasnewfiles();
 			}
 		}, this);
-		return x;
+		return x.length;
 	}
 });
 m.File = Backbone.Model.extend({
@@ -120,6 +121,18 @@ m.File = Backbone.Model.extend({
 			bytes = parseFloat(bytes, 10).toFixed(2).toString().slice(0,6);
 		}
 		return  bytes + " " + unit[index];
+	},
+	dled: function(){
+		this.set({"dled" : true});
+
+		var workbin = this.parent;
+		while(workbin.parent){
+			workbin = workbin.parent;
+		}
+		workbin.updateserver();
+	},
+	isnotdled: function(){
+		return !this.get('dled') || this.get('dled') === "false";
 	}
 });
 m.Workbin = Backbone.Model.extend({
@@ -127,6 +140,7 @@ m.Workbin = Backbone.Model.extend({
 		this.type = "workbin";
 		this.fields();
 		this.on('change', this.fields, this);
+		_.bindAll(this, "updateserver");
 	},
 	fields: function(){
 		var x = _.map(this.get('folders'), function(folder){
@@ -139,6 +153,22 @@ m.Workbin = Backbone.Model.extend({
 	},
 	filepath: function(){
 		return this.get("name");
+	},
+	updateserver: function(){
+		//save state
+		$.ajax({
+			type: 'POST',
+			url: "/workbin",
+			data: {moduleid : this.get("modid"), workbin: this.toJSON()},
+			success: function(data){
+				//console.log(data);
+				console.log(arguments);
+			},
+			error: function(){
+				console.log(arguments);
+			},
+			dataType: 'json'
+		});
 	}
 });
 /*
@@ -151,6 +181,7 @@ m.Announcement = Backbone.Model.extend({
 			this.set({"nicedate": m.readabledate(this.get("date"))});
 		}
 		//update when necessary.
+		//TODO
 	}
 });
 m.Announcements = Backbone.Collection.extend({
@@ -178,7 +209,10 @@ m.Thread = Backbone.Model.extend({
 		if (this.get("threads")){
 			this.setthreads(this.get("threads"));
 		}
+		
 		this.set({"nicedate": m.readabledate(this.get("date"))});
+		//update when necessary.
+		//TODO
 	},
 	fetch: function(){
 		var that = this;
@@ -312,7 +346,7 @@ m.Module = Backbone.Model.extend({
 			y.filetype = file.FileType;
 			y.id = file.ID;
 			y.type = "document";
-			y.dled = file.isDownloaded ? 1 : 0;
+			y.dled = file.isDownloaded ? true : false;
 			return y;
 		});
 	},
@@ -347,22 +381,13 @@ m.Module = Backbone.Model.extend({
 			//save space.
 			var relevant = {};
 			relevant.folders = that.thinfolder(data.Results[0].Folders);
+			relevant.modid = that.id;
 			relevant.id = data.Results[0].ID || -1;
 			relevant.type = relevant.kind = "folder";
 			relevant.title = data.Results[0].Title;
 			that.workbin.set(relevant);
-
-			//save state
-			$.ajax({
-				type: 'POST',
-				url: "/workbin",
-				data: {moduleid : that.id, workbin: relevant},
-				success: function(data){
-					//console.log(data);
-				},
-				dataType: 'json'
-			});
 		});
+		this.workbin.updateserver();
 		return this;
 	},
 	fetchannouncements: function(){

@@ -437,9 +437,30 @@ WORKBIN
 		}
 	}
 }
+.notification {
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 15px;
+	padding: 0px 5px;
+	color: white;
+	text-align: center;
+	border-radius: 100px;
+	position: absolute;
+	right: -4px;
+	bottom: 0px;
+	background-color: @secondarycolor;
+}
 .folderview .rowicon{
+	position: relative;
 	background-image: url(/img/folder.png);
 }
 .fileview .rowicon {
+	position: relative;
 	background-image: url(/img/filetypes/_blank.png);
+	.notification {
+		right: -4px;
+		bottom: -5px;
+		background-color: @secondarycolor;
+		border: solid 2px @light;
+	}
 }

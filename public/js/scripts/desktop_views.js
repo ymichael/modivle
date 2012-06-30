@@ -495,14 +495,26 @@ v.WorkbinView = Backbone.View.extend({
 	},
 	downloadfile: function(e, file){
 		this.user.file(file.id);
+		setTimeout(function(){
+			if (file.isnotdled()){
+				file.dled();
+			}
+		}, 500);
 	}
 });
 v.FileView = Backbone.View.extend({
 	className: 'tabrow itemview fileview',
-	initialize: function(){},
+	initialize: function(){
+		this.model.on("change", this.render, this);
+	},
 	render: function(){
 		this.$el.html(ich.itemview(this.model.toJSON()));
 		this.itemicon();
+
+		if (this.model.isnotdled()){
+			this.$(".rowicon").append("<div class='notification'>1</div>");
+		}
+
 		return this;
 	},
 	itemicon: function(){
@@ -570,6 +582,13 @@ v.FolderView = Backbone.View.extend({
 	},
 	render: function(){
 		this.$el.html(ich.itemview(this.model.toJSON()));
+		
+		var number = this.model.hasnewfiles();
+		if (number){
+			//cap number at 10.
+			number = number > 10 ? "10+" : number;
+			this.$(".rowicon").append("<div class='notification'>"+ number +"</div>");
+		}
 		return this;
 	},
 	events: {
