@@ -23,7 +23,7 @@ var AppRouter = Backbone.Router.extend({
 		":mod/forum" : "forum"
 	},
 	workbin: function(mod){
-		this.parent.mainview.modulesview.views[1].moduleselected();
+		this.parent.mainview.modulesview.views[0].moduleselected();
 		this.parent.mainview.contentview.contentnav.changeview(null, "workbin");
 		this.parent.mainview.contentview.changeview(null, "workbin");
 	},

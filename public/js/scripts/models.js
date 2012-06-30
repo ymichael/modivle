@@ -78,6 +78,19 @@ m.Folder = Backbone.Model.extend({
 		this.items.add(folders);
 		this.items.add(files);
 	},
+	getlatest: function(){
+		var x = this.toJSON();
+		x.files = [];
+		x.folders = [];
+		_.each(this.items.models, function(item) {
+			if (item.get("type") === "document") {
+				x.files.push(item.toJSON());
+			} else if (item.get("type") === "folder") {
+				x.folders.push(item.getlatest());
+			}
+		});
+		return x;
+	},
 	filepath: function(){
 		var path = "";
 		var current = this.parent;
@@ -123,8 +136,7 @@ m.File = Backbone.Model.extend({
 		return  bytes + " " + unit[index];
 	},
 	dled: function(){
-		this.set({"dled" : true});
-
+		this.set({"dled" : "true"});
 		var workbin = this.parent;
 		while(workbin.parent){
 			workbin = workbin.parent;
@@ -132,6 +144,7 @@ m.File = Backbone.Model.extend({
 		workbin.updateserver();
 	},
 	isnotdled: function(){
+		console.log(this.get('dled'));
 		return !this.get('dled') || this.get('dled') === "false";
 	}
 });
@@ -155,17 +168,17 @@ m.Workbin = Backbone.Model.extend({
 		return this.get("name");
 	},
 	updateserver: function(){
+		var workbin = this.toJSON();
+		workbin.folders = _.map(this.items.models, function(item){
+			return item.getlatest();
+		});
 		//save state
 		$.ajax({
 			type: 'POST',
 			url: "/workbin",
-			data: {moduleid : this.get("modid"), workbin: this.toJSON()},
+			data: {moduleid : this.get("modid"), workbin: workbin},
 			success: function(data){
 				//console.log(data);
-				console.log(arguments);
-			},
-			error: function(){
-				console.log(arguments);
 			},
 			dataType: 'json'
 		});
@@ -386,8 +399,8 @@ m.Module = Backbone.Model.extend({
 			relevant.type = relevant.kind = "folder";
 			relevant.title = data.Results[0].Title;
 			that.workbin.set(relevant);
+			that.workbin.updateserver();
 		});
-		this.workbin.updateserver();
 		return this;
 	},
 	fetchannouncements: function(){
