@@ -130,7 +130,7 @@ v.SingleModuleNav = Backbone.View.extend({
 	tagName: "div",
 	initialize: function(options){
 		this.current = options.current;
-		this.tabs = ["announcements","workbin"];
+		this.tabs = ["announcements","workbin", "forum"];
 		_.bindAll(this,"render");
 	},
 	render: function(){
