@@ -46,20 +46,18 @@ header, #main, footer {
 }
 header {
 	position: relative;
-	border-bottom: solid 1px darken(@light, 20%);
-	background-color: lighten(@light, 5%);
 	#logo {
-		height: 30px;
-		padding: 5px;
+		height: 20px;
+		padding: 10px;
 		float: left;
 	}
 	#logout {
 		position: absolute;
 		right: 0;
 		top: 2px;
-		height: 25px;
-		width: 25px;
-		padding: 7px;
+		height: 20px;
+		width: 20px;
+		padding: 10px;
 		background-size: 100%;
 		background-origin: content-box;
 		background-repeat: no-repeat;
@@ -89,7 +87,6 @@ header {
 MODULES
 */
 .module {
-	min-height: 70px;
 	float: left;
 	width: 100%;
 	border-bottom: solid 1px @light;
@@ -102,9 +99,11 @@ MODULES
 			width: 80%;
 			letter-spacing: -2px;
 			font-size: 25px;
+			font-weight: 300;
 			line-height: 25px;	
 		}
 		.desc {
+			display: none;
 			padding: 0px 10px;
 			width: 80%;
 			font-size: 15px;
