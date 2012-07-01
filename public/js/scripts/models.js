@@ -144,7 +144,6 @@ m.File = Backbone.Model.extend({
 		workbin.updateserver();
 	},
 	isnotdled: function(){
-		console.log(this.get('dled'));
 		return !this.get('dled') || this.get('dled') === "false";
 	}
 });
@@ -491,8 +490,6 @@ m.Modules = Backbone.Collection.extend({
 			});
 
 			//add those that dont exist. update those that do.
-			console.log(that.models);
-			console.log(modules);
 			_.each(modules, function(mod){
 				var existing = this.get(mod.id);
 				if (existing) {
@@ -502,7 +499,6 @@ m.Modules = Backbone.Collection.extend({
 					this.add(x, {silent: true});
 				}
 			},that);
-			console.log(that.models);
 			that.trigger("reset");
 			if (callback) {
 				callback();

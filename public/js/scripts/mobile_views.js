@@ -176,6 +176,30 @@ v.SingleModuleNavTab = Backbone.View.extend({
 });
 
 /*
+NAV VIEW
+*/
+v.NavView = Backbone.View.extend({
+	className: "navview",
+	initialize: function(){},
+	render: function(){
+		var current = this.model.parent;
+		
+		// if (!current) {
+		// 	this.$el.hide();
+		// 	return this;
+		// }
+
+		this.$el.html(ich.navview({label: "Lecture Notes"}));
+		return this;
+	},
+	back: function(){
+		this.$el.trigger("drilldown", this.currentitem.parent);
+	}
+});
+
+
+
+/*
 ANNOUNCEMENTS
 */
 v.AnnouncmentsView = Backbone.View.extend({
@@ -187,10 +211,10 @@ v.AnnouncmentsView = Backbone.View.extend({
 	},
 	render: function(){
 		if (this.announcements.isloading()){
-			this.$el.html(ich.announcementsinfo({text:"loading..."}));
+			this.$el.html(ich.infoview({text:"loading..."}));
 		} else if (this.announcements.models.length === 0){
 			//no announcements
-			this.$el.html(ich.announcementsinfo({text:"no announcements."}));
+			this.$el.html(ich.infoview({text:"no announcements."}));
 		} else {
 			var fragment = document.createDocumentFragment();
 			_.each(this.announcements.models, function(announcement){
@@ -217,7 +241,6 @@ v.AnnouncementView = Backbone.View.extend({
 	}
 });
 
-
 /*
 WORKBIN
 */
@@ -232,7 +255,7 @@ v.WorkbinView = Backbone.View.extend({
 		this.$el.html(ich.workbinview());
 		if (typeof this.currentitem.get('id') !== 'undefined'){
 			if (this.currentitem.items.models.length === 0){
-				this.$("#workbincontents").html(ich.workbininfo({msg : "this folder is empty."}));
+				this.$("#workbincontents").html(ich.infoview({text : "this folder is empty."}));
 			} else {
 				//files and folders
 				var fragment = document.createDocumentFragment();
@@ -248,20 +271,17 @@ v.WorkbinView = Backbone.View.extend({
 				},this);
 				this.$('#workbincontents').html(fragment);
 			}
-			this.nav = new v.WorkbinNav({currentitem: this.currentitem, el : this.$('#workbinnav')}).render();
+			this.nav = new v.NavView({model : this.currentitem});
+			this.$('#workbinnav').html(this.nav.render().el);
 		} else {
 			//loading folder...
-			this.$("#workbinnav").html(ich.workbininfo({msg : "loading..."}));
+			this.$("#workbinnav").html(ich.infoview({text : "loading..."}));
 		}
 		return this;
 	},
 	events: {
 		"drilldown": "drilldown",
-		"downloadfile" : "downloadfile",
-		"click #back" : "back"
-	},
-	back: function(){
-		this.nav.back();
+		"downloadfile" : "downloadfile"
 	},
 	drilldown: function(e, model){
 		this.currentitem = model;
@@ -269,26 +289,6 @@ v.WorkbinView = Backbone.View.extend({
 	},
 	downloadfile: function(e, file){
 		this.user.file(file.id);
-	}
-});
-v.WorkbinNav = Backbone.View.extend({
-	initialize: function(options){
-		this.currentitem = options.currentitem;
-	},
-	render: function(){
-		var parent = this.currentitem.parent;
-		if (!parent){
-			this.$el.html(ich.workbinnavhome());
-		} else {
-			this.$el.html(ich.workbinnav({
-				backitem: parent.parent ? parent.get("name") : "~",
-				label : this.currentitem.get("name")
-			}));
-		}
-		return this;
-	},
-	back: function(){
-		this.$el.trigger("drilldown", this.currentitem.parent);
 	}
 });
 v.FileView = Backbone.View.extend({

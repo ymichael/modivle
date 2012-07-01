@@ -89,7 +89,7 @@ header {
 		background-origin: content-box;
 		background-repeat: no-repeat;
 		height: 23px;
-		width: 23px;
+		width: 26px;
 		background-image: url(/img/home.png);
 	}
 }
@@ -101,7 +101,8 @@ footer {
 GENERIC STYLES
 */
 #tabs {
-	border-bottom: solid 1px @light;
+	.box-shadow(inset 0  -2px 2px -2px rgba(0,0,0,.3));
+	#translucent > .background(#eee, 0.25);
 	padding: 0 15px;
 	text-align: center;
 	.tab {
@@ -115,7 +116,6 @@ GENERIC STYLES
 		color: black;
 		font-weight: bold;
 		border-bottom: solid 1px;
-		margin-bottom: -1px;
 	}
 }
 .row {
@@ -139,7 +139,8 @@ GENERIC STYLES
 		background-image: url(/img/next.png);
 	}
 	.text {
-		padding-left: 35px;
+		margin-left: 35px;
+		margin-right: 20px;
 		span {
 			display: block;
 			overflow: hidden;
@@ -149,6 +150,7 @@ GENERIC STYLES
 			&.main {
 				font-size: 19px;
 				line-height: 23px;
+				padding-bottom: 2px;
 			}
 			&.desc {
 				font-size: 13px;
@@ -169,31 +171,50 @@ GENERIC STYLES
 
 	}
 }
-
-
+.info {
+	border-bottom: solid 1px @light;
+	padding: 15px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: 300;
+}
+.navview {
+	position: relative;
+	border-bottom: solid 1px @light;
+	height: 30px;
+	padding: 10px 15px;
+	.back {
+		position: absolute;
+		border-right: dotted 1px @light;
+		left: 0px;
+		top: 0;
+		height: 20px;
+		width: 20px;
+		padding: 15px;
+		background-size: 100%;
+		background-origin: content-box;
+		background-repeat: no-repeat;
+		background-image: url(/img/prev.png);
+	}
+	.label {
+		margin-left: 50px;
+		font-weight: 300;
+	}
+}
 /*
 MODULES
 */
 .module {
 	padding: 15px;
 	.text {
-		padding-left: 0;
+		margin-left: 0;
 	}
 }
 /*
 ANNOUNCEMENTS
 */
 .announcementsview {
-	float: left;
-	width: 100%;
-	.announcementinfo {
-		border-bottom: solid 1px @light;
-		float: left;
-		width :100%;
-		padding: 10px 0px;
-		text-align: center;
-		font-size: 15px;
-	}
+	
 }
 .announcementicon {
 	background-image: url(/img/mic.png);
@@ -206,56 +227,4 @@ WORKBIN
 */
 .itemview {
 	
-}
-.workbinview {
-	float: left;
-	width: 100%;
-	.workbininfo {
-		float: left;
-		border-bottom: solid 1px @light;
-		width :100%;
-		padding: 10px 0px;
-		text-align: center;
-		font-size: 15px;
-	}
-	#workbinnav {
-		float: left;
-		border-bottom: solid 1px darken(@light, 20%);
-		width: 100%;
-		position: relative;
-		#back {
-			position: absolute;
-			left: 0;
-			top: 0;
-			height: 30px;
-			min-width: 60px;
-			padding: 5px;
-			.backicon {
-				float: left;
-				height: 20px;
-				width: 20px;
-				padding :5px 0px;
-				background-size: 100%;
-				background-origin: content-box;
-				background-repeat: no-repeat;
-				background-image: url(/img/back2.png);
-			}
-			.backitem {
-				font-size: 12px;
-				line-height: 15px;
-				float: left;
-				padding: 7px 0px;
-			}
-		}
-		.currentitem {
-			padding: 13px 0px 7px 0px;
-			margin: 0px 80px;
-			text-align: center;
-			font-size: 15px;
-		}
-	}
-	#workbincontents {
-		float:left;
-		width: 100%;
-	}
 }
