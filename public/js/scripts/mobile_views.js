@@ -184,16 +184,19 @@ v.NavView = Backbone.View.extend({
 	render: function(){
 		var current = this.model.parent;
 		
-		// if (!current) {
-		// 	this.$el.hide();
-		// 	return this;
-		// }
+		if (!current) {
+			this.$el.hide();
+			return this;
+		}
 
-		this.$el.html(ich.navview({label: "Lecture Notes"}));
+		this.$el.html(ich.navview(this.model.toJSON()));
 		return this;
 	},
+	events: {
+		"click .back" : "back"
+	},
 	back: function(){
-		this.$el.trigger("drilldown", this.currentitem.parent);
+		this.$el.trigger("drilldown", this.model.parent);
 	}
 });
 

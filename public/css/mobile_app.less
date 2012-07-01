@@ -51,7 +51,7 @@ header {
 	position: relative;
 	height: 50px;
 	// border-bottom: solid 1px @light;
-	.box-shadow(0 2px 1px -1px rgba(0,0,0,.2));
+	.box-shadow(0 2px 1px -1px rgba(0,0,0,.3));
 	#logo {
 		display: block;
 		width: 100px;
@@ -101,8 +101,8 @@ footer {
 GENERIC STYLES
 */
 #tabs {
-	.box-shadow(inset 0  -2px 2px -2px rgba(0,0,0,.3));
-	#translucent > .background(#eee, 0.25);
+	.box-shadow(inset 0  -2px 1px -1px rgba(0,0,0,.3));
+	#translucent > .background(#eee, 0.3);
 	padding: 0 15px;
 	text-align: center;
 	.tab {
@@ -116,6 +116,7 @@ GENERIC STYLES
 		color: black;
 		font-weight: bold;
 		border-bottom: solid 1px;
+		// border-top: solid 1px;
 	}
 }
 .row {
@@ -180,7 +181,7 @@ GENERIC STYLES
 }
 .navview {
 	position: relative;
-	border-bottom: solid 1px @light;
+	.box-shadow(0 2px 1px -1px rgba(0,0,0,.4));
 	height: 30px;
 	padding: 10px 15px;
 	.back {
@@ -198,6 +199,7 @@ GENERIC STYLES
 	}
 	.label {
 		margin-left: 50px;
+		line-height: 30px;
 		font-weight: 300;
 	}
 }
