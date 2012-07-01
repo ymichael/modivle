@@ -144,20 +144,28 @@ GENERIC STYLES
 		margin-right: 20px;
 		span {
 			display: block;
-			overflow: hidden;
-			width: 100%;
-			overflow: hidden;
+			// overflow: hidden;
 			font-weight: 300;
 			&.main {
 				font-size: 19px;
 				line-height: 23px;
+				// word-wrap: break-word;
 				padding-bottom: 2px;
 			}
 			&.desc {
 				font-size: 13px;
 				line-height: 15px;
+				padding-bottom: 1px;
 				height: 15px;
 				color: lighten(@textcolor,20%);
+				.author {
+					display: inline;
+					text-transform: uppercase;
+					color: @secondarycolor;
+				}
+				.date {
+					display: inline-block;
+				}
 			}
 		}
 	}
@@ -267,6 +275,12 @@ ICONS
 /*
 FORUM
 */
+.threadview {
+	.desc {
+		word-wrap: break-word !important;
+		height: auto !important;
+	}
+}
 .forumpost {
 	.subthreads {
 		margin-right: -15px;

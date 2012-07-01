@@ -462,6 +462,7 @@ v.ForumHeadingsView = Backbone.View.extend({
 	}
 });
 v.ForumThreadsView = Backbone.View.extend({
+	className: 'threadview',
 	initialize: function(){
 		this.model.threads.on("reset", this.render, this);
 	},
