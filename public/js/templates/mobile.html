@@ -7,21 +7,51 @@
 		<div id='headerlabel'>{{ code }}</div>
 		<div id='logout'></div>
 </script>
+
+<!-- MODULE VIEW -->
 <script type="text/html" id='moduleview'>
 	<div class='text'>
-		<div class='code'>{{ code }}</div>
-		<div class='desc'>{{ name }}</div>
+		<span class='main'>{{ code }}</span>
+		<span class='desc'>{{ name }}</span>
 	</div>
-	<div class='nexticon'></div>
+	<div class='nexticon icon'></div>
 </script>
-<script type="text/html" id='announcementtitle'>
-	<div class='title'>{{ title }}</div>
-	<div class='info'>
-		<span class='author'>{{ from }}</span>
-		<span class='date'>{{ date }}</span>
+
+<!-- WORKBIN VIEW -->
+<script type="text/html" id='itemview'>
+	<div class='{{type}}icon icon'></div>
+	<div class='text'>
+		<span class='main'>{{ name }}</span>
+		<span class='desc'>{{ kind }}, {{ size }}</span>
 	</div>
-	<div class='content'>{{{ contents }}</div>
 </script>
+
+
+
+
+
+
+
+<!-- ANNOUNCEMENTS VIEW -->
+<script type="text/html" id='announcementlist'>
+	<div class='announcementicon icon'></div>
+	<div class='text'>
+		<span class='main'>{{ title }}</span>
+		<span class='desc'>{{ from }}, {{ nicedate }}</span>
+	</div>
+	<div class='nexticon icon'></div>
+</script>
+
+
+
+
+
+
+
+
+
+
+
 <script type='text/html' id='announcementsinfo'>
 	<div class='announcementinfo'>{{text}}</div>
 </script>
@@ -41,9 +71,4 @@
 </script>
 <script type='text/html' id='workbininfo'>
 	<div class='workbininfo'>{{ msg }}</div>
-</script>
-<script type="text/html" id='itemview'>
-	<div class='itemicon'></div>
-	<div class='title'>{{name}}</div>
-	<div class='info'>{{kind}}, {{size}}</div>
 </script>

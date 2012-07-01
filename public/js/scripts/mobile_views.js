@@ -14,9 +14,7 @@ v.MainView = Backbone.View.extend({
 		_.bindAll(this, 'render', 'moduleselected');
 	},
 	render: function(){
-		//header
 		this.header = new v.HeaderView();
-		//contents
 		this.modulesview = new v.ModulesView({collection: this.modules}).render();
 		this.$("#main").html(this.modulesview.el);
 		return this;
@@ -26,7 +24,6 @@ v.MainView = Backbone.View.extend({
 	},
 	moduleselected: function(e, module){
 		this.header.modulepage(module.get("code"));
-
 		var singlemoduleview = new v.SingleModuleView({
 			model: module,
 			user: this.user
@@ -50,7 +47,6 @@ v.HeaderView = Backbone.View.extend({
 v.ModulesView = Backbone.View.extend({
 	initialize: function(){
 		this.collection.on('reset', this.render, this);
-		this.collection.on('add', this.render, this);
 	},
 	render: function(){
 		var fragment = document.createDocumentFragment();
@@ -64,7 +60,7 @@ v.ModulesView = Backbone.View.extend({
 });
 v.ModuleView = Backbone.View.extend({
 	tagName: "div",
-	className: "module",
+	className: "module row",
 	initialize: function(){
 
 	},
@@ -126,8 +122,7 @@ v.SingleModuleView = Backbone.View.extend({
 	}
 });
 v.SingleModuleNav = Backbone.View.extend({
-	id: "nav",
-	tagName: "div",
+	id: "tabs",
 	initialize: function(options){
 		this.current = options.current;
 		this.tabs = ["announcements","workbin", "forum"];
@@ -157,7 +152,6 @@ v.SingleModuleNav = Backbone.View.extend({
 });
 v.SingleModuleNavTab = Backbone.View.extend({
 	className: "tab",
-	tagName: "div",
 	initialize: function(options){
 		this.name = options.name;
 	},
@@ -213,21 +207,16 @@ v.AnnouncmentsView = Backbone.View.extend({
 });
 v.AnnouncementView = Backbone.View.extend({
 	tagName: "div",
-	className: "announcement",
+	className: "row announcement",
 	initialize: function(){
 
 	},
 	render: function(){
-		this.$el.html(ich.announcementtitle(this.model.toJSON()));
+		this.$el.html(ich.announcementlist(this.model.toJSON()));
 		return this;
-	},
-	events: {
-		"click": "showannouncement"
-	},
-	showannouncement: function(){
-		this.$el.toggleClass("active");
 	}
 });
+
 
 /*
 WORKBIN
@@ -303,7 +292,7 @@ v.WorkbinNav = Backbone.View.extend({
 	}
 });
 v.FileView = Backbone.View.extend({
-	className: 'itemview fileview',
+	className: 'row itemview fileview',
 	render: function(){
 		this.$el.html(ich.itemview(this.model.toJSON()));
 		this.itemicon();
@@ -358,7 +347,7 @@ v.FileView = Backbone.View.extend({
 		var bg = _.has(fileTypes, type) ? fileTypes[type] : defaultfile;
 
 		bg = "url(/img/filetypes/" + bg + ".png)";
-		this.$('.itemicon').css("background-image", bg);
+		this.$('.icon').css("background-image", bg);
 	},
 	events: {
 		"click" : "downloadfile"
@@ -368,7 +357,7 @@ v.FileView = Backbone.View.extend({
 	}
 });
 v.FolderView = Backbone.View.extend({
-	className: 'itemview folderview',
+	className: 'row itemview folderview',
 	initialize: function(){
 		_.bindAll(this,'drilldown');
 	},
