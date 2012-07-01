@@ -44,7 +44,8 @@ m.readabledate = function(dateobj){
 	return args + " ago";
 };
 m.nicedate = function(date){
-	var dateobj = new Date(date);
+	var parts = date.match(/(\d+)/g);
+	var dateobj = new Date(parts[0], parts[1]-1, parts[2], parts[3], parts[4], parts[5]);
 	return dateobj;
 };
 /*
