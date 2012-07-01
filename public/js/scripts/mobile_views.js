@@ -103,6 +103,8 @@ v.SingleModuleView = Backbone.View.extend({
 			return v.AnnouncmentsView;
 		} else if (view === "workbin"){
 			return v.WorkbinView;
+		} else if (view === "forum"){
+			return v.ForumView;
 		}
 	},
 	events: {
@@ -180,10 +182,19 @@ NAV VIEW
 */
 v.NavView = Backbone.View.extend({
 	className: "navview",
-	initialize: function(){},
+	initialize: function(options){
+		if (options.type){
+			this.type = options.type;
+		}
+	},
 	render: function(){
 		var current = this.model.parent;
 		
+		if (this.type === "announcements"){
+			this.$el.html(ich.navview({name: "Announcements"}));
+			return this;
+		}
+
 		if (!current) {
 			this.$el.hide();
 			return this;
@@ -199,9 +210,6 @@ v.NavView = Backbone.View.extend({
 		this.$el.trigger("drilldown", this.model.parent);
 	}
 });
-
-
-
 /*
 ANNOUNCEMENTS
 */
@@ -210,26 +218,41 @@ v.AnnouncmentsView = Backbone.View.extend({
 	initialize: function(options){
 		this.user = options.user;
 		this.announcements = this.model.fetchannouncements().announcements;
+		this.currentitem = this.announcements;
 		this.announcements.on('all', this.render, this);
 	},
 	render: function(){
-		if (this.announcements.isloading()){
-			this.$el.html(ich.infoview({text:"loading..."}));
-		} else if (this.announcements.models.length === 0){
-			//no announcements
-			this.$el.html(ich.infoview({text:"no announcements."}));
+		this.$el.html(ich.announcementsview());
+		if (this.currentitem === this.announcements){
+			if (this.announcements.isloading()){
+				this.$(".contents").html(ich.infoview({text:"loading..."}));
+			} else if (this.announcements.models.length === 0){
+				//no announcements
+				this.$(".contents").html(ich.infoview({text:"no announcements."}));
+			} else {
+				var fragment = document.createDocumentFragment();
+				_.each(this.announcements.models, function(announcement){
+					var x = new v.AnnouncementView({model: announcement});
+					fragment.appendChild(x.render().el);
+				},this);
+				this.$(".contents").html(fragment);
+			}
 		} else {
-			var fragment = document.createDocumentFragment();
-			_.each(this.announcements.models, function(announcement){
-				var x = new v.AnnouncementView({model: announcement});
-				fragment.appendChild(x.render().el);
-			},this);
-			this.$el.html(fragment);
-			
-			//open latest
-			this.$(".announcementview:first-child").click();
+			this.nav = new v.NavView({
+				model: this.currentitem,
+				type: "announcements"
+			});
+			this.$(".nav").html(this.nav.render().el);
+			this.$(".contents").html(ich.announcementpost(this.currentitem.toJSON()));
 		}
 		return this;
+	},
+	events : {
+		"drilldown" : "drilldown"
+	},
+	drilldown: function(e, model){
+		this.currentitem = model || this.announcements;
+		this.render();
 	}
 });
 v.AnnouncementView = Backbone.View.extend({
@@ -241,9 +264,14 @@ v.AnnouncementView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(ich.announcementlist(this.model.toJSON()));
 		return this;
+	},
+	events: {
+		"click" : "drilldown"
+	},
+	drilldown: function(){
+		this.$el.trigger('drilldown', this.model);
 	}
 });
-
 /*
 WORKBIN
 */
@@ -258,7 +286,7 @@ v.WorkbinView = Backbone.View.extend({
 		this.$el.html(ich.workbinview());
 		if (typeof this.currentitem.get('id') !== 'undefined'){
 			if (this.currentitem.items.models.length === 0){
-				this.$("#workbincontents").html(ich.infoview({text : "this folder is empty."}));
+				this.$(".contents").html(ich.infoview({text : "this folder is empty."}));
 			} else {
 				//files and folders
 				var fragment = document.createDocumentFragment();
@@ -272,13 +300,13 @@ v.WorkbinView = Backbone.View.extend({
 						fragment.appendChild(x.render().el);
 					}
 				},this);
-				this.$('#workbincontents').html(fragment);
+				this.$(".contents").html(fragment);
 			}
 			this.nav = new v.NavView({model : this.currentitem});
-			this.$('#workbinnav').html(this.nav.render().el);
+			this.$(".nav").html(this.nav.render().el);
 		} else {
 			//loading folder...
-			this.$("#workbinnav").html(ich.infoview({text : "loading..."}));
+			this.$(".contents").html(ich.infoview({text : "loading..."}));
 		}
 		return this;
 	},
@@ -295,9 +323,9 @@ v.WorkbinView = Backbone.View.extend({
 	}
 });
 v.FileView = Backbone.View.extend({
-	className: 'row itemview fileview',
+	className: 'row fileview',
 	render: function(){
-		this.$el.html(ich.itemview(this.model.toJSON()));
+		this.$el.html(ich.workbinitemview(this.model.toJSON()));
 		this.itemicon();
 		return this;
 	},
@@ -360,12 +388,12 @@ v.FileView = Backbone.View.extend({
 	}
 });
 v.FolderView = Backbone.View.extend({
-	className: 'row itemview folderview',
+	className: 'row folderview',
 	initialize: function(){
 		_.bindAll(this,'drilldown');
 	},
 	render: function(){
-		this.$el.html(ich.itemview(this.model.toJSON()));
+		this.$el.html(ich.workbinitemview(this.model.toJSON()));
 		return this;
 	},
 	events: {
@@ -373,6 +401,133 @@ v.FolderView = Backbone.View.extend({
 	},
 	drilldown: function(){
 		this.$el.trigger('drilldown', this.model);
+	}
+});
+
+/*
+FORUM
+*/
+v.ForumView = Backbone.View.extend({
+	id: "forumcontainer",
+	initialize: function(options){
+		this.user = options.user;
+		this.currentitem = this.model.fetchforums().forum;
+	},
+	render: function(){
+		this.$el.html(ich.forumview());
+		this.nav = new v.NavView({model : this.currentitem});
+		this.$(".nav").html(this.nav.render().el);
+		
+		//immediately jump into single header forums.
+		//TODO
+
+		if (this.currentitem.type === "forum"){
+			this.headingsview = new v.ForumHeadingsView({model: this.currentitem});
+			this.$(".contents").html(this.headingsview.render().el);
+		} else if (this.currentitem.type === "heading"){
+			var threadsview = new v.ForumThreadsView({model: this.currentitem});
+			this.$(".contents").html(threadsview.render().el);
+		} else if (this.currentitem.type === "thread"){
+			var singlethreadview = new v.ForumSingleThreadView({model: this.currentitem});
+			this.$(".contents").html(singlethreadview.render().el);
+		}
+		return this;
+	},
+	events: {
+		"drilldown": "drilldown"
+	},
+	drilldown: function(e, model){
+		this.currentitem = model;
+		this.render();
+	}
+});
+v.ForumHeadingsView = Backbone.View.extend({
+	initialize: function(){
+		this.model.headings.on("reset", this.render, this);
+	},
+	render: function(){
+		if (this.model.headings.isloading()){
+			this.$el.html(ich.infoview({text:"loading..."}));
+		} else if (this.model.headings.models.length === 0){
+			this.$el.html(ich.infoview({text:"no headings"}));
+		} else {
+			var fragment = document.createDocumentFragment();
+			_.each(this.model.headings.models, function(heading){
+				var x = new v.ForumItemView({model: heading});
+				fragment.appendChild(x.render().el);
+			});
+			this.$el.html(fragment);
+		}
+		return this;
+	}
+});
+v.ForumThreadsView = Backbone.View.extend({
+	initialize: function(){
+		this.model.threads.on("reset", this.render, this);
+	},
+	render: function(){
+		if (this.model.threads.isloading()){
+			this.$el.html(ich.infoview({text:"loading..."}));
+		} else if (this.model.threads.models.length === 0){
+			this.$el.html(ich.infoview({text:"zero threads :("}));
+		} else {
+			var fragment = document.createDocumentFragment();
+			_.each(this.model.threads.models, function(thread){
+				var x = new v.ForumItemView({model: thread});
+				fragment.appendChild(x.render().el);
+			});
+			this.$el.html(fragment);
+		}
+		return this;
+	}
+});
+v.ForumItemView = Backbone.View.extend({
+	className: "row",
+	initialize: function(){
+	},
+	render: function(){
+		if (this.model.type === "heading"){
+			this.$el.html(ich.forumheadingview(this.model.toJSON()));
+		} else if (this.model.type === "thread"){
+			this.$el.html(ich.forumthreadview(this.model.toJSON()));
+		}
+		return this;
+	},
+	events: {
+		"click" : "drilldown"
+	},
+	drilldown: function(){
+		this.$el.trigger("drilldown", this.model);
+	}
+});
+//FORUM SINGLE THREAD VIEW
+v.ForumSingleThreadView = Backbone.View.extend({
+	initialize: function(){
+		this.model.fetch();
+		this.model.on("reset", this.render, this);
+	},
+	render: function(){
+		//this post.
+		var root = new v.ForumSingleThreadThreadView({model: this.model});
+		this.$el.html(root.render().el);
+		return this;
+	}
+});
+v.ForumSingleThreadThreadView = Backbone.View.extend({
+	className: "post forumpost",
+	initialize: function(){
+
+	},
+	render: function(){
+		this.$el.html(ich.forumpost(this.model.toJSON()));
+		
+		if (this.model.threads.length !== 0) {
+			_.each(this.model.threads, function(subthread){
+				var x = new v.ForumSingleThreadThreadView({model: subthread});
+				this.$(".subthreads").append(x.render().el);
+			}, this);
+		}
+		return this;
 	}
 });
 return v;

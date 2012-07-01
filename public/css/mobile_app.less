@@ -94,7 +94,7 @@ header {
 	}
 }
 footer {
-	height: 150px;
+	height: 50px;
 }
 
 /*
@@ -164,12 +164,44 @@ GENERIC STYLES
 }
 .post {
 	position: relative;
-	padding: 15px;
+	margin: 0 15px;
+	padding: 10px 0;
 	border-bottom: solid 1px @light;
 	.title {
-		font-size: 20px;
+		margin-bottom: 10px;
 		font-weight: 300;
-
+		.main {
+			font-size: 20px;
+			display: block;
+			padding-bottom: 5px;
+			border-bottom: solid 3px @light;
+		}
+		span {
+			font-size: 12px;
+			&.author {
+				text-transform: uppercase;
+				color: @secondarycolor;
+			}
+		}
+	}
+	.body {
+		font-weight: normal;
+		word-wrap: break-word;
+		font-size: 14px;
+	}
+}
+.post {
+	.body {
+		p {
+			margin: 10px 0;
+			line-height: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+		}
+		//link colors
+		a {
+			color: black;
+		}
 	}
 }
 .info {
@@ -198,6 +230,8 @@ GENERIC STYLES
 		background-image: url(/img/prev.png);
 	}
 	.label {
+		height: 30px;
+		overflow: hidden;
 		margin-left: 50px;
 		line-height: 30px;
 		font-weight: 300;
@@ -213,20 +247,32 @@ MODULES
 	}
 }
 /*
-ANNOUNCEMENTS
+ICONS
 */
-.announcementsview {
-	
+.row {
+	.announcementicon {
+		background-image: url(/img/mic.png);
+	}
+	.headingicon {
+		background-image: url(/img/speech.png);
+	}
+	.threadicon {
+		background-image: url(/img/speech2.png);
+	}
+	.foldericon {
+		background-image: url(/img/folder.png);
+	}	
 }
-.announcementicon {
-	background-image: url(/img/mic.png);
-}
-.foldericon {
-	background-image: url(/img/folder.png);
-}
+
 /*
-WORKBIN
+FORUM
 */
-.itemview {
-	
+.forumpost {
+	.subthreads {
+		margin-right: -15px;
+		.post {
+			border-bottom: none;
+			margin-top: 10px;
+		}
+	}
 }
