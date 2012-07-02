@@ -85,7 +85,7 @@ var App = Backbone.View.extend({
 		$('.loading').html("please be patient, loading your modules...");
 		$('#overlay').show();
 		var that = this;
-		$('#close').click(function(){
+		$('#close').on('tap', function(){
 			that.stoploading();
 		});
 	},
@@ -109,8 +109,8 @@ var App = Backbone.View.extend({
 		this.mainview.home();
 	},
 	events: {
-		'click #logout': "logout",
-		'click #home' : "home"
+		'tap #logout': "logout",
+		'tap #home' : "home"
 	}
 });
 return App;

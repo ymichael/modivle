@@ -3,6 +3,12 @@ define(['jquery','underscore','backbone', 'ich'],
 function($,_,Backbone,ich){
 
 var v = {};
+v.tappedevent = function(start,callback,context){
+	start.call(context);
+	setTimeout(function(){
+		callback.call(context);
+	}, 300);
+};
 /*
 MAIN
 */
@@ -69,10 +75,14 @@ v.ModuleView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"click" : "moduleselected"
+		"tap" : "moduleselected"
 	},
 	moduleselected: function(){
-		this.$el.trigger("moduleselected", this.model);
+		v.tappedevent(function(){
+			this.$el.addClass("tapped");
+		}, function(){
+			this.$el.trigger("moduleselected", this.model);
+		}, this);
 	}
 });
 
@@ -168,7 +178,7 @@ v.SingleModuleNavTab = Backbone.View.extend({
 		this.$el.removeClass("active");
 	},
 	events: {
-		"click" : "changeview"
+		"tap" : "changeview"
 	},
 	changeview: function(){
 		if (!this.$el.hasClass("active")){
@@ -204,10 +214,14 @@ v.NavView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"click .back" : "back"
+		"tap .back" : "back"
 	},
 	back: function(){
-		this.$el.trigger("drilldown", this.model.parent);
+		v.tappedevent(function(){
+			this.$(".back").addClass("tapped");
+		}, function(){
+			this.$el.trigger("drilldown", this.model.parent);
+		}, this);
 	}
 });
 /*
@@ -266,10 +280,15 @@ v.AnnouncementView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"click" : "drilldown"
+		"tap" : "drilldown"
 	},
 	drilldown: function(){
-		this.$el.trigger('drilldown', this.model);
+		v.tappedevent(function(){
+			this.$el.addClass("tapped");
+		}, function(){
+			this.$el.trigger('drilldown', this.model);
+		}, this);
+		
 	}
 });
 /*
@@ -381,10 +400,14 @@ v.FileView = Backbone.View.extend({
 		this.$('.icon').css("background-image", bg);
 	},
 	events: {
-		"click" : "downloadfile"
+		"tap" : "downloadfile"
 	},
 	downloadfile: function(){
-		this.$el.trigger('downloadfile', this.model);
+		v.tappedevent(function(){
+			this.$el.addClass("tapped");
+		}, function(){
+			this.$el.trigger('downloadfile', this.model);
+		}, this);
 	}
 });
 v.FolderView = Backbone.View.extend({
@@ -397,10 +420,14 @@ v.FolderView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"click" : "drilldown"
+		"tap" : "drilldown"
 	},
 	drilldown: function(){
-		this.$el.trigger('drilldown', this.model);
+		v.tappedevent(function(){
+			this.$el.addClass("tapped");
+		}, function(){
+			this.$el.trigger('drilldown', this.model);
+		}, this);
 	}
 });
 
@@ -496,10 +523,14 @@ v.ForumItemView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		"click" : "drilldown"
+		"tap" : "drilldown"
 	},
 	drilldown: function(){
-		this.$el.trigger("drilldown", this.model);
+		v.tappedevent(function(){
+			this.$el.addClass("tapped");
+		}, function(){
+			this.$el.trigger("drilldown", this.model);
+		}, this);
 	}
 });
 //FORUM SINGLE THREAD VIEW

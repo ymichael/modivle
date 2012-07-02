@@ -119,6 +119,16 @@ GENERIC STYLES
 		// border-top: solid 1px;
 	}
 }
+
+
+@color: #d70000;
+.tapped {
+	color: white;
+	#gradient > .vertical(@color,darken(@color,5));
+	span {
+		color: inherit !important;
+	}
+}
 .row {
 	position: relative;
 	padding: 10px 15px;
@@ -175,6 +185,7 @@ GENERIC STYLES
 	position: relative;
 	margin: 0 15px;
 	padding: 10px 0;
+	overflow: hidden;
 	border-bottom: solid 1px @light;
 	.title {
 		margin-bottom: 10px;
