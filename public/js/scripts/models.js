@@ -56,6 +56,7 @@ m.Folder = Backbone.Model.extend({
 	initialize: function(attr, parent){
 		//link to parent folder
 		this.parent = parent;
+		this.set({"path": this.get("name")});
 		var count = this.get('count');
 		if (this.get('folders')) {
 			count = parseInt(count, 10) + this.get('folders').length;
@@ -218,6 +219,7 @@ FORUM
 m.Thread = Backbone.Model.extend({
 	initialize: function(model, options){
 		_.bindAll(this, "setthreads", "fetch", "thinthread");
+		this.set({"path": this.id});
 		this.parent = options.parent;
 		this.user = options.user;
 		this.type = "thread";
@@ -282,6 +284,7 @@ m.Heading = Backbone.Model.extend({
 		this.parent = options.parent;
 		this.user = options.user;
 		this.threads = new m.Threads();
+		this.set({"path": this.get("name")});
 	},
 	update: function(){
 		var that = this;
@@ -341,6 +344,21 @@ m.Forum = Backbone.Model.extend({
 		}, this);
 		this.headings.isloaded();
 		this.headings.trigger("reset");
+	},
+	updateserver: function(){
+		//save state
+		$.ajax({
+			type: 'POST',
+			url: "/forum",
+			data: {
+				moduleid : this.get("modid"),
+				forum: JSON.stringify(this.toJSON())
+			},
+			success: function(data){
+				//console.log(data);
+			},
+			dataType: 'json'
+		});
 	}
 });
 /*
@@ -437,24 +455,12 @@ m.Module = Backbone.Model.extend({
 			var result = data.Results.length > 0 ? data.Results[0] : {};
 			var forum = {
 				id: result.ID,
+				modid: that.id,
 				title: result.Title,
 				headings: that.thinheadings(result.Headings)
 			};
 			that.forum.update(forum);
-
-			//save state
-			$.ajax({
-				type: 'POST',
-				url: "/forum",
-				data: {
-					moduleid : that.id,
-					forum: JSON.stringify(forum)
-				},
-				success: function(data){
-					//console.log(data);
-				},
-				dataType: 'json'
-			});
+			that.forum.updateserver();
 		});
 		return this;
 	}

@@ -26,7 +26,9 @@ v.MainView = Backbone.View.extend({
 		this.contentview.changemodule(module);
 
 		//trigger route.
-		this.$el.trigger("navigateto", module.get('code'));
+		if (e){
+			this.$el.trigger("navigateto", module.get('code'));
+		}
 	}
 });
 v.ModulesView = Backbone.View.extend({
@@ -122,9 +124,21 @@ v.ContentView = Backbone.View.extend({
 	changeview: function(e, view){
 		this.currentview = view;
 		this.contentcontainer.changeview(view);
+		this.contentnav.changeview(view);
+
+		if (e) {
+			this.navigate();
+		}
+	},
+	navigate: function(e){
+		var args = Array.prototype.slice.call(arguments, 1);
+		
+		args.unshift(this.module.get('code'), this.currentview);
+		this.$el.trigger("navigateto", args);
 	},
 	events: {
-		"changeview" : "changeview"
+		"changeview" : "changeview",
+		"navigate" : "navigate"
 	}
 });
 v.ContentNavView = Backbone.View.extend({
@@ -142,13 +156,10 @@ v.ContentNavView = Backbone.View.extend({
 			fragment.appendChild(x.render().el);
 		},this);
 		this.$el.html(fragment);
-		this.changeview(null,this.currentview);
+		this.changeview(this.currentview);
 		return this;
 	},
-	events: {
-		"changeview" : "changeview"
-	},
-	changeview: function(e, view){
+	changeview: function(view){
 		_.each(this.children, function(navitem){
 			if (navitem.name === view){
 				navitem.active();
@@ -189,14 +200,15 @@ v.ContentContainerView = Backbone.View.extend({
 		this.user = options.user;
 		this.module = options.module;
 		this.currentview = options.view;
+		this.viewobj = {};
 	},
 	render: function(){
 		var Backboneview = this.view(this.currentview);
-		var x = new Backboneview({
+		this.viewobj = new Backboneview({
 			user: this.user,
 			model: this.module
 		});
-		this.$el.html(x.render().el);
+		this.$el.html(this.viewobj.render().el);
 		return this;
 	},
 	view: function(view){
@@ -306,6 +318,23 @@ v.ForumView = Backbone.View.extend({
 	drilldown: function(e, model){
 		this.currentitem = model;
 		this.render();
+
+		if (e) {
+			var path = [],
+			current = this.currentitem;
+			//only want the path up to workbin-1
+			while (current.parent) {
+				var name = current.get('path');
+				path.unshift(name);
+				
+				current = current.parent;
+			}
+
+			//tmp
+			path = path.slice(0,1);
+
+			this.$el.trigger("navigate", path);
+		}
 	}
 });
 v.ForumHeadingsView = Backbone.View.extend({
@@ -491,6 +520,19 @@ v.WorkbinView = Backbone.View.extend({
 	drilldown: function(e, model){
 		this.currentitem = model;
 		this.render();
+
+		if (e) {
+			var path = [],
+			current = this.currentitem;
+			//only want the path up to workbin-1
+			while (current.parent) {
+				var name = current.get('path');
+				path.unshift(name);
+				
+				current = current.parent;
+			}
+			this.$el.trigger("navigate", path);
+		}
 	},
 	downloadfile: function(e, file){
 		this.user.file(file.id);
