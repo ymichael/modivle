@@ -18,13 +18,29 @@ var AppRouter = Backbone.Router.extend({
 		this.parent = options.parent;
 	},
 	routes: {
-		":mod/workbin" : "workbin",
+		":mod/workbin/*stuff" : "workbin",
 		":mod/announcements" : "announcements",
-		":mod/forum" : "forum",
-		":mod" : "module"
+		":mod/forum/*stuff" : "forum",
+		"*mod" : "module"
 	},
 	module: function(mod){
-		console.log(mod + " module");
+		if (this.parent.modules) {
+			//check if mod == valid module.
+			var module = _.find(this.parent.modules.models, function(loadedmodules){
+				return loadedmodules.get('code').toLowerCase() === mod.toLowerCase();
+			}, this);
+
+			if (module) {
+				//select module.
+				this.parent.mainview.moduleselected(null, module);
+			} else {
+				//revert url base.
+				this.navigate("");
+			}
+		} else {
+			//revert url base.
+			this.navigate("");
+		}
 	},
 	workbin: function(mod){
 		console.log(mod + " workbin");
@@ -42,6 +58,10 @@ var App = Backbone.View.extend({
 	initialize: function(){
 		var apikey = "ba1ge5NQ9cl76KQNI1Suc";
 		this.ivle = new Ivle(apikey, '/proxy/');
+
+		//app router
+		this.router = new AppRouter({parent: this});
+
 		_.bindAll(this, 'start');
 	},
 	start: function(){
@@ -67,8 +87,6 @@ var App = Backbone.View.extend({
 		}
 		this.render();
 		this.validateuser();
-
-		var router = new AppRouter({parent: this});
 		Backbone.history.start({pushState: true});
 	},
 	validateuser: function(){
@@ -133,8 +151,12 @@ var App = Backbone.View.extend({
 		var logout =  re.exec(window.location.href)[1] + "/logout";
 		window.location.href = logout;
 	},
+	navigateto: function(e, path){
+		this.router.navigate(path.toLowerCase());
+	},
 	events: {
-		'click #logout': "logout"
+		'click #logout': "logout",
+		'navigateto' : "navigateto"
 	}
 });
 

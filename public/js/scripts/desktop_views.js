@@ -22,7 +22,11 @@ v.MainView = Backbone.View.extend({
 		"moduleselected" : "moduleselected"
 	},
 	moduleselected: function(e, module){
+		this.modulesview.active(module.get('code'));
 		this.contentview.changemodule(module);
+
+		//trigger route.
+		this.$el.trigger("navigateto", module.get('code'));
 	}
 });
 v.ModulesView = Backbone.View.extend({
@@ -46,9 +50,6 @@ v.ModulesView = Backbone.View.extend({
 		}
 		return this;
 	},
-	moduleselected: function(e, module){
-		this.active(module.get("code"));
-	},
 	active: function(modcode){
 		//keep ref to active mod;
 		this.activemod = modcode;
@@ -59,9 +60,6 @@ v.ModulesView = Backbone.View.extend({
 				view.active();
 			}
 		}, this);
-	},
-	events: {
-		"moduleselected" : "moduleselected"
 	}
 });
 v.ModuleView = Backbone.View.extend({
