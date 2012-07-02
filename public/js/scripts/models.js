@@ -282,6 +282,8 @@ m.Heading = Backbone.Model.extend({
 		this.parent = options.parent;
 		this.user = options.user;
 		this.threads = new m.Threads();
+	},
+	update: function(){
 		var that = this;
 		this.user.forumheadingthreads(this.id, function(data){
 			var threads = _.map(data.Results, function(thread){

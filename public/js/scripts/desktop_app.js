@@ -20,22 +20,20 @@ var AppRouter = Backbone.Router.extend({
 	routes: {
 		":mod/workbin" : "workbin",
 		":mod/announcements" : "announcements",
-		":mod/forum" : "forum"
+		":mod/forum" : "forum",
+		":mod" : "module"
+	},
+	module: function(mod){
+		console.log(mod + " module");
 	},
 	workbin: function(mod){
-		this.parent.mainview.modulesview.views[0].moduleselected();
-		this.parent.mainview.contentview.contentnav.changeview(null, "workbin");
-		this.parent.mainview.contentview.changeview(null, "workbin");
+		console.log(mod + " workbin");
 	},
 	announcements: function(mod){
-		this.parent.mainview.modulesview.views[1].moduleselected();
-		this.parent.mainview.contentview.contentnav.changeview(null, "announcements");
-		this.parent.mainview.contentview.changeview(null, "announcements");
+		console.log(mod + " announcements");
 	},
 	forum: function(mod){
-		this.parent.mainview.modulesview.views[0].moduleselected();
-		this.parent.mainview.contentview.contentnav.changeview(null, "forum");
-		this.parent.mainview.contentview.changeview(null, "forum");
+		console.log(mod + " forum");
 	}
 });
 
