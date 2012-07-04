@@ -152,22 +152,23 @@ var App = Backbone.View.extend({
 		this.usertoken = this.bootstrap.token;
 		this.user = new this.ivle.user(this.usertoken);
 		
-		var that = this;
-		if (this.bootstrap.modules) {
-			//modules availible on server
-			var modules = _.map(this.bootstrap.modules, function(module){
-				var x = new m.Module(module,{user: this.user});
-				return x;
-			}, this);
-			this.modules = new m.Modules(modules,{user: this.user});
-			this.modules.fetch();
-		} else {
-			this.loading();
-			this.modules = new m.Modules([],{user: this.user});
-			this.modules.fetch(function(){
-				that.stoploading();
-			});
-		}
+		this.loading();
+		// var that = this;
+		// if (this.bootstrap.modules) {
+		// 	//modules availible on server
+		// 	var modules = _.map(this.bootstrap.modules, function(module){
+		// 		var x = new m.Module(module,{user: this.user});
+		// 		return x;
+		// 	}, this);
+		// 	this.modules = new m.Modules(modules,{user: this.user});
+		// 	this.modules.fetch();
+		// } else {
+		// 	this.loading();
+		// 	this.modules = new m.Modules([],{user: this.user});
+		// 	this.modules.fetch(function(){
+		// 		that.stoploading();
+		// 	});
+		// }
 		this.render();
 		this.validateuser();
 		Backbone.history.start({pushState: true});
@@ -211,10 +212,10 @@ var App = Backbone.View.extend({
 		});
 	},
 	loading: function(){
-		$('.loading').html("please be patient, loading your modules...");
+		$('#overlay').html(ich.loading());
 		$('#overlay').show();
 		var that = this;
-		$('#close').click(function(){
+		$('#overlay_close').click(function(){
 			that.stoploading();
 		});
 	},

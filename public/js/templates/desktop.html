@@ -1,8 +1,88 @@
+<!-- OVERLAY -->
+<script id='loading' type="text/html">
+	<div class='modal message'>
+		<div id='overlay_close'></div>
+		<span>Loading your modules, Please be patient...</span>
+	</div>
+</script>
+<script id='keyboardshortcuts' type="text/html">
+	<div class='modal keyboardshortcuts'>
+		<div id='overlay_close'></div>
+		<div class='title'>Keyboard shortcuts</div>
+		<div class='contents'>
+			<div class='navigation col'>
+				<div class='coltitle'>Navigation</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>J</span>
+					</span>
+					<span class='desc'>Move up</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>K</span>
+					</span>
+					<span class='desc'>Move down</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>Enter</span>
+					</span>
+					<span class='desc'>Action / Select</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>?</span>
+					</span>
+					<span class='desc'>This menu</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>Esc</span>
+					</span>
+					<span class='desc'>Close this menu</span>
+				</div>
+			</div>
+			<div class='jumping col'>
+				<div class='coltitle'>Jumping</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>G</span>
+						<span class='key'>M</span>
+					</span>
+					<span class='desc'>Modules</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>G</span>
+						<span class='key'>A</span>
+					</span>
+					<span class='desc'>Announcements</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>G</span>
+						<span class='key'>W</span>
+					</span>
+					<span class='desc'>Workbin</span>
+				</div>
+				<div class='row'>
+					<span class='keys'>
+						<span class='key'>G</span>
+						<span class='key'>F</span>
+					</span>
+					<span class='desc'>Forum</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
 <!-- MAIN -->
 <script id='moduleview' type='text/html'>
 	<div class='modulecode'>{{code}}</div>
 </script>
-<script type="text/html" id="contentview">
+<script id="contentview" type="text/html">
 	<div id="tabs"></div>
 	<div id="tabcontent"></div>
 </script>
@@ -18,7 +98,7 @@
 
 
 <!-- FORUM -->
-<script type='text/html' id='forumview'>
+<script id='forumview' type="text/html">
 	<div class='tabheading' id='forumheader'></div>
 	<div class='tabcontents'>
 		<!-- <div class='tabrowinfo tabrow'>
@@ -32,7 +112,7 @@
 		<div id='forumcontents'></div>
 	</div>
 </script>
-<script type='text/html' id='forumheadingview'>
+<script id='forumheadingview' type="text/html">
 	<div class="rowname">
 		<div class='rowicon headingicon'></div>
 		<span>{{name}}</span>
@@ -40,7 +120,7 @@
 	<div class="rowcol2"></div>
 	<div class="rowcol3"></div>
 </script>
-<script type='text/html' id='forumthreadview'>
+<script id='forumthreadview' type="text/html">
 	<div class='rowicon threadicon'></div>
 	<div class='posttitle'>
 		<div class='posttitlemain'>
@@ -51,14 +131,14 @@
 		<span class='date'>{{ nicedate }}</span>
 	</div>
 </script>
-<script type='text/html' id='forumthreadsthreadview'>
+<script id='forumthreadsthreadview' type="text/html">
 	<div class="rowname">
 		<span>{{title}}</span>
 	</div>
 	<div class="rowcol2"></div>
 	<div class="rowcol3"></div>
 </script>
-<script type='text/html' id='forumpost'>
+<script id='forumpost' type="text/html">
 	<div class='subthreadicon'></div>
 	<div class='posttitle'>
 		<div class='posttitlemain'>
@@ -74,7 +154,7 @@
 
 
 <!-- ANNOUNCEMENTS -->
-<script type='text/html' id='announcementview'>
+<script id='announcementview' type="text/html">
 	<div class='posttitle'>
 		<div class='posttitlemain'>
 			<span class='main'>{{ title }}</span>
@@ -85,7 +165,7 @@
 	</div>
 	<div class='postbody'>{{{ contents }}}</div>
 </script>
-<script type='text/html' id='inforow'>
+<script id='inforow' type="text/html">
 	<div class='inforow tabrow'>{{text}}</div>
 </script>
 
