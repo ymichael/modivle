@@ -7,9 +7,10 @@ define([
 	'ivle',
 	'models',
 	'views',
-	'text!templates/desktop.html'
+	'text!templates/desktop.html',
+	'keymaster'
 ],
-function($,_,Backbone,ich,Ivle,m,v,templates){
+function($,_,Backbone,ich,Ivle,m,v,templates,key){
 $('body').append(templates);
 ich.grabTemplates();
 
@@ -135,6 +136,38 @@ var AppRouter = Backbone.Router.extend({
 	}
 });
 
+var KeyboardShortcuts = Backbone.View.extend({
+	el: "#container",
+	initialize: function(options){
+		this.parent = options.parent;
+		this.shortcuts();
+	},
+	shortcuts: function(){
+		//initialize
+		key('shift+/', function(){
+			$("#overlay")
+				.html(ich.keyboardshortcuts())
+				.show();
+
+			$('#overlay_close').click(function(){
+				$("#overlay")
+					.html("")
+					.hide();
+			});
+		});
+		key('esc', function(){
+			$("#overlay")
+				.html("")
+				.hide();
+		});
+	},
+	
+	//listen to events and reset/set values accordingly.
+	events: {
+
+	}
+});
+
 var App = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
@@ -144,6 +177,9 @@ var App = Backbone.View.extend({
 
 		//app router
 		this.router = new AppRouter({parent: this});
+
+		//keyboard shortcut
+		this.keyboard = new KeyboardShortcuts({parent: this});
 
 		_.bindAll(this, 'start');
 	},

@@ -6,6 +6,7 @@ require.config({
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
+		'keymaster' : "libs/keymasterwrapper",
 		'ivle': "libs/ivle",
 		'app' : "scripts/desktop_app",
 		'views' : "scripts/desktop_views",
