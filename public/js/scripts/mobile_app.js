@@ -25,6 +25,7 @@ var App = Backbone.View.extend({
 		this.usertoken = this.bootstrap.token;
 		this.user = new this.ivle.user(this.usertoken);
 		var that = this;
+		
 		if (this.bootstrap.modules) {
 			//modules availible on server
 			var modules = _.map(this.bootstrap.modules, function(module){
@@ -82,16 +83,19 @@ var App = Backbone.View.extend({
 		});
 	},
 	loading: function(){
-		$('.loading').html("please be patient, loading your modules...");
-		$('#overlay').show();
+		$('#overlay')
+			.html(ich.loading())
+			.show();
+
 		var that = this;
-		$('#close').on('tap', function(){
+		$('#overlay_close').on('tap',function(){
 			that.stoploading();
 		});
 	},
 	stoploading: function(){
-		$('.loading').html("");
-		$('#overlay').hide();
+		$('#overlay')
+			.html("")
+			.hide();
 	},
 	render: function(){
 		this.mainview = new v.MainView({
