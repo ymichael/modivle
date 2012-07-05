@@ -45,6 +45,7 @@ app.get(/^\/(?!(css)|(js)|(img)).*/, routes.app);
 app.post('/modules', routes.modules);
 app.post('/workbin', routes.workbin);
 app.post('/forum', routes.forum);
+app.post('/forum/heading', routes.forumheading);
 app.post('/proxy', routes.proxy);
 app.post('/auth', routes.token);
 

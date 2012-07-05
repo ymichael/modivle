@@ -68,7 +68,23 @@ exports.forum = function(req,res){
   } else {
     _.each(req.session.bootstrap.modules, function(module){
       if (module.id === req.body.moduleid){
-        module.forum = JSON.parse(req.body.forum);
+        _.extend(module.forum, JSON.parse(req.body.forum));
+      }
+    });
+    res.json({updatestatus: "Success"});
+  }
+};
+exports.forumheading = function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
+    res.redirect(403, '/welcome');
+  } else {
+    _.each(req.session.bootstrap.modules, function(module){
+      if (module.id === req.body.moduleid){
+        _.each(module.forum.headings, function(heading) {
+          if (heading.id === req.body.headingid) {
+            heading.threads = JSON.parse(req.body.threads);
+          }
+        });
       }
     });
     res.json({updatestatus: "Success"});

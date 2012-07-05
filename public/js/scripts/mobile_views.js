@@ -30,11 +30,16 @@ v.MainView = Backbone.View.extend({
 	},
 	moduleselected: function(e, module){
 		this.header.modulepage(module.get("code"));
-		var singlemoduleview = new v.SingleModuleView({
+		this.singlemoduleview = new v.SingleModuleView({
 			model: module,
 			user: this.user
 		});
-		this.$("#main").html(singlemoduleview.render().el);
+		this.$("#main").html(this.singlemoduleview.render().el);
+
+		//trigger route.
+		if (e){
+			this.$el.trigger("navigateto", module.get('code'));
+		}
 	},
 	home: function(){
 		this.header.home();
@@ -118,7 +123,8 @@ v.SingleModuleView = Backbone.View.extend({
 		}
 	},
 	events: {
-		"changeview" : "changeview"
+		"changeview" : "changeview",
+		"navigate" : "navigate"
 	},
 	changeview: function(e, view){
 		this.currentview = view;
@@ -131,6 +137,16 @@ v.SingleModuleView = Backbone.View.extend({
 			user: this.user
 		});
 		this.$el.append(this.content.render().el);
+
+		if (e) {
+			this.navigate();
+		}
+	},
+	navigate: function(e){
+		var args = Array.prototype.slice.call(arguments, 1);
+		
+		args.unshift(this.model.get('code'), this.currentview);
+		this.$el.trigger("navigateto", args);
 	}
 });
 v.SingleModuleNav = Backbone.View.extend({
@@ -267,6 +283,11 @@ v.AnnouncmentsView = Backbone.View.extend({
 	drilldown: function(e, model){
 		this.currentitem = model || this.announcements;
 		this.render();
+
+		if (e) {
+			var path = [];
+			this.$el.trigger("navigate", path);
+		}
 	}
 });
 v.AnnouncementView = Backbone.View.extend({
@@ -336,6 +357,19 @@ v.WorkbinView = Backbone.View.extend({
 	drilldown: function(e, model){
 		this.currentitem = model;
 		this.render();
+
+		if (e) {
+			var path = [],
+			current = this.currentitem;
+			//only want the path up to workbin-1
+			while (current.parent) {
+				var name = current.get('path');
+				path.unshift(name);
+				
+				current = current.parent;
+			}
+			this.$el.trigger("navigate", path);
+		}
 	},
 	downloadfile: function(e, file){
 		this.user.file(file.id);
@@ -466,6 +500,19 @@ v.ForumView = Backbone.View.extend({
 	drilldown: function(e, model){
 		this.currentitem = model;
 		this.render();
+
+		if (e) {
+			var path = [],
+			current = this.currentitem;
+			while (current.parent) {
+				var name = current.get('path');
+				path.unshift(name);
+				
+				current = current.parent;
+			}
+			console.log(path);
+			this.$el.trigger("navigate", path);
+		}
 	}
 });
 v.ForumHeadingsView = Backbone.View.extend({

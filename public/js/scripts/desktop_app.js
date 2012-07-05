@@ -97,7 +97,6 @@ var AppRouter = Backbone.Router.extend({
 				currentitem = _.find(collection.models, function(item){
 					return this.sanitize(item.get('path')) === paths[0];
 				},this);
-
 				if (currentitem){
 					parentitem = currentitem;
 				} else {

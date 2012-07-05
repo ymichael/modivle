@@ -21,8 +21,6 @@ var relativeTime = {
 	y : "a year",
 	yy : "%d years"
 };
-
-
 m.readabledate = function(dateobj){
 	var milliseconds = Date.now() - dateobj.getTime(),
 		seconds = Math.round(Math.abs(milliseconds) / 1000),
@@ -192,7 +190,8 @@ m.Workbin = Backbone.Model.extend({
 ANNOUCEMENTS
 */
 m.Announcement = Backbone.Model.extend({
-	initialize: function(){
+	initialize: function(options){
+		this.set({"path": this.id});
 		//check date.
 		if (this.get("date")){
 			this.set({"nicedate": m.readabledate(this.get("date"))});
@@ -227,10 +226,21 @@ m.Thread = Backbone.Model.extend({
 		if (this.get("threads")){
 			this.setthreads(this.get("threads"));
 		}
-		
-		this.set({"nicedate": m.readabledate(this.get("date"))});
+			
+		var date = this.get("date");
+		if (typeof date === "string"){
+			date = m.nicedate(date);
+		}
+		this.set({"nicedate": m.readabledate(date)});
+		this.loaded = false;
 		//update when necessary.
 		//TODO
+	},
+	isloading: function(){
+		return !this.loaded;
+	},
+	isloaded: function(){
+		this.loaded = true;
 	},
 	fetch: function(){
 		var that = this;
@@ -238,6 +248,7 @@ m.Thread = Backbone.Model.extend({
 			var thread = data.Results.length !== 0 ? data.Results[0] : null;
 			thread = that.thinthread(thread);
 			that.setthreads(thread.threads);
+			that.isloaded();
 			that.trigger("reset");
 		});
 	},
@@ -267,8 +278,8 @@ m.Thread = Backbone.Model.extend({
 	}
 });
 m.Threads = Backbone.Collection.extend({
-	initialize: function(){
-		this.loaded = false;
+	initialize: function(models){
+		this.loaded = models.length === 0 ? false : true;
 	},
 	model: m.Thread,
 	isloading: function(){
@@ -283,7 +294,14 @@ m.Heading = Backbone.Model.extend({
 		this.type = "heading";
 		this.parent = options.parent;
 		this.user = options.user;
-		this.threads = new m.Threads();
+		var threads = [];
+		if (this.get("threads")){
+			_.each(this.get("threads"), function(thread){
+				var x = new m.Thread(thread, {parent: this, user: this.user});
+				threads.push(x);
+			}, this);
+		}
+		this.threads = new m.Threads(threads);
 		this.set({"path": this.get("name")});
 	},
 	update: function(){
@@ -307,6 +325,23 @@ m.Heading = Backbone.Model.extend({
 			}, that);
 			that.threads.isloaded();
 			that.threads.trigger("reset");
+			that.updateserver();
+		});
+	},
+	updateserver: function(){
+		//save state
+		$.ajax({
+			type: 'POST',
+			url: "/forum/heading",
+			data: {
+				moduleid : this.parent.get("modid"),
+				headingid: this.id,
+				threads: JSON.stringify(this.threads.toJSON())
+			},
+			success: function(data){
+				// console.log(data);
+			},
+			dataType: 'json'
 		});
 	}
 });

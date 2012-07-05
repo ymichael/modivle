@@ -329,10 +329,6 @@ v.ForumView = Backbone.View.extend({
 				
 				current = current.parent;
 			}
-
-			//tmp
-			path = path.slice(0,1);
-
 			this.$el.trigger("navigate", path);
 		}
 	}
@@ -406,24 +402,44 @@ v.ForumSingleThreadView = Backbone.View.extend({
 	},
 	render: function(){
 		//this post.
-		var root = new v.ForumSingleThreadThreadView({model: this.model});
-		this.$el.html(root.render().el);
+		var root;
+		if (this.model.isloading()) {
+			root = new v.ForumSingleThreadThreadView({
+				model: this.model,
+				root: true,
+				loading: true
+			});
+			this.$el.html(root.render().el);
+		} else {
+			root = new v.ForumSingleThreadThreadView({
+				model: this.model,
+				root: true
+			});
+			this.$el.html(root.render().el);
+		}
 		return this;
 	}
 });
 v.ForumSingleThreadThreadView = Backbone.View.extend({
 	className: "tabpost forumpost",
-	initialize: function(){
-
+	initialize: function(options){
+		this.root = options.root;
+		this.loading = options.loading;
 	},
 	render: function(){
 		this.$el.html(ich.forumpost(this.model.toJSON()));
-		
-		if (this.model.threads.length !== 0) {
-			_.each(this.model.threads, function(subthread){
-				var x = new v.ForumSingleThreadThreadView({model: subthread});
-				this.$(".subthreads").append(x.render().el);
-			}, this);
+		if (this.loading) {
+			this.$el.append(ich.inforow({text: "loading entire thread..."}));
+		} else {
+			if (this.model.threads.length !== 0) {
+				_.each(this.model.threads, function(subthread){
+					var x = new v.ForumSingleThreadThreadView({model: subthread});
+					this.$(".subthreads").append(x.render().el);
+				}, this);
+			}
+			if (this.root) {
+				this.$el.append(ich.inforow({text: "end of thread."}));
+			}
 		}
 		return this;
 	}
