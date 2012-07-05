@@ -17,10 +17,14 @@ var LandingPageRouter = Backbone.Router.extend({
 	},
 	routes: {
 		"about" : "about",
+		"features" : "features",
 		"*everythingelse" : "catchall"
 	},
 	about: function(){
-		console.log("about");
+		this.parent.changeview(null, "about");
+	},
+	features: function(){
+		this.parent.changeview(null, "features");
 	},
 	catchall: function(everythingelse){
 		this.navigate("");
@@ -38,6 +42,8 @@ var LandingPage = Backbone.View.extend({
 	start: function(){
 		this.header = new HeaderView();
 		this.main = new MainView();
+
+		this.$("#main").append(ich.features());
 
 		Backbone.history.start({pushState: true, root: "/welcome/"});
 	},
