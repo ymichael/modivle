@@ -40,6 +40,42 @@ PAGE STRUCTURE
 /*
 HEADER
 */
+#tabarrow {
+	.transition(right 0.2s ease-in);
+	position: absolute;
+	width: 20px; 
+	height: 12px; 
+	bottom: -1px;
+	display: none;
+	&.features {
+		display: block;
+		right: 80px;
+	}
+	&.about {
+		display: block;
+		right: 153px;
+	}
+	.front {
+		position: absolute;
+		top: 3px;
+		left: 2px;
+		width: 0; 
+		height: 0; 
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-bottom: 10px solid white;	
+	}
+	.back {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 0; 
+		height: 0; 
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-bottom: 12px solid darken(@light, 0);	
+	}
+}
 header {
 	border-bottom: solid 1px @light;
 	z-index: 10;
@@ -64,46 +100,6 @@ header {
 			&.active {
 				color: black;
 			}
-		}
-		.tabarrow {
-			.transition(right 0.5s ease-in);
-			position: absolute;
-			width: 20px; 
-			height: 12px; 
-			bottom: -1px;
-			display: none;
-
-			&.features {
-				display: block;
-				right: 80px;
-			}
-			&.about {
-				display: block;
-				right: 153px;
-			}
-
-			.front {
-				position: absolute;
-				top: 3px;
-				left: 2px;
-				width: 0; 
-				height: 0; 
-				border-left: 8px solid transparent;
-				border-right: 8px solid transparent;
-				border-bottom: 10px solid white;	
-			}
-			.back {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 0; 
-				height: 0; 
-				border-left: 10px solid transparent;
-				border-right: 10px solid transparent;
-				border-bottom: 12px solid darken(@light, 0);	
-			}
-			
-
 		}
 	}
 }
@@ -155,13 +151,20 @@ FOOTER
 footer {
 	color: #999;
 	font-size: 14px;
-	.footer_link {
-		float: left;
+	span {
 		display: inline-block;
 		font-weight: 300;
 		font-size: 15px;
 		line-height: 40px;
 		padding: 5px 0;
+	}
+	.footer_link {
+		float: left;
 		margin-right: 20px;
 	}
+	// .footer_right {
+	// 	font-weight: 600;
+	// 	font-size: 20px;
+	// 	float: right;
+	// }
 }

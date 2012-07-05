@@ -49,6 +49,9 @@ var ivle = (function($){
 				window.location.href = authUrl;
 			});
 		};
+		this.authurl = function(callbackurl){
+			return "https://ivle.nus.edu.sg/api/login/?apikey=" + apikey + "&url=" + encodeURIComponent(callbackurl);
+		};
 
 		//create user with auth token
 		this.user = function(authtoken){
