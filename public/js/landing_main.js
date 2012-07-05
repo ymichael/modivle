@@ -8,13 +8,11 @@ require.config({
 		'backbone': "libs/backbone",
 		'ich': "libs/icanhazamd",
 		'ivle': "libs/ivle",
-		'mainapp' : "scripts/app",
-		'appmodels' : "scripts/models",
-		'appviews' : "scripts/views",
-		'loginscript' : "scripts/login"
+		'landing': "scripts/landing_page"
 	}
 });
-require(['loginscript'],
-function(login){
-	login.init();
+require(['landing'],
+function(Landingpage){
+	var x = new Landingpage();
+	x.start();
 });

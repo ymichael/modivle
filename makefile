@@ -2,7 +2,7 @@ all:
 	#optimise js files
 	r.js -o public/js/build/desktop.build.js
 	r.js -o public/js/build/mobile.build.js
-	r.js -o public/js/build/login.build.js
+	r.js -o public/js/build/landing.build.js
 	
 	#parse and minify less files
 	lessc public/css/desktop_app.less > build/css/desktop_app.css --yui-compress

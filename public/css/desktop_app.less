@@ -180,7 +180,6 @@ TABS
 
 header, #main, footer {
 	width: 100%;
-	float: left;
 }
 #header_container, #main_container, #footer_container {
 	width: @pagewidth;
@@ -200,7 +199,9 @@ header, #main, footer {
 		cursor: pointer;
 	}
 }
-//sticky footer
+/*
+STICKY FOOTER
+*/
 html, body {
 	height: 100%;
 }
@@ -208,24 +209,26 @@ html, body {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	padding: 0;
 	margin: 0 auto -30px; /* the bottom margin is the negative value of the footer's height */
 }
 footer, .push {
-	height: 30px;  
+	height: 30px;
+	clear: both;
 	//.push must be the same height as .footer 
 }
 footer {
-	background-color: white;
 	color: #999;
 	text-align: right;
+	font-spacing: normal;
 	font-size: 14px;
 	#footer_container {
 		p {
+			font-weight: 300;
 			padding-left: 5px;
 		}
 		a { 
-			color: #555; 
+			font-weight: 300;
+			color: #999; 
 		}
 	}
 }
@@ -237,7 +240,6 @@ footer {
 	}
 	#content {
 		width: @content;
-		min-height: 300px;
 		float: right;
 		margin-bottom: 100px;
 	}
@@ -251,7 +253,6 @@ GENERIC STYLES
 	width: 100%;
 	float: left;
 	margin: 10px 0px;
-	min-height: 500px;
 }
 .tabheading {
 	padding-bottom: 7px;
