@@ -40,6 +40,15 @@
 
 /* Mixins
 -------------------------------------------------- */
+.selection(@color){
+  &::selection {
+    background: @color;
+  }
+  &::-moz-selection {
+    background: @color;
+  }
+}
+.selection(#d70000);
 
 // Clearfix for clearing floats like a boss
 .clearfix {

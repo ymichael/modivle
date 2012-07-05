@@ -1,65 +1,54 @@
 extends layouts/landing
 
 block content
-	#fbsdk.
-		<div id="fb-root"></div>
-		<script>(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=115616068562331";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));</script>
-	header
-			#header_container
-				img#logo(alt="modivle logo",src='img/logo/modivleblack.png')
-				#login(title='login')
+	//- #fbsdk.
+	//- 	<div id="fb-root"></div>
+	//- 	<script>(function(d, s, id) {
+	//- 		var js, fjs = d.getElementsByTagName(s)[0];
+	//- 		if (d.getElementById(id)) return;
+	//- 		js = d.createElement(s); js.id = id;
+	//- 		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=115616068562331";
+	//- 		fjs.parentNode.insertBefore(js, fjs);
+	//- 	}(document, 'script', 'facebook-jssdk'));</script>
 	#container
-		#main_container
-			#top
-				#screenshotwrapper
-					img#screenshot(alt="modivle screenshot",src='img/logo/main.png')
-				#titledesc.
-					MODIVLE is a simple and easy to use NUS IVLE client.
-				#fblike.
-					<div class="fb-like" data-href="http://modivle.yrmichael.com" data-send="false" data-width="450" data-show-faces="false"></div>
-			.page#features
-				.pagetitle FEATURES.
+		header.wrapper
+			#header_container.center
+				img#logo(alt="modivle logo",src='img/logo/modivleblack.png')
+				
+				
+				span.header_link login
+				span.header_link.active features
+				span.header_link about
+
+				.tabarrow
+					.back
+					.front
+
+		section.wrapper#banner
+			.center
 				.content
-					.desc
-						.title simple
-						.text we know you are busy. that's why we've whittled down ivle to the bare essentials so you get the job done. no popups, redirects, blinking text or annoying iframes. Just the stuff you use and need.
-					.imgwrapper
-						img#simple(alt="modivle window view",src='img/logo/appview.png')
-				.content
-					.desc
-						.title mobile friendly
-						.text access MODIVLE anywhere from any device. mobile support is very important to us and it something that is lacking in the real ivle. pulling up the latest files on your phone should be easy. we make that happen.
-					.imgwrapper
-						img#mobile(alt="modivle mobile view",src='img/logo/mobile.png')
-				.content
-					.desc
-						.title free & open-sourced
-						.text the <a href="https://github.com/ymichael/modivle" target="_blank">application source code</a> is available on github! Feel free to fork it and submit a pull request!
-					.imgwrapper
-						img#github(alt="github octocat",src='img/logo/github.jpg')
-			.page#getintouch
-				.pagetitle GET IN TOUCH.
-				.desc
-					.title feedback?
-					.text if you like MODIVLE, have a suggestion, bug report or just want to say hi, feel free to drop us a mail!
-				.desc
-					.title contributions
-					.text a developer? a designer? want to get your hands dirty and build a better ivle? get in touch!
-				.contact
-					.field#mail
-						.icon
-						.label <a href='mailto:wrong92@gmail.com'>wrong92@gmail.com</a>
-					.field#twitter
-						.icon
-						.label <a href="http://twitter.com/_ymichael" target="_blank">@_ymichael</a>				
-	footer
-		#footer_container
+					//- p Mobile 
+					//- 	br	
+					//- 	span means everywhere.			
+					//- img(src='/img/landing/test.png')
+				p.tagline A NUS IVLE Client. Less but better.
+
+		
+		.push
+
+
+	footer.wrapper
+		#footer_container.center
+			span.footer_link Release Notes
+			span.footer_link Terms of Service
+			span.footer_link Contact Us
+
+
+	
+
+
+
+
 	if env == "dev"
 		script(data-main="/js/login", src="/js/libs/require.js")
 	else
