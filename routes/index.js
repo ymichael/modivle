@@ -68,7 +68,12 @@ exports.forum = function(req,res){
   } else {
     _.each(req.session.bootstrap.modules, function(module){
       if (module.id === req.body.moduleid){
-        _.extend(module.forum, JSON.parse(req.body.forum));
+        if (module.forum) {
+          _.extend(module.forum, JSON.parse(req.body.forum));
+        } else {
+          module.forum = JSON.parse(req.body.forum);
+        }
+        
       }
     });
     res.json({updatestatus: "Success"});

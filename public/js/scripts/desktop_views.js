@@ -62,6 +62,10 @@ v.ModulesView = Backbone.View.extend({
 				view.active();
 			}
 		}, this);
+	},
+	highlight: function(index){
+		this.$(".highlight").removeClass("highlight");
+		this.views[index].$el.addClass("highlight");
 	}
 });
 v.ModuleView = Backbone.View.extend({
@@ -511,15 +515,16 @@ v.WorkbinView = Backbone.View.extend({
 				//files and folders
 				var fragment = document.createDocumentFragment();
 				//reverse models to show latest files at the top.
+				this.elems = [];
 				_.each(this.currentitem.items.models, function(item){
 					var x;
 					if (item.get("type") === 'document'){
 						x = new v.FileView({model: item});
-						fragment.appendChild(x.render().el);
 					} else if (item.get("type") === 'folder'){
 						x = new v.FolderView({model: item});
-						fragment.appendChild(x.render().el);
 					}
+					this.elems.push(x);
+					fragment.appendChild(x.render().el);
 				},this);
 				this.$('#filescontainer').html(fragment);
 			}
@@ -557,6 +562,10 @@ v.WorkbinView = Backbone.View.extend({
 				file.dled();
 			}
 		}, 500);
+	},
+	highlight: function(index){
+		this.$(".highlight").removeClass("highlight");
+		this.elems[index].$el.addClass("highlight");
 	}
 });
 v.FileView = Backbone.View.extend({

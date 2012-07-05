@@ -8,11 +8,17 @@ define([
 	'models',
 	'views',
 	'text!templates/desktop.html',
-	'keymaster'
+	'keyboardjs'
 ],
-function($,_,Backbone,ich,Ivle,m,v,templates,key){
+function($,_,Backbone,ich,Ivle,m,v,templates,keymaster){
 $('body').append(templates);
 ich.grabTemplates();
+
+//alias keymaster to keyboardjs
+var key = function(keycombo, callback){
+	keymaster.bind.key(keycombo, callback, function(){});
+};
+
 
 var AppRouter = Backbone.Router.extend({
 	initialize: function(options){
@@ -140,10 +146,14 @@ var KeyboardShortcuts = Backbone.View.extend({
 	initialize: function(options){
 		this.parent = options.parent;
 		this.shortcuts();
+
+		//state.
+		this.resetstate();
 	},
 	shortcuts: function(){
+		var that = this;
 		//initialize
-		key('shift+/', function(){
+		key('shift + slash', function(){
 			$("#overlay")
 				.html(ich.keyboardshortcuts())
 				.show();
@@ -159,11 +169,135 @@ var KeyboardShortcuts = Backbone.View.extend({
 				.html("")
 				.hide();
 		});
+
+		//views
+		key('g + a', function(){
+			that.currentview = "announcements";
+			that.parent.mainview.contentview.changeview(null, that.currentview);
+		});
+		key('g + w', function(){
+			that.currentview = "workbin";
+			that.parent.mainview.contentview.changeview(null, that.currentview);
+		});
+		key('g + f', function(){
+			that.currentview = "forum";
+			console.log('asdf');
+			that.parent.mainview.contentview.changeview(null, that.currentview);
+		});
+		key('g + m', function(){
+			that.currentview = "modules";
+		});
+
+		//navigation
+		key('j', function(){
+			that.up();
+		});
+		key('k', function(){
+			that.down();
+		});
+		key('enter', function(){
+			that.select();
+		});
 	},
 	
 	//listen to events and reset/set values accordingly.
 	events: {
 
+	},
+	resetstate: function(view, index){
+		this.currentview = view || "modules";
+		this.currentindex = index;
+	},
+	incrindex: function(){
+		if (typeof this.currentindex !== "number") {
+			this.currentindex = 0;
+		} else {
+			this.currentindex += 1;
+		}
+		this.padindex();
+		return this.currentindex;
+	},
+	decrindex: function(){
+		if (typeof this.currentindex !== "number") {
+			this.currentindex = 0;
+		} else {
+			this.currentindex -= 1;
+		}
+		this.padindex();
+		return this.currentindex;
+	},
+	up: function(){
+		var index = this.incrindex();
+		this.highlight(index);
+	},
+	down: function(){
+		var index = this.decrindex();
+		this.highlight(index);
+	},
+	select: function(){
+		var col = this.viewcollection();
+		var index = this.currentindex || 0;
+		
+		if (this.currentview === "modules") {
+			var elem = col[index];
+			this.parent.mainview.moduleselected({}, elem);
+		}
+	},
+	viewcollection: function(){
+		var x, currentitem;
+		if (this.currentview === "modules") {
+			x = this.parent.mainview.modulesview.collection.models;
+		} else if (this.currentview === "forum") {
+			currentitem = this.parent.mainview.contentview.contentcontainer.viewobj.currentitem;
+			if (currentitem.type === "forum") {
+				x = currentitem.headings.models;
+			} else if (currentitem.type === "heading") {
+				x = currentitem.threads.models;
+			} else if (currentitem.type === "thread") {
+				x = "dontloop";
+			}
+		} else if (this.currentview === "workbin") {
+			currentitem = this.parent.mainview.contentview.contentcontainer.viewobj.currentitem;
+			x = currentitem.items.models;
+		} else if (this.currentview === "announcements") {
+			x = this.parent.mainview.contentview.contentcontainer.viewobj.announcements.models;
+		}
+		return x;
+	},
+	highlightobj: function(){
+		var x, currentitem;
+		if (this.currentview === "modules") {
+			x = this.parent.mainview.modulesview;
+		} else if (this.currentview === "forum") {
+			currentitem = this.parent.mainview.contentview.contentcontainer.viewobj.currentitem;
+			if (currentitem.type === "forum") {
+				x = currentitem.headings.models;
+			} else if (currentitem.type === "heading") {
+				x = currentitem.threads.models;
+			} else if (currentitem.type === "thread") {
+				x = "dontloop";
+			}
+		} else if (this.currentview === "workbin") {
+			x = this.parent.mainview.contentview.contentcontainer.viewobj;
+		} else if (this.currentview === "announcements") {
+			x = this.parent.mainview.contentview.contentcontainer.viewobj.announcements.models;
+		}
+		return x;
+	},
+	highlight: function(){
+		this.highlightobj().highlight(this.currentindex);
+	},
+	padindex: function(){
+		if (this.currentindex >= 0) {
+			this.currentindex %= this.lengthofview();
+		} else {
+			this.currentindex = this.lengthofview() + this.currentindex;
+		}
+	},
+	lengthofview: function(){
+		var col = this.viewcollection(this.currentview);
+		var len = col === "dontloop" ? this.currentindex + 1 : col.length;
+		return len;
 	}
 });
 
@@ -178,7 +312,7 @@ var App = Backbone.View.extend({
 		this.router = new AppRouter({parent: this});
 
 		//keyboard shortcut
-		this.keyboard = new KeyboardShortcuts({parent: this});
+		// this.keyboard = new KeyboardShortcuts({parent: this});
 
 		_.bindAll(this, 'start');
 	},
