@@ -11,15 +11,35 @@ function($,_,Backbone,ich,Ivle,templates){
 $('body').append(templates);
 ich.grabTemplates();
 
+var LandingPageRouter = Backbone.Router.extend({
+	initialize: function(options){
+		this.parent = options.parent;
+	},
+	routes: {
+		"about" : "about",
+		"*everythingelse" : "catchall"
+	},
+	about: function(){
+		console.log("about");
+	},
+	catchall: function(everythingelse){
+		this.navigate("");
+	}
+});
+
 var LandingPage = Backbone.View.extend({
 	el: "body",
 	initialize: function(){
 		var apikey = "ba1ge5NQ9cl76KQNI1Suc";
 		this.ivle = new Ivle(apikey, '/proxy/');
+		//app router
+		this.router = new LandingPageRouter({parent: this});
 	},
 	start: function(){
 		this.header = new HeaderView();
 		this.main = new MainView();
+
+		Backbone.history.start({pushState: true, root: "/welcome/"});
 	},
 	login: function(){
 		var re = new RegExp("^(.+" + window.location.host+ ")");
@@ -75,7 +95,11 @@ var MainView = Backbone.View.extend({
 
 	},
 	changeview: function(view){
-		console.log(view);
+		if (view === 'about') {
+			this.$el.html(ich.about());
+		} else if (view === 'features') {
+			this.$el.html(ich.features());
+		}
 	}
 });
 

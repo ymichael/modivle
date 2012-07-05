@@ -36,7 +36,7 @@ app.configure('production', function(){
 });
 
 //GET
-app.get('/welcome', routes.landing);
+app.get(/\/welcome.*/, routes.landing);
 app.get('/logout', routes.logout);
 app.get('/ivle/auth', routes.auth);
 app.get(/^\/(?!(css)|(js)|(img)).*/, routes.app);
