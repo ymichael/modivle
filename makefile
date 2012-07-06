@@ -3,8 +3,11 @@ all:
 	r.js -o public/js/build/desktop.build.js
 	r.js -o public/js/build/mobile.build.js
 
-	cat public/js/libs/zepto.js public/js/landing_main.js > build/js/landing_main.js
-	uglifyjs -o build/js/landing_main.js build/js/landing_main.js
+	cat public/js/libs/zepto.js public/js/mobile_landing.js > build/js/mobile_landing.js
+	uglifyjs -o build/js/mobile_landing.js build/js/mobile_landing.js
+
+	cat public/js/libs/zepto.js public/js/desktop_landing.js > build/js/desktop_landing.js
+	uglifyjs -o build/js/desktop_landing.js build/js/desktop_landing.js
 
 	#parse and minify less files
 	lessc public/css/desktop_app.less > build/css/desktop_app.css --yui-compress
