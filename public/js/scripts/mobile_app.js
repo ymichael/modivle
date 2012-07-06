@@ -6,12 +6,9 @@ define([
 	'ich',
 	'ivle',
 	'models',
-	'views',
-	'text!templates/mobile.html'
+	'views'
 ],
-function($,_,Backbone,ich,Ivle,m,v,templates){
-$('body').append(templates);
-ich.grabTemplates();
+function($,_,Backbone,ich,Ivle,m,v){
 
 var AppRouter = Backbone.Router.extend({
 	initialize: function(options){

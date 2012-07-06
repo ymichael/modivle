@@ -6,7 +6,7 @@ require.config({
 		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
-		'ich': "libs/icanhazamd",
+		'ich': "templates/mobile",
 		'ivle': "libs/ivle",
 		'app' : "scripts/mobile_app",
 		'views' : "scripts/mobile_views",

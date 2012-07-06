@@ -474,9 +474,6 @@ v.AnnouncementsView = Backbone.View.extend({
 				fragment.appendChild(x.render().el);
 			},this);
 			this.$el.html(fragment);
-			
-			//open latest
-			this.$(".announcementview:first-child").click();
 		}
 		return this;
 	}

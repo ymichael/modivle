@@ -7,13 +7,9 @@ define([
 	'ivle',
 	'models',
 	'views',
-	'text!templates/desktop.html',
 	'keyboardjs'
 ],
-function($,_,Backbone,ich,Ivle,m,v,templates,keymaster){
-$('body').append(templates);
-ich.grabTemplates();
-
+function($,_,Backbone,ich,Ivle,m,v,keymaster){
 //alias keymaster to keyboardjs
 var key = function(keycombo, callback){
 	keymaster.bind.key(keycombo, callback, function(){});

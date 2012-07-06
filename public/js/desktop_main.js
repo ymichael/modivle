@@ -1,12 +1,10 @@
 /*global require:true */
 require.config({
 	paths: {
-		// 'jquery': "libs/jquery-1.7.2",
 		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
-		'ich': "libs/icanhazamd",
-		// 'keymaster' : "libs/keymasterwrapper",
+		'ich': "templates/desktop",
 		'keyboardjs' : "libs/keyboard",
 		'ivle': "libs/ivle",
 		'app' : "scripts/desktop_app",

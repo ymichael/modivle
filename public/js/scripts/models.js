@@ -66,6 +66,9 @@ m.Folder = Backbone.Model.extend({
 		}
 		this.init();
 	},
+	defaults: {
+		"filetype": ""
+	},
 	init: function(){
 		var files = _.map(this.get('files'), function(file){
 			return new m.File(file, this);
@@ -119,6 +122,9 @@ m.File = Backbone.Model.extend({
 		this.parent = parent;
 		this.set({size: this.calcfilesize(this.get('bytes'))});
 		this.set({kind: this.get("filetype") + " document"});
+	},
+	defaults: {
+		"filetype": ""
 	},
 	calcfilesize: function(bytes){
 		var unit, index;
