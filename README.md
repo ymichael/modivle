@@ -7,14 +7,14 @@ Application hosted [here](http://modivle.yrmichael.com)
 - [Redis](http://redis.io/download)
 
 ## Setting up the development environment
-1. Install node dependencies
-  - run `npm install`
+1. Rebuild node dependencies
+  - run `npm rebuild`
 	- Depending on your configuration, you might need to export the installed modules to your path.
 2. Executing the app
 
 ```bash
 # you need to run redis first.
-$ redis-server start
+$ redis-server
 
 # Development mode
 $ node app.js
