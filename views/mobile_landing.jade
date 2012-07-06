@@ -6,13 +6,37 @@ block content
 			img#logo(alt="modivle logo",src='/img/logo/modivleblack.png')
 			span#login
 		#main
-			#carousel.wrapper
+			#banner.wrapper
+				img(src='/img/landing/mobilemain.png')
+				p.text A NUS IVLE client.
+
+			#features
+				.list
+					p.title Less noise, more work
+					p.desc
+						| IVLE minus the clutter.
+						br
+						| No popups, blinking text or annoying iframes.
+
 				
-						
-			.wrapper.page.featured
-				.pagetitle.center Features
-				article.center
-					
+				.list
+					p.title Only the stuff you really need
+					p.desc
+						span.emphasis announcements
+						span.emphasis workbin
+						span.emphasis forum
+						span.strikethrough weblinks
+						span.strikethrough carreer center
+						span.strikethrough library portal
+						span.strikethrough used textbooks
+						span.strikethrough student events
+						span.strikethrough bookmarks
+						span.strikethrough communities
+				
+				.list
+					p.title Designed for happiness
+					p.desc
+						| We try. Really.
 
 
 	footer.wrapper
@@ -33,4 +57,3 @@ block content
 		script(src="/js/mobile_landing.js")
 	else
 		script(src="/js/mobile_landing.js")
-
