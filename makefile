@@ -2,8 +2,10 @@ all:
 	#optimise js files
 	r.js -o public/js/build/desktop.build.js
 	r.js -o public/js/build/mobile.build.js
-	r.js -o public/js/build/landing.build.js
-	
+
+	cat public/js/libs/zepto.js public/js/landing_main.js > build/js/landing_main.js
+	uglifyjs -o build/js/landing_main.js build/js/landing_main.js
+
 	#parse and minify less files
 	lessc public/css/desktop_app.less > build/css/desktop_app.css --yui-compress
 	lessc public/css/desktop_landing.less > build/css/desktop_landing.css --yui-compress
@@ -16,15 +18,10 @@ clean:
 	mkdir public/css/tmp
 	
 	#remove minified js files
-	rm build/js/main.js
-	rm build/js/login.js
-	rm build/js/mobilemain.js
+	rm build/js/*.js
 	
 	#remove minified css files
-	rm build/css/main.css
-	rm build/css/landing.css
-	rm build/css/mobilelanding.css
-	rm build/css/mobilemain.css
+	rm build/css/*.css
 
 	#remove images in build folder.
 	rm -R build/img
@@ -48,6 +45,7 @@ images:
 	optipng build/img/*.png --strip all
 	optipng build/img/filetypes/*.png --strip all
 	optipng build/img/logo/*.png --strip all
+	optipng build/img/landing/*.png --strip all
 	
 	#jpeg
-	jpegtran -copy none -outfile build/img/logo/github.jpg -optimize build/img/logo/github.jpg
+	# jpegtran -copy none -outfile build/img/logo/github.jpg -optimize build/img/logo/github.jpg

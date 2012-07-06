@@ -5,44 +5,89 @@ block content
 		header.wrapper
 			#header_container.center
 				img#logo(alt="modivle logo",src='/img/logo/modivleblack.png')
-				
-				
-				span.header_link#login login
+				span#login
 				span.header_link#features features
-				span.header_link#about about
+				span.header_link#home home
 
 				#tabarrow
 					.back
 					.front
 
 		#main
-			section.wrapper#banner
-				.center
-					.content
-						.slide
-							img(src='/img/landing/main.png')
-						.slide
-					.tagline A NUS IVLE Client. <span>Less but better.</span>
+			#carousel.wrapper
+					.slides
+						.slide#one
+							img.image(src='/img/landing/main.png')
+							.tagline A NUS IVLE Client. <span>Reloaded.</span>
+					.nav
+						
+			.wrapper.page.featured
+				.pagetitle.center Features
+				article.center
+					.list
+						.text
+							p.title Less noise, more work
+							p.desc
+								| IVLE minus the clutter.
+								br
+								| No popups, blinking text or annoying iframes.
+							img#lessnoise(src='/img/landing/lessnoise.jpg')
+					.list
+						.text
+							p.title Any device
+							p.desc
+								| Access MODIVLE from your desktop or your phone.
+								br
+								| The mobile version is not just a smaller desktop version.
+								br
+								| It is a completely reworked application to fully maximise the user experience.
+						img#mobile(src='/img/landing/mobile.jpg')
+					.list
+						.text
+							p.title Only the stuff you really need
+							p.desc
+								span.emphasis announcements
+								span.emphasis workbin
+								span.emphasis forum
+								span.strikethrough weblinks
+								span.strikethrough carreer center
+								span.strikethrough library portal
+								span.strikethrough used textbooks
+								span.strikethrough student events
+								span.strikethrough bookmarks
+								span.strikethrough communities
+								span.strikethrough my organiser
+								span.strikethrough resource banks
+								span.strikethrough profile
+								span.strikethrough usage statistics
+						img#onlythestuff(src='/img/landing/onlythestuff.jpg')
+					.list
+						.text
+							p.title Blitz through the application
+							p.desc
+							| Keyboard shortcuts allow you to navigate the application to get what you want faster.
+						img#keyboard(src='/img/landing/keyboard.jpg')
+					.list
+						.text
+							p.title Designed for happiness
+							p.desc
+							| We try. Really.
 		.push
 
 
 	footer.wrapper
 		#footer_container.center
-			span.footer_link Release Notes
-			span.footer_link Terms of Service
-			span.footer_link The Stack
-			span.footer_link Acknowledgements
-			span.footer_link Contact Us
+			a(href='').footer_link Release Notes
+			a(href='').footer_link Terms of Service
+			a(href='').footer_link The Stack
+			a(href='https://github.com/ymichael/modivle',target="_blank").footer_link Source
+			a(href='').footer_link Acknowledgements
+			a(href='mailto:wrong92@gmail.com').footer_link Contact Us
 
-			//- span.footer_right f
-
-
-	
-
-
-
-
+			a.footer_right built by @_ymichael.
 	if env == "dev"
-		script(data-main="/js/landing_main", src="/js/libs/require.js")
+		script(src="/js/libs/zepto.js")
+		script(src="/js/landing_main.js")
 	else
 		script(src="/js/landing_main.js")
+
