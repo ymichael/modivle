@@ -1,4 +1,4 @@
-/*global define:true, mixpanel bootstrap */
+/*global define:true, mixpanel _gaq bootstrap */
 define([
 	'jquery',
 	'underscore',
@@ -139,6 +139,11 @@ var AppRouter = Backbone.Router.extend({
 		}
 
 		this.navigate(path.join("/"));
+		this.trackpageview();
+	},
+	trackpageview: function(){
+		var url = Backbone.history.getFragment();
+		_gaq.push(['_trackPageview', "/" + url]);
 	}
 });
 
