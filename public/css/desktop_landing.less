@@ -265,6 +265,7 @@ FEATURES
 FOOTER
 */
 footer {
+	overflow: hidden;
 	font-size: 14px;
 	background-color: #e5e5e5;
 	a {
@@ -272,7 +273,7 @@ footer {
 		display: inline-block;
 		font-size: 15px;
 		line-height: 40px;
-		padding: 5px 0;
+		padding-top: 5px;
 		font-weight: 300;
 		text-decoration: none;
 	}
@@ -283,6 +284,10 @@ footer {
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+	.mixpanel {
+		clear: both;
+		float: left;
 	}
 	.footer_right {
 		color: #bbb;

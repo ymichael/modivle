@@ -27,7 +27,8 @@ v.MainView = Backbone.View.extend({
 
 		//trigger route.
 		if (e){
-			this.$el.trigger("navigateto", module.get('code'));
+			var currentview = this.contentview.currentview;
+			this.$el.trigger("navigateto", [module.get('code'), currentview]);
 		}
 	}
 });
@@ -91,8 +92,8 @@ v.ContentView = Backbone.View.extend({
 	initialize: function(options){
 		this.user = options.user;
 		this.module = null;
-		this.currentview = null;
 		this.defaultview = "announcements";
+		this.currentview = this.defaultview;
 		_.bindAll(this, 'render','changemodule','changeview');
 	},
 	render: function(){

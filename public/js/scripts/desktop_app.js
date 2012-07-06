@@ -1,4 +1,4 @@
-/*global define:true, bootstrap */
+/*global define:true, bootstrap mixpanel */
 define([
 	'jquery',
 	'underscore',
@@ -18,129 +18,6 @@ ich.grabTemplates();
 var key = function(keycombo, callback){
 	keymaster.bind.key(keycombo, callback, function(){});
 };
-
-
-var AppRouter = Backbone.Router.extend({
-	initialize: function(options){
-		this.parent = options.parent;
-	},
-	routes: {
-		":mod/workbin*stuff" : "workbin",
-		":mod/announcements" : "announcements",
-		":mod/forum*stuff" : "forum",
-		"*mod" : "module"
-	},
-	module: function(mod){
-		//check if mod == valid module.
-		var module = this.checkmod(mod);
-		if (module) {
-			//select module.
-			this.parent.mainview.moduleselected(null, module);
-		} else {
-			//revert url base.
-			this.navigate("");
-		}
-	},
-	workbin: function(mod, stuff){
-		var module = this.checkmod(mod);
-		if (!module) {
-			return this.navigate("");
-		}
-
-		//breakdown "stuff"
-		if (stuff) {
-			var paths = stuff.split("/").slice(1);
-
-			var currentitem, parentitem = module.workbin;
-			while (paths.length !== 0) {
-				currentitem = _.find(parentitem.items.models, function(item){
-					return this.sanitize(item.get('path')) === paths[0];
-				},this);
-
-				if (currentitem){
-					parentitem = currentitem;
-				} else {
-					break;
-				}
-				paths = paths.slice(1);
-			}
-			
-			if (currentitem) {
-				this.parent.mainview.moduleselected(null, module);
-				this.parent.mainview.contentview.changeview(null, "workbin");
-				this.parent.mainview.contentview.contentcontainer.viewobj.drilldown(null, currentitem);
-			} else {
-				this.parent.mainview.moduleselected(null, module);
-				this.parent.mainview.contentview.changeview(null, "workbin");
-				return this.navigateto(module.get('code'), "workbin");
-			}
-		} else {
-			this.parent.mainview.moduleselected(null, module);
-			this.parent.mainview.contentview.changeview(null, "workbin");
-		}
-	},
-	announcements: function(mod){
-		var module = this.checkmod(mod);
-		if (!module) {
-			return this.navigate("");
-		}
-		
-		this.parent.mainview.moduleselected(null, module);
-		this.parent.mainview.contentview.changeview(null, "announcements");
-	},
-	forum: function(mod, stuff){
-		var module = this.checkmod(mod);
-		if (!module) {
-			return this.navigate("");
-		}
-
-		//breakdown "stuff"
-		if (stuff) {
-			var paths = stuff.split("/").slice(1);
-			var currentitem, parentitem = module.forum;
-			while (paths.length !== 0) {
-				var collection = parentitem.headings || parentitem.threads;
-				currentitem = _.find(collection.models, function(item){
-					return this.sanitize(item.get('path')) === paths[0];
-				},this);
-				if (currentitem){
-					parentitem = currentitem;
-				} else {
-					break;
-				}
-				paths = paths.slice(1);
-			}
-
-			if (currentitem) {
-				this.parent.mainview.moduleselected(null, module);
-				this.parent.mainview.contentview.changeview(null, "forum");
-				this.parent.mainview.contentview.contentcontainer.viewobj.drilldown(null, currentitem);
-			} else {
-				this.parent.mainview.moduleselected(null, module);
-				this.parent.mainview.contentview.changeview(null, "forum");
-				return this.navigateto(module.get('code'), "forum");
-			}
-		} else {
-			this.parent.mainview.moduleselected(null, module);
-			this.parent.mainview.contentview.changeview(null, "forum");
-		}
-	},
-	checkmod: function(mod){
-		return _.find(this.parent.modules.models, function(loadedmodules){
-				return this.sanitize(loadedmodules.get('code')) === this.sanitize(mod.toLowerCase());
-		}, this);
-	},
-	sanitize: function(path){
-		return path.replace(/\//g, "-").replace(/ /g, "").toLowerCase();
-	},
-	navigateto: function(){
-		var path = _.map(arguments, function(arg){
-			return this.sanitize(arg);
-		},this);
-		this.navigate(path.join("/"));
-	}
-});
-
 var KeyboardShortcuts = Backbone.View.extend({
 	el: "#container",
 	initialize: function(options){
@@ -301,6 +178,133 @@ var KeyboardShortcuts = Backbone.View.extend({
 	}
 });
 
+
+var AppRouter = Backbone.Router.extend({
+	initialize: function(options){
+		this.parent = options.parent;
+	},
+	routes: {
+		":mod/workbin*stuff" : "workbin",
+		":mod/announcements" : "announcements",
+		":mod/forum*stuff" : "forum",
+		"*mod" : "module"
+	},
+	module: function(mod){
+		//check if mod == valid module.
+		var module = this.checkmod(mod);
+		if (module) {
+			//select module.
+			this.parent.mainview.moduleselected(null, module);
+		} else {
+			//revert url base.
+			this.navigate("");
+		}
+	},
+	workbin: function(mod, stuff){
+		var module = this.checkmod(mod);
+		if (!module) {
+			return this.navigate("");
+		}
+
+		//breakdown "stuff"
+		if (stuff) {
+			var paths = stuff.split("/").slice(1);
+
+			var currentitem, parentitem = module.workbin;
+			while (paths.length !== 0) {
+				currentitem = _.find(parentitem.items.models, function(item){
+					return this.sanitize(item.get('path')) === paths[0];
+				},this);
+
+				if (currentitem){
+					parentitem = currentitem;
+				} else {
+					break;
+				}
+				paths = paths.slice(1);
+			}
+			
+			if (currentitem) {
+				this.parent.mainview.moduleselected(null, module);
+				this.parent.mainview.contentview.changeview(null, "workbin");
+				this.parent.mainview.contentview.contentcontainer.viewobj.drilldown(null, currentitem);
+			} else {
+				this.parent.mainview.moduleselected(null, module);
+				this.parent.mainview.contentview.changeview(null, "workbin");
+				return this.navigateto(module.get('code'), "workbin");
+			}
+		} else {
+			this.parent.mainview.moduleselected(null, module);
+			this.parent.mainview.contentview.changeview(null, "workbin");
+		}
+	},
+	announcements: function(mod){
+		var module = this.checkmod(mod);
+		if (!module) {
+			return this.navigate("");
+		}
+		
+		this.parent.mainview.moduleselected(null, module);
+		this.parent.mainview.contentview.changeview(null, "announcements");
+	},
+	forum: function(mod, stuff){
+		var module = this.checkmod(mod);
+		if (!module) {
+			return this.navigate("");
+		}
+
+		//breakdown "stuff"
+		if (stuff) {
+			var paths = stuff.split("/").slice(1);
+			var currentitem, parentitem = module.forum;
+			while (paths.length !== 0) {
+				var collection = parentitem.headings || parentitem.threads;
+				currentitem = _.find(collection.models, function(item){
+					return this.sanitize(item.get('path')) === paths[0];
+				},this);
+				if (currentitem){
+					parentitem = currentitem;
+				} else {
+					break;
+				}
+				paths = paths.slice(1);
+			}
+
+			if (currentitem) {
+				this.parent.mainview.moduleselected(null, module);
+				this.parent.mainview.contentview.changeview(null, "forum");
+				this.parent.mainview.contentview.contentcontainer.viewobj.drilldown(null, currentitem);
+			} else {
+				this.parent.mainview.moduleselected(null, module);
+				this.parent.mainview.contentview.changeview(null, "forum");
+				return this.navigateto(module.get('code'), "forum");
+			}
+		} else {
+			this.parent.mainview.moduleselected(null, module);
+			this.parent.mainview.contentview.changeview(null, "forum");
+		}
+	},
+	checkmod: function(mod){
+		return _.find(this.parent.modules.models, function(loadedmodules){
+				return this.sanitize(loadedmodules.get('code')) === this.sanitize(mod.toLowerCase());
+		}, this);
+	},
+	sanitize: function(path){
+		return path.replace(/\//g, "-").replace(/ /g, "").toLowerCase();
+	},
+	navigateto: function(){
+		var path = _.map(arguments, function(arg){
+			return this.sanitize(arg);
+		},this);
+
+		//mixpanel
+		var section = path[1];
+		mixpanel.track(section);
+
+		this.navigate(path.join("/"));
+	}
+});
+
 var App = Backbone.View.extend({
 	el: "#container",
 	initialize: function(){
@@ -378,6 +382,42 @@ var App = Backbone.View.extend({
 		}, function(){
 			//error callback.
 		});
+		
+		//uniquely id user.
+		var user = this.bootstrap.user;
+		if (!user) {
+			that.user.uid(function(uid){
+				that.user.email(function(email){
+					that.user.uname(function(uname){
+						//save state
+						$.ajax({
+							type: 'POST',
+							url: "/user",
+							data: {
+								uid: uid,
+								email: email
+							},
+							success: function(data){
+								//console.log(data);
+							},
+							dataType: 'json'
+						});
+						that.bootstrap.user = {
+							uname: uname,
+							uid: uid,
+							email: email
+						};
+						mixpanel.identify(uid);
+						mixpanel.people.set({
+							"$name": uname,
+							"$email": email
+						});
+					});
+				});
+			});
+		} else {
+			mixpanel.identify(user.uid);
+		}
 	},
 	loading: function(){
 		$('#overlay')

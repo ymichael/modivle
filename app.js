@@ -48,6 +48,7 @@ app.post('/forum', routes.forum);
 app.post('/forum/heading', routes.forumheading);
 app.post('/proxy', routes.proxy);
 app.post('/auth', routes.token);
+app.post('/user', routes.user);
 
 var port = process.env.PORT || 9002;
 http.createServer(app).listen(port, function() {

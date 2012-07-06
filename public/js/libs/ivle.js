@@ -49,10 +49,6 @@ var ivle = (function($){
 				window.location.href = authUrl;
 			});
 		};
-		this.authurl = function(callbackurl){
-			return "https://ivle.nus.edu.sg/api/login/?apikey=" + apikey + "&url=" + encodeURIComponent(callbackurl);
-		};
-
 		//create user with auth token
 		this.user = function(authtoken){
 			this.authtoken = authtoken;
@@ -67,6 +63,42 @@ var ivle = (function($){
 			//validate user
 			this.validate = function(success, error){
 				var endpoint = 'Validate';
+				var params = {
+					"APIKey" : apikey,
+					"Token" : this.authtoken,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
+
+			//userid
+			this.uid = function(success, error){
+				var endpoint = 'UserID_Get';
+				var params = {
+					"APIKey" : apikey,
+					"Token" : this.authtoken,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
+
+			//userid
+			this.uname = function(success, error){
+				var endpoint = 'UserName_Get';
+				var params = {
+					"APIKey" : apikey,
+					"Token" : this.authtoken,
+					"output" : "json"
+				};
+				var url = baseurl + endpoint;
+				jsonp(url, params, success, error, proxy);
+			};
+
+			//user email
+			this.email = function(success, error){
+				var endpoint = 'UserEmail_Get';
 				var params = {
 					"APIKey" : apikey,
 					"Token" : this.authtoken,

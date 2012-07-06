@@ -42,6 +42,18 @@ exports.token = function(req,res){
     res.json({updatestatus: "Success"});
   }
 };
+exports.user = function(req,res){
+  if (!req.session.bootstrap || !req.session.bootstrap.token){
+    res.redirect(403, '/welcome');
+  } else {
+    req.session.bootstrap.user = {
+      uid: req.body.uid,
+      email: req.body.email,
+      uname: req.body.uname
+    };
+    res.json({updatestatus: "Success"});
+  }
+};
 exports.modules = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     res.redirect(403, '/welcome');

@@ -510,7 +510,6 @@ v.ForumView = Backbone.View.extend({
 				
 				current = current.parent;
 			}
-			console.log(path);
 			this.$el.trigger("navigate", path);
 		}
 	}

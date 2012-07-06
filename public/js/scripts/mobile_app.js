@@ -1,4 +1,4 @@
-/*global define:true, bootstrap */
+/*global define:true, mixpanel bootstrap */
 define([
 	'jquery',
 	'underscore',
@@ -131,6 +131,13 @@ var AppRouter = Backbone.Router.extend({
 		var path = _.map(arguments, function(arg){
 			return this.sanitize(arg);
 		},this);
+
+		//mixpanel
+		if (path.length > 1) {
+			var section = path[1];
+			mixpanel.track(section);
+		}
+
 		this.navigate(path.join("/"));
 	}
 });
@@ -143,7 +150,7 @@ var App = Backbone.View.extend({
 
 		//app router
 		this.router = new AppRouter({parent: this});
-		
+
 		_.bindAll(this, 'start');
 	},
 	start: function(){
@@ -208,6 +215,42 @@ var App = Backbone.View.extend({
 		}, function(){
 			//error callback.
 		});
+		
+		//uniquely id user.
+		var user = this.bootstrap.user;
+		if (!user) {
+			that.user.uid(function(uid){
+				that.user.email(function(email){
+					that.user.uname(function(uname){
+						//save state
+						$.ajax({
+							type: 'POST',
+							url: "/user",
+							data: {
+								uid: uid,
+								email: email
+							},
+							success: function(data){
+								//console.log(data);
+							},
+							dataType: 'json'
+						});
+						that.bootstrap.user = {
+							uname: uname,
+							uid: uid,
+							email: email
+						};
+						mixpanel.identify(uid);
+						mixpanel.people.set({
+							"$name": uname,
+							"$email": email
+						});
+					});
+				});
+			});
+		} else {
+			mixpanel.identify(user.uid);
+		}
 	},
 	loading: function(){
 		$('#overlay')
@@ -250,5 +293,6 @@ var App = Backbone.View.extend({
 		'navigateto' : "navigateto"
 	}
 });
+
 return App;
 });
