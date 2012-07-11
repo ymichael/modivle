@@ -67,7 +67,11 @@ m.Folder = Backbone.Model.extend({
 		this.init();
 	},
 	defaults: {
-		"filetype": ""
+		name: "",
+		kind: "",
+		size: "",
+		filetype: "",
+		type: ""
 	},
 	init: function(){
 		var files = _.map(this.get('files'), function(file){
@@ -124,7 +128,11 @@ m.File = Backbone.Model.extend({
 		this.set({kind: this.get("filetype") + " document"});
 	},
 	defaults: {
-		"filetype": ""
+		name: "",
+		kind: "",
+		size: "",
+		filetype: "",
+		type: ""
 	},
 	calcfilesize: function(bytes){
 		var unit, index;
@@ -204,6 +212,12 @@ m.Announcement = Backbone.Model.extend({
 		}
 		//update when necessary.
 		//TODO
+	},
+	defaults: {
+		title: "",
+		from: "",
+		nicedate: "",
+		contents: ""
 	}
 });
 m.Announcements = Backbone.Collection.extend({
@@ -241,6 +255,12 @@ m.Thread = Backbone.Model.extend({
 		this.loaded = false;
 		//update when necessary.
 		//TODO
+	},
+	defaults: {
+		name: "",
+		author: "",
+		nicedate: "",
+		body: ""
 	},
 	isloading: function(){
 		return !this.loaded;
@@ -309,6 +329,9 @@ m.Heading = Backbone.Model.extend({
 		}
 		this.threads = new m.Threads(threads);
 		this.set({"path": this.get("name")});
+	},
+	defaults: {
+		name: ""
 	},
 	update: function(){
 		var that = this;
@@ -416,7 +439,9 @@ m.Module = Backbone.Model.extend({
 	},
 	//to prevent zeptojs ajax post method from triggering the same error again.
 	defaults: {
-		id: ""
+		id: "",
+		code: "",
+		name: ""
 	},
 	thinfiles: function(filearray){
 		return _.map(filearray.reverse(), function(file){

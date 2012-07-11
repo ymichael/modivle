@@ -4,15 +4,15 @@ require.config({
 		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
-		'ich': "templates/desktop",
 		'keyboardjs' : "libs/keyboard",
 		'ivle': "libs/ivle",
-		'app' : "scripts/desktop_app",
-		'views' : "scripts/desktop_views",
+		'desktop_app' : "scripts/desktop_app",
+		'desktop_views' : "scripts/desktop_views",
+		'desktop_ich' : "templates/desktop",
 		'models' : "scripts/models"
 	}
 });
-require(['app'],
+require(['desktop_app'],
 function(app){
 	var x = new app();
 	x.start();

@@ -1,5 +1,5 @@
 /*global define:true */
-define(['jquery','underscore','backbone', 'ich'],
+define(['jquery','underscore','backbone', 'desktop_ich'],
 function($,_,Backbone,ich){
 
 var v = {};

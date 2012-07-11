@@ -3,10 +3,10 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'ich',
+	'desktop_ich',
 	'ivle',
 	'models',
-	'views',
+	'desktop_views',
 	'keyboardjs'
 ],
 function($,_,Backbone,ich,Ivle,m,v,keymaster){

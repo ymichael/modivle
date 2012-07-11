@@ -5,16 +5,13 @@
 	include: "mobile_main",
 	out: "../../../build/js/mobile_main.js",
 	paths: {
-		// 'jquery': "empty:",
-		// 'jquery': "libs/jquery-1.7.2",
 		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
-		// 'ich': "libs/icanhazamd",
-		'ich' : "templates/mobile",
 		'ivle': "libs/ivle",
-		'app' : "scripts/mobile_app",
-		'views' : "scripts/mobile_views",
+		'mobile_app' : "scripts/mobile_app",
+		'mobile_views' : "scripts/mobile_views",
+		'mobile_ich' : "templates/mobile",
 		'models' : "scripts/models"
 	}
 })

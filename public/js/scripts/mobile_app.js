@@ -3,10 +3,10 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'ich',
+	'mobile_ich',
 	'ivle',
 	'models',
-	'views'
+	'mobile_views'
 ],
 function($,_,Backbone,ich,Ivle,m,v){
 

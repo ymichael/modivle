@@ -1,19 +1,17 @@
 /*global require:true */
 require.config({
 	paths: {
-		// 'jquery': "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min",
-		// 'jquery': "libs/jquery-1.7.2",
 		'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
-		'ich': "templates/mobile",
 		'ivle': "libs/ivle",
-		'app' : "scripts/mobile_app",
-		'views' : "scripts/mobile_views",
+		'mobile_app' : "scripts/mobile_app",
+		'mobile_views' : "scripts/mobile_views",
+		'mobile_ich' : "templates/mobile",
 		'models' : "scripts/models"
 	}
 });
-require(['app'],
+require(['mobile_app'],
 function(app){
 	var x = new app();
 	x.start();
