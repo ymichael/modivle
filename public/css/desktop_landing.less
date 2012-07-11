@@ -38,11 +38,13 @@ HEADER
 	display: none;
 	&.features {
 		display: block;
-		right: 81px;
+		// right: 81px;
+		right: 101px;
 	}
 	&.home {
 		display: block;
-		right: 155px;
+		// right: 155px;
+		right: 175px;
 	}
 	.front {
 		position: absolute;
@@ -93,6 +95,10 @@ header {
 				color: black;
 				cursor: auto;
 			}
+		}
+		#preview {
+			font-weight: 400;
+			color: darken(@secondarycolor,5);
 		}
 		#login {
 			float: right;
@@ -148,7 +154,7 @@ SLIDES
 	.image {
 		opacity: 0;
 		display: block;
-		width: 750px;
+		width: 740px;
 		margin: 0 auto;
 		.transition(opacity 0.5s ease-in 1s);
 	}
@@ -246,9 +252,9 @@ FEATURES
 	right: 50px;
 }
 #onlythestuff {
-	width: 350px;
+	width: 340px;
 	right: 0px;
-	bottom: -35px;
+	bottom: -25px;
 	.box-shadow(-2px -2px 8px rgba(0,0,0,0.2));
 }
 #keyboard {
@@ -258,7 +264,7 @@ FEATURES
 	left: -5px;
 }
 #mobile {
-	top: 20px;
+	top: 15px;
 	left: 70px;
 	width: 200px;
 }
