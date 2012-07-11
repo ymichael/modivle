@@ -51,4 +51,5 @@ images:
 	optipng build/img/landing/*.png --strip all
 	
 	#jpeg
-	# jpegtran -copy none -outfile build/img/logo/github.jpg -optimize build/img/logo/github.jpg
+	jpegtran -copy none -outfile build/img/landing/keyboard.jpg -optimize build/img/landing/keyboard.jpg
+	jpegtran -copy none -outfile build/img/landing/lessnoise.jpg -optimize build/img/landing/lessnoise.jpg
