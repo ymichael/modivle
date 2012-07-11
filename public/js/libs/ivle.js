@@ -6,7 +6,7 @@ define([
 //main library obj
 var ivle = (function($){
 	//private stuff.
-	var baseurl = "http://local.host:3000/";
+	var baseurl = "http://ivleapi.yrmichael.com/";
 
 	var jsonp = function(url, params, success, error, proxyurl){
 		$.ajax({

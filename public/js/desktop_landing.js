@@ -53,6 +53,11 @@ $(function(){
 		window.location.href = authUrl;
 	});
 
+	//preview
+	$("#preview").on("click", function(){
+		window.location.href = "/preview";
+	});
+
 
 	//intialize state;
 	var state = {};

@@ -36,9 +36,25 @@ app.configure('production', function(){
 });
 
 //GET
+app.get("/preview", function(req,res){
+  req.session.regenerate(function(err){
+    //tmp measure. todo.
+    if (err) {
+      res.redirect(403, '/welcome');
+    } else {
+      //add token to session variable
+      if (!req.session.bootstrap) {
+        req.session.bootstrap = {};
+      }
+      var token = "dummytoken";
+      req.session.bootstrap.token = token;
+      res.redirect(302, '/');
+    }
+  });
+});
 app.get("/welcome", routes.landing);
 app.get('/logout', routes.logout);
-app.get('/ivle/auth', routes.auth);
+// app.get('/ivle/auth', routes.auth);
 app.get(/^\/(?!(css)|(js)|(img)).*/, routes.app);
 
 //POST

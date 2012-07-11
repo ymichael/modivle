@@ -7,4 +7,9 @@ $(function(){
 		var authUrl = "https://ivle.nus.edu.sg/api/login/?apikey=" + apikey + "&url=" + encodeURIComponent(callbackurl);
 		window.location.href = authUrl;
 	});
+
+	//preview
+	$("#preview").on("tap", function(){
+		window.location.href = "/preview";
+	});
 });

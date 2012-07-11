@@ -58,7 +58,7 @@ header {
 		display: block;
 		line-height: 20px;
 		font-size: 17px;
-		color: @secondarycolor;
+		color: darken(@secondarycolor, 5);
 		font-weight: 400;
 	}
 }
@@ -76,9 +76,10 @@ BANNER
 	border-bottom: solid 1px @light;
 	img {
 		position: relative;
-		top: -150px;
+		top: 0px;
 		left: 15px;
 		width: 270px;
+		height: 300px;
 	}
 	.text {
 		bottom: 0px;
@@ -141,7 +142,7 @@ PAGE STRUCTURE
 FOOTER
 */
 footer {
-	min-height: 70px;
+	height: 70px;
 	position: relative;
 	font-size: 14px;
 	background-color: #e5e5e5;
