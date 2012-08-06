@@ -51,6 +51,15 @@ v.ModulesView = Backbone.View.extend({
 		if (this.activemod){
 			this.active(this.activemod);
 		}
+		
+		// resize leftbar and container.
+		this.$el.css({width: "auto"});
+		var leftbar_width = this.$el.width();
+
+		// account for font-weight increase in active modules.
+		leftbar_width += 10;
+		$("#content").width(960 - leftbar_width);
+		
 		return this;
 	},
 	active: function(modcode){
