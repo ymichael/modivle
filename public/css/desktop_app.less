@@ -1,8 +1,8 @@
 @import "base.less";
 
 @pagewidth: 960px;
-@leftbar: 180px;
-@content: 780px;
+@leftbar: 120px;
+@content: @pagewidth - @leftbar;
 @secondarycolor: darken(#d70000, 10%);
 @light: #e5e5e5;
 
@@ -133,6 +133,7 @@ MODULES
 	margin: 3px;
 	height: 30px;
 	padding: 5px;
+	cursor: pointer;
 	.modulecode {
 		word-wrap: break-word;
 		display: block;		
@@ -141,9 +142,9 @@ MODULES
 		color: #999;
 		font-weight:300;
 		letter-spacing: -1px;
-
 	}
 	&.active{
+		cursor: auto;
 		.modulecode {
 			color: black;
 			font-weight: 400;
