@@ -14,7 +14,13 @@ html
 			else if env == "dev"
 				link(rel="stylesheet/less", href="/css/mobile_app.less")
 				script(src="/js/libs/less-1.1.5.min.js")
-		else if useragent == "desktop"
+		else if useragent == "tablet"
+			if env == "prod"
+				link(rel="stylesheet", href="/css/tablet_app.css")
+			else if env == "dev"
+				link(rel="stylesheet/less", href="/css/tablet_app.less")
+				script(src="/js/libs/less-1.1.5.min.js")
+		else
 			if env == "prod"
 				link(rel="stylesheet", href="/css/desktop_app.css")
 			else if env == "dev"

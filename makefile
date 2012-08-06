@@ -9,9 +9,17 @@ all:
 	cat public/js/libs/zepto.js public/js/desktop_landing.js > build/js/desktop_landing.js
 	uglifyjs -o build/js/desktop_landing.js build/js/desktop_landing.js
 
+	cat public/js/libs/zepto.js public/js/tablet_landing.js > build/js/tablet_landing.js
+	uglifyjs -o build/js/tablet_landing.js build/js/tablet_landing.js
+
 	#parse and minify less files
 	lessc public/css/desktop_app.less > build/css/desktop_app.css --yui-compress
 	lessc public/css/desktop_landing.less > build/css/desktop_landing.css --yui-compress
+
+	lessc public/css/tablet_app.less > build/css/tablet_app.css --yui-compress
+	lessc public/css/tablet_landing.less > build/css/tablet_landing.css --yui-compress
+	
+
 	lessc public/css/mobile_app.less > build/css/mobile_app.css --yui-compress
 	lessc public/css/mobile_landing.less > build/css/mobile_landing.css --yui-compress
 

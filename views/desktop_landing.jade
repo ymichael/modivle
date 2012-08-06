@@ -6,12 +6,14 @@ block content
 			#header_container.center
 				img#logo(alt="modivle logo",src='/img/logo/modivleblack.png')
 				span.header_link#preview Preview
-				span.header_link#features features
-				span.header_link#home home
 
-				#tabarrow
-					.back
-					.front
+				if useragent != "tablet"
+					span.header_link#features features
+					span.header_link#home home
+
+					#tabarrow
+						.back
+						.front
 
 		#main
 			#carousel.wrapper
@@ -88,9 +90,16 @@ block content
 			a(href="https://mixpanel.com/f/partner").mixpanel
 				img(src="https://mixpanel.com/site_media/images/partner/badge_blue.png",alt="Mobile Analytics")
 
-	if env == "dev"
-		script(src="/js/libs/zepto.js")
-		script(src="/js/desktop_landing.js")
+	if useragent == "tablet"
+		if env == "dev"
+			script(src="/js/libs/zepto.js")
+			script(src="/js/tablet_landing.js")
+		else
+			script(src="/js/tablet_landing.js")
 	else
-		script(src="/js/desktop_landing.js")
+		if env == "dev"
+			script(src="/js/libs/zepto.js")
+			script(src="/js/desktop_landing.js")
+		else
+			script(src="/js/desktop_landing.js")
 
