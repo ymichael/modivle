@@ -52,6 +52,13 @@ tmpl.forumheadingview = "\
 </div>\
 <div class='nexticon icon'></div>";
 
+tmpl.forumforumview = "\
+<div class='headingicon icon'></div>\
+<div class='text forumheading'>\
+	<span class='main'>{{ title }}</span>\
+</div>\
+<div class='nexticon icon'></div>";
+
 tmpl.forumthreadview = "\
 <div class='threadicon icon'></div>\
 <div class='text'>\

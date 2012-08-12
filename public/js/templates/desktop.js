@@ -122,6 +122,14 @@ tmpl.forumthreadview = "\
 	<span class='date'>{{ nicedate }}</span>\
 </div>";
 
+tmpl.forumforumview = "\
+<div class='rowname'>\
+	<div class='rowicon headingicon'></div>\
+	<span>{{title}}</span>\
+</div>\
+<div class='rowcol2'></div>\
+<div class='rowcol3'></div>";
+
 tmpl.forumthreadsthreadview = "\
 <div class='rowname'>\
 	<span>{{title}}</span>\

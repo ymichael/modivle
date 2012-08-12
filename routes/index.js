@@ -95,15 +95,31 @@ exports.forumheading = function(req,res){
   if (!req.session.bootstrap || !req.session.bootstrap.token || !req.session.bootstrap.modules){
     res.redirect(403, '/welcome');
   } else {
+    var found = false;
     _.each(req.session.bootstrap.modules, function(module){
-      if (module.id === req.body.moduleid){
+      if (module.id === req.body.moduleid) {
         _.each(module.forum.headings, function(heading) {
           if (heading.id === req.body.headingid) {
             heading.threads = JSON.parse(req.body.threads);
+            found = true;
           }
         });
+        
+        if (!found) {
+          _.each(module.forum.forums, function(forum) {
+            if (!found) {
+              _.each(forum.headings, function(heading) {
+                if (heading.id === req.body.headingid) {
+                  heading.threads = JSON.parse(req.body.threads);
+                  found = true;
+                }
+              });
+            }
+          });
+        }
       }
     });
+    console.log(found);
     res.json({updatestatus: "Success"});
   }
 };

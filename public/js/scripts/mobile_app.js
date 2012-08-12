@@ -90,7 +90,7 @@ var AppRouter = Backbone.Router.extend({
 			var paths = stuff.split("/").slice(1);
 			var currentitem, parentitem = module.forum;
 			while (paths.length !== 0) {
-				var collection = parentitem.headings || parentitem.threads;
+				var collection = parentitem.items || parentitem.threads;
 				currentitem = _.find(collection.models, function(item){
 					return this.sanitize(item.get('path')) === paths[0];
 				},this);

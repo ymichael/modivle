@@ -374,11 +374,10 @@ m.Heading = Backbone.Model.extend({
 		});
 	}
 });
-m.Headings = Backbone.Collection.extend({
+m.ForumItems = Backbone.Collection.extend({
 	initialize: function(models){
-		this.loaded = models.length === 0 ? false : true;
+		this.loaded = models && models.length === 0 ? false : true;
 	},
-	model: m.Heading,
 	isloading: function(){
 		return !this.loaded;
 	},
@@ -390,24 +389,53 @@ m.Forum = Backbone.Model.extend({
 	initialize: function(model, options){
 		this.type = "forum";
 		this.user = options.user;
-		var headings = [];
-		if (this.get("headings")){
-			_.each(this.get("headings"), function(heading){
-				var x = new m.Heading(heading, {parent: this, user: this.user});
-				headings.push(x);
-			}, this);
-		}
-		this.headings = new m.Headings(headings);
-		_.bindAll(this ,"update");
+		this.parent = options.parent;
+		
+		//collections
+		this.items = new m.ForumItems();
+
+		//breadcrumbs naming convention
+		this.set("name", this.get("title"));
+		//router naming convention
+		this.set({"path": this.get("name")});
+
+		//add bootstrapped headings
+		_.each(this.get("headings"), function(heading){
+			var x = new m.Heading(heading, {parent: this, user: this.user});
+			this.items.add(x, {silent: true});
+		}, this);
+
+		//add bootstrapped forums
+		_.each(this.get("forums"), function(forum){
+			var x = new m.Forum(forum, {parent: this, user: this.user});
+			this.items.add(x, {silent: true});
+		}, this);
+
+		_.bindAll(this, 'update');
 	},
 	update: function(obj){
-		this.set(obj);
-		_.each(obj.headings, function(heading){
-			var x = new m.Heading(heading, {parent: this, user: this.user});
-			this.headings.add(x, {silent: true});
-		}, this);
-		this.headings.isloaded();
-		this.headings.trigger("reset");
+		//single forum
+		if (obj.length === 1) {
+			obj = obj[0];
+			this.set(obj);
+			_.each(obj.headings, function(heading){
+				var x = new m.Heading(heading, {parent: this, user: this.user});
+				this.items.add(x, {silent: true});
+			}, this);
+		}
+		
+		//multiple forums
+		if (obj.length > 1) {
+			this.set("modid", obj[0].modid);
+			this.set("forums", obj);
+			_.each(obj, function(forum){
+				var x = new m.Forum(forum, {parent: this, user: this.user});
+				this.items.add(x, {silent: true});
+			}, this);
+		}
+
+		this.items.isloaded();
+		this.items.trigger("reset");
 	},
 	updateserver: function(){
 		//save state
@@ -517,15 +545,16 @@ m.Module = Backbone.Model.extend({
 	fetchforums: function(){
 		var that = this;
 		this.user.forums(this.id, function(data){
-			//assume only one forum.
-			var result = data.Results.length > 0 ? data.Results[0] : {};
-			var forum = {
-				id: result.ID,
-				modid: that.id,
-				title: result.Title,
-				headings: that.thinheadings(result.Headings)
-			};
-			that.forum.update(forum);
+			var forums = _.map(data.Results, function(elem){
+				var forum = {
+					id: elem.ID,
+					modid: that.id,
+					title: elem.Title,
+					headings: that.thinheadings(elem.Headings)
+				};
+				return forum;
+			});
+			that.forum.update(forums);
 			that.forum.updateserver();
 		});
 		return this;

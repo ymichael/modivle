@@ -313,9 +313,8 @@ v.ForumView = Backbone.View.extend({
 		
 		//immediately jump into single header forums.
 		//TODO
-
 		if (this.currentitem.type === "forum"){
-			this.headingsview = new v.ForumHeadingsView({model: this.currentitem});
+			this.headingsview = new v.ForumItemsView({model: this.currentitem});
 			this.$("#forumcontents").html(this.headingsview.render().el);
 		} else if (this.currentitem.type === "heading"){
 			var threadsview = new v.ForumThreadsView({model: this.currentitem});
@@ -347,18 +346,18 @@ v.ForumView = Backbone.View.extend({
 		}
 	}
 });
-v.ForumHeadingsView = Backbone.View.extend({
+v.ForumItemsView = Backbone.View.extend({
 	initialize: function(){
-		this.model.headings.on("reset", this.render, this);
+		this.model.items.on("reset", this.render, this);
 	},
 	render: function(){
-		if (this.model.headings.isloading()){
+		if (this.model.items.isloading()){
 			this.$el.html(ich.inforow({text:"loading..."}));
-		} else if (this.model.headings.models.length === 0){
+		} else if (this.model.items.models.length === 0){
 			this.$el.html(ich.inforow({text:"no headings"}));
 		} else {
 			var fragment = document.createDocumentFragment();
-			_.each(this.model.headings.models, function(heading){
+			_.each(this.model.items.models, function(heading){
 				var x = new v.ForumItemView({model: heading});
 				fragment.appendChild(x.render().el);
 			});
@@ -397,6 +396,8 @@ v.ForumItemView = Backbone.View.extend({
 			this.$el.html(ich.forumheadingview(this.model.toJSON()));
 		} else if (this.model.type === "thread"){
 			this.$el.html(ich.forumthreadview(this.model.toJSON()));
+		} else if (this.model.type === "forum"){
+			this.$el.html(ich.forumforumview(this.model.toJSON()));
 		}
 		return this;
 	},
