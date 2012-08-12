@@ -427,6 +427,9 @@ m.Forum = Backbone.Model.extend({
 		//multiple forums
 		if (obj.length > 1) {
 			this.set("modid", obj[0].modid);
+
+			//clear headings (legacy)
+			this.set("headings", []);
 			this.set("forums", obj);
 			_.each(obj, function(forum){
 				var x = new m.Forum(forum, {parent: this, user: this.user});
