@@ -51,5 +51,5 @@ images:
 	optipng build/img/landing/*.png --strip all
 	
 	#jpeg
-	jpegtran -copy none -outfile build/img/landing/keyboard.jpg -optimize build/img/landing/keyboard.jpg
-	jpegtran -copy none -outfile build/img/landing/lessnoise.jpg -optimize build/img/landing/lessnoise.jpg
+	jpegtran -copy none -outfile build/img/landing/keyboard.jpg -optimize public/img/landing/keyboard.jpg
+	jpegtran -copy none -outfile build/img/landing/lessnoise.jpg -optimize public/img/landing/lessnoise.jpg
