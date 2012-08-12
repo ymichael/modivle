@@ -281,6 +281,9 @@ var AppRouter = Backbone.Router.extend({
 		}
 	},
 	checkmod: function(mod){
+		// mixpanel track router usage
+		mixpanel.track("Router triggered");
+
 		return _.find(this.parent.modules.models, function(loadedmodules){
 				return this.sanitize(loadedmodules.get('code')) === this.sanitize(mod.toLowerCase());
 		}, this);
@@ -293,9 +296,9 @@ var AppRouter = Backbone.Router.extend({
 			return this.sanitize(arg);
 		},this);
 
-		//mixpanel
+		//mixpanel track views
 		var section = path[1];
-		mixpanel.track(section);
+		mixpanel.track(section + " tabview");
 
 		this.navigate(path.join("/"));
 		this.trackpageview();
@@ -453,7 +456,13 @@ var App = Backbone.View.extend({
 	},
 	events: {
 		'click #logout': "logout",
-		'navigateto' : "navigateto"
+		'navigateto' : "navigateto",
+		'downloadfile': "downloadfile"
+	},
+	downloadfile: function(){
+		// mixpanel track file download
+		mixpanel.track("File downloaded");
+
 	}
 });
 
