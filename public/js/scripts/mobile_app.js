@@ -26,6 +26,12 @@ var AppRouter = Backbone.Router.extend({
 		if (module) {
 			//select module.
 			this.parent.mainview.moduleselected(null, module);
+
+			// mixpanel track router usage
+			mixpanel.track("Router triggered", {
+				"type" : "module",
+				"route" : mod
+			});
 		} else {
 			//revert url base.
 			this.navigate("");
@@ -40,6 +46,12 @@ var AppRouter = Backbone.Router.extend({
 
 		//breakdown "stuff"
 		if (stuff) {
+			// mixpanel track router usage
+			mixpanel.track("Router triggered", {
+				"type" : "workbin",
+				"route" : stuff
+			});
+
 			var paths = stuff.split("/").slice(1);
 
 			var currentitem, parentitem = module.workbin;
@@ -78,6 +90,12 @@ var AppRouter = Backbone.Router.extend({
 		
 		this.parent.mainview.moduleselected(null, module);
 		this.parent.mainview.singlemoduleview.changeview(null, "announcements");
+
+		// mixpanel track router usage
+		mixpanel.track("Router triggered", {
+			"type" : "announcements",
+			"route" : mod + "/announcements"
+		});
 	},
 	forum: function(mod, stuff){
 		var module = this.checkmod(mod);
@@ -87,6 +105,12 @@ var AppRouter = Backbone.Router.extend({
 
 		//breakdown "stuff"
 		if (stuff) {
+			// mixpanel track router usage
+			mixpanel.track("Router triggered", {
+				"type" : "forum",
+				"route" : stuff
+			});
+
 			var paths = stuff.split("/").slice(1);
 			var currentitem, parentitem = module.forum;
 			while (paths.length !== 0) {
@@ -117,9 +141,6 @@ var AppRouter = Backbone.Router.extend({
 		}
 	},
 	checkmod: function(mod){
-		// mixpanel track router usage
-		mixpanel.track("Router triggered");
-
 		return _.find(this.parent.modules.models, function(loadedmodules){
 				return this.sanitize(loadedmodules.get('code')) === this.sanitize(mod.toLowerCase());
 		}, this);
@@ -135,7 +156,9 @@ var AppRouter = Backbone.Router.extend({
 		//mixpanel
 		if (path.length > 1) {
 			var section = path[1];
-			mixpanel.track(section + " tabview");
+			mixpanel.track(section + " tabview", {
+				"module" : path[0]
+			});
 		}
 
 		this.navigate(path.join("/"));
@@ -248,13 +271,18 @@ var App = Backbone.View.extend({
 						mixpanel.identify(uid);
 						mixpanel.people.set({
 							"$name": uname,
-							"$email": email
+							"$email": email,
+							"$created" : new Date(),
+							'$last_login': new Date()
 						});
 					});
 				});
 			});
 		} else {
 			mixpanel.identify(user.uid);
+			mixpanel.people.set({
+				'$last_login': new Date()
+			});
 		}
 	},
 	loading: function(){
