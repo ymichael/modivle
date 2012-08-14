@@ -316,6 +316,12 @@ v.ForumView = Backbone.View.extend({
 		if (this.currentitem.type === "forum"){
 			this.headingsview = new v.ForumItemsView({model: this.currentitem});
 			this.$("#forumcontents").html(this.headingsview.render().el);
+
+			if (this.currentitem.items.models.length === 1) {
+				var child = this.currentitem.items.models[0];
+				this.drilldown("drilldown", child);
+			}
+
 		} else if (this.currentitem.type === "heading"){
 			var threadsview = new v.ForumThreadsView({model: this.currentitem});
 			this.$("#forumcontents").html(threadsview.render().el);

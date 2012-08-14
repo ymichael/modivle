@@ -119,7 +119,6 @@ exports.forumheading = function(req,res){
         }
       }
     });
-    console.log(found);
     res.json({updatestatus: "Success"});
   }
 };
