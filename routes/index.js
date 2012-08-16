@@ -168,6 +168,21 @@ exports.app = function(req,res){
     }
   }
 };
+
+//pages where user might or might not be logged in.
+exports.privacy = function(req, res){
+  var variables = utils.bootstrap(req);
+  
+  var loggedin = (!req.session.bootstrap || !req.session.bootstrap.token) ? true : false;
+  variables.loggedin = loggedin;
+  
+  if (variables.useragent === "mobile"){
+    res.render('mobile_privacy', variables);
+  } else {
+    res.render('desktop_privacy', variables);
+  }
+};
+
 exports.logout = function(req,res){
   req.session.destroy(function(err){
     res.redirect(302, '/welcome');
