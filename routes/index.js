@@ -173,7 +173,7 @@ exports.app = function(req,res){
 exports.privacy = function(req, res){
   var variables = utils.bootstrap(req);
   
-  var loggedin = (!req.session.bootstrap || !req.session.bootstrap.token) ? true : false;
+  var loggedin = (!req.session.bootstrap || !req.session.bootstrap.token) ? false : true;
   variables.loggedin = loggedin;
   
   if (variables.useragent === "mobile"){

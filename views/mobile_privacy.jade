@@ -3,8 +3,11 @@ extends layouts/landing
 block content
 	#container
 		header.wrapper
-			img#logo(alt="modivle logo",src='/img/logo/modivleblacksmall.png')
-			span#login
+			a(href='/')
+				img#logo(alt="modivle logo",src='/img/logo/modivleblacksmall.png')
+			if !loggedin
+				span#login
+
 		#main.wrapper
 			.center.content
 				h1 Privacy Policy

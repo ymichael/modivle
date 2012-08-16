@@ -3,7 +3,8 @@ extends layouts/landing
 block content
 	#container
 		header.wrapper
-			img#logo(alt="modivle logo",src='/img/logo/modivleblacksmall.png')
+			a(href='/')
+				img#logo(alt="modivle logo",src='/img/logo/modivleblacksmall.png')
 			span#login
 		#main
 			#banner.wrapper
@@ -41,19 +42,13 @@ block content
 
 	footer.wrapper
 		#footer_container.center
-			//- a(href='').footer_link Release Notes
-			//- a(href='').footer_link Terms of Service
-			//- a(href='').footer_link The Stack
-			//- a(href='https://github.com/ymichael/modivle',target="_blank").footer_link Source
-			//- a(href='').footer_link Acknowledgements
+			a(href='/privacy').footer_link Privacy
+			a(href='https://github.com/ymichael/modivle',target="_blank").footer_link Source
 			a(href='mailto:modivle@yrmichael.com').footer_link Contact Us
 
 			a.footer_right built by @_ymichael.
 			a(href="https://mixpanel.com/f/partner").mixpanel
 				img(src="https://mixpanel.com/site_media/images/partner/badge_blue.png",alt="Mobile Analytics")
 
-	if env == "dev"
-		script(src="/js/libs/zepto.js")
-		script(src="/js/mobile_landing.js")
-	else
-		script(src="/js/mobile_landing.js")
+block otherscripts
+	

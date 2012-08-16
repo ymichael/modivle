@@ -56,6 +56,7 @@
 }
 #container {
 	height: 100%;
+	min-height: 500px;
 	width: 100%;
 	margin: 0 auto; 
 	padding: 0;
@@ -119,8 +120,45 @@ header {
 		background-image: url(/img/home.png);
 	}
 }
+/*
+FOOTER
+*/
 footer {
-	height: 50px;
+	#footer_container {
+		padding: 15px 15px;
+		min-height: 70px;
+	}
+	margin-top: 50px;
+	width: 100%;
+	position: relative;
+	font-size: 14px;
+	background-color: #e5e5e5;
+	a {
+		color: #999;
+		display: inline-block;
+		font-size: 15px;
+		line-height: 20px;
+		padding: 3px 0;
+		font-weight: 300;
+		text-decoration: none;
+	}
+	.footer_link {
+		width: 100%;
+		margin-bottom: 5px;
+		margin-right: 20px;
+		cursor: pointer;
+	}
+	.mixpanel {
+		position: absolute;
+		bottom: 10px;
+		right: 15px;
+	}
+	.footer_right {
+		color: #bbb;
+		position: absolute;
+		top: 15px;
+		right: 15px;
+	}
 }
 
 /*
@@ -198,7 +236,7 @@ GENERIC STYLES
 				font-size: 13px;
 				line-height: 15px;
 				padding-bottom: 1px;
-				height: 15px;
+				// height: 15px;
 				color: lighten(@textcolor,20%);
 				.author {
 					display: inline;

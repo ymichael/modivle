@@ -4,10 +4,10 @@ block content
 	#container
 		header.wrapper
 			#header_container.center
-				img#logo(alt="modivle logo",src='/img/logo/modivleblack.png')
-				span#login
-				span.header_link#features features
-				span.header_link#home home
+				a(href='/')
+					img#logo(alt="modivle logo",src='/img/logo/modivleblack.png')
+				if !loggedin
+					span#login
 
 		#main.wrapper
 			.center.content
@@ -56,7 +56,7 @@ block content
 			//- a(href='').footer_link Release Notes
 			//- a(href='').footer_link The Stack
 			//- a(href='').footer_link Acknowledgements
-			a(href='').footer_link Privacy
+			a.footer_link Privacy
 			a(href='https://github.com/ymichael/modivle',target="_blank").footer_link Source
 			a(href='mailto:modivle@yrmichael.com').footer_link Contact Us
 
