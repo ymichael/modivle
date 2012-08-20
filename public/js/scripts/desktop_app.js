@@ -438,9 +438,9 @@ var App = Backbone.View.extend({
 						mixpanel.people.set({
 							"$name": uname,
 							"$email": email,
-							"$created" : new Date(),
 							'$last_login': new Date()
 						});
+						mixpanel.register_once({"$created" : new Date()});
 					});
 				});
 			});
@@ -474,6 +474,9 @@ var App = Backbone.View.extend({
 		this.mainview.render();
 	},
 	logout: function(){
+		// mixpanel track logout.
+		mixpanel.track("logout");
+
 		var re = new RegExp("^(.+" + window.location.host+ ")");
 		var logout =  re.exec(window.location.href)[1] + "/logout";
 		window.location.href = logout;
