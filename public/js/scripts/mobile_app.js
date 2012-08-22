@@ -272,9 +272,9 @@ var App = Backbone.View.extend({
 						mixpanel.people.set({
 							"$name": uname,
 							"$email": email,
-							'$last_login': new Date()
+							'$last_login': new Date(),
+							'$created' : new Date()
 						});
-						mixpanel.register_once({"$created" : new Date()});
 					});
 				});
 			});
