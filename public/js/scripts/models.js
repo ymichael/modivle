@@ -198,6 +198,21 @@ m.Workbin = Backbone.Model.extend({
 			},
 			dataType: 'json'
 		});
+	},
+	update: function(obj){
+		//single workbin
+		if (obj.length === 1) {
+			return this.set(obj[0]);
+		}
+		
+		//multiple workbins
+		if (obj.length > 1) {
+			_.each(obj, function(workbin){
+				var x = new m.Workbin(workbin);
+				this.items.add(x, {silent: true});
+			}, this);
+		}
+		this.items.trigger("reset");
 	}
 });
 /*
@@ -515,14 +530,21 @@ m.Module = Backbone.Model.extend({
 			if (data.Results.length === 0) {
 				data.Results[0] = {};
 			}
-			//save space.
-			var relevant = {};
-			relevant.folders = that.thinfolder(data.Results[0].Folders);
-			relevant.modid = that.id;
-			relevant.id = data.Results[0].ID || -1;
-			relevant.type = relevant.kind = "folder";
-			relevant.title = data.Results[0].Title;
-			that.workbin.set(relevant);
+
+			console.log(data.Results);
+
+			var workbins = _.map(data.Results, function(workbin){
+				//save space.
+				var relevant = {};
+				relevant.folders = that.thinfolder(workbin.Folders);
+				relevant.modid = that.id;
+				relevant.id = workbin.ID || -1;
+				relevant.type = relevant.kind = "folder";
+				relevant.title = workbin.Title;
+				return relevant;
+			});
+
+			that.workbin.update(workbins);
 			that.workbin.updateserver();
 		});
 		return this;
