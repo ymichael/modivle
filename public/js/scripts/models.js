@@ -105,7 +105,6 @@ m.Folder = Backbone.Model.extend({
 			path = current.get("name") + "/" + path;
 			current = current.parent;
 		}
-
 		return path + current.get("name");
 	},
 	hasnewfiles: function(){
@@ -161,18 +160,62 @@ m.File = Backbone.Model.extend({
 		return !this.get('dled') || this.get('dled') === "false";
 	}
 });
-m.Workbin = Backbone.Model.extend({
-	initialize: function(){
+m.Workbin = m.Folder.extend({
+	initialize: function(model, options){
 		this.type = "workbin";
+		this.parent = options && options.parent;
 		this.fields();
 		this.on('change', this.fields, this);
 		_.bindAll(this, "updateserver");
+	},
+	update: function(obj){
+		//single workbin
+		if (obj.length === 1) {
+			return this.set(obj[0]);
+		}
+		
+		//multiple workbins
+		if (obj.length > 1) {
+			var makefolder = {
+				id: obj[0].modid,
+				modid: obj[0].modid,
+				kind: "folder",
+				type: "folder",
+				size: obj.length + " items"
+			};
+			this.set(makefolder);
+			_.each(obj, function(workbin){
+				var x = new m.Workbin(workbin, {parent: this});
+				this.items.add(x, {silent: true});
+			}, this);
+			this.trigger('reset');
+		}
+	},
+	getlatest: function(){
+		var x = this.toJSON();
+		x.files = [];
+		x.folders = [];
+		_.each(this.items.models, function(item) {
+			if (item.get("type") === "document") {
+				x.files.push(item.toJSON());
+			} else if (item.get("type") === "folder") {
+				x.folders.push(item.getlatest());
+			}
+		});
+		return x;
 	},
 	fields: function(){
 		var x = _.map(this.get('folders'), function(folder){
 			return new m.Folder(folder, this);
 		},this);
 		this.items = new m.Items(x);
+
+		var count = this.items.length;
+		if (count === 0){
+			this.set({size: "empty"});
+		} else {
+			this.set({size: count+ " items"});
+		}
 	},
 	setname: function(name){
 		this.set({name: name});
@@ -198,21 +241,6 @@ m.Workbin = Backbone.Model.extend({
 			},
 			dataType: 'json'
 		});
-	},
-	update: function(obj){
-		//single workbin
-		if (obj.length === 1) {
-			return this.set(obj[0]);
-		}
-		
-		//multiple workbins
-		if (obj.length > 1) {
-			_.each(obj, function(workbin){
-				var x = new m.Workbin(workbin);
-				this.items.add(x, {silent: true});
-			}, this);
-		}
-		this.items.trigger("reset");
 	}
 });
 /*
@@ -531,8 +559,6 @@ m.Module = Backbone.Model.extend({
 				data.Results[0] = {};
 			}
 
-			console.log(data.Results);
-
 			var workbins = _.map(data.Results, function(workbin){
 				//save space.
 				var relevant = {};
@@ -540,10 +566,10 @@ m.Module = Backbone.Model.extend({
 				relevant.modid = that.id;
 				relevant.id = workbin.ID || -1;
 				relevant.type = relevant.kind = "folder";
-				relevant.title = workbin.Title;
+				relevant.name = relevant.title = workbin.Title;
 				return relevant;
 			});
-
+			
 			that.workbin.update(workbins);
 			that.workbin.updateserver();
 		});
