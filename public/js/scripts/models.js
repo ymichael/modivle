@@ -189,6 +189,7 @@ m.Workbin = m.Folder.extend({
 				return x;
 			}, this);
 			this.items.reset(x);
+			this.trigger('reset');
 		}
 	},
 	getlatest: function(){
