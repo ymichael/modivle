@@ -658,6 +658,7 @@ v.FileView = Backbone.View.extend({
 v.FolderView = Backbone.View.extend({
 	className: 'tabrow itemview folderview',
 	initialize: function(){
+		this.model.on("change", this.render, this);
 		_.bindAll(this,'drilldown');
 	},
 	render: function(){

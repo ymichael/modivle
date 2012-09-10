@@ -179,16 +179,16 @@ m.Workbin = m.Folder.extend({
 			var makefolder = {
 				id: obj[0].modid,
 				modid: obj[0].modid,
-				kind: "folder",
+				kind: "workbin",
 				type: "folder",
 				size: obj.length + " items"
 			};
 			this.set(makefolder);
-			_.each(obj, function(workbin){
+			var x = _.map(obj, function(workbin){
 				var x = new m.Workbin(workbin, {parent: this});
-				this.items.add(x, {silent: true});
+				return x;
 			}, this);
-			this.trigger('reset');
+			this.items.reset(x);
 		}
 	},
 	getlatest: function(){
@@ -206,7 +206,11 @@ m.Workbin = m.Folder.extend({
 	},
 	fields: function(){
 		var x = _.map(this.get('folders'), function(folder){
-			return new m.Folder(folder, this);
+			if (folder.kind === 'folder') {
+				return new m.Folder(folder, this);
+			} else if (folder.kind === 'workbin') {
+				return new m.Workbin(folder, this);
+			}
 		},this);
 		this.items = new m.Items(x);
 
@@ -565,7 +569,8 @@ m.Module = Backbone.Model.extend({
 				relevant.folders = that.thinfolder(workbin.Folders);
 				relevant.modid = that.id;
 				relevant.id = workbin.ID || -1;
-				relevant.type = relevant.kind = "folder";
+				relevant.type = "folder";
+				relevant.kind = "workbin";
 				relevant.name = relevant.title = workbin.Title;
 				return relevant;
 			});
