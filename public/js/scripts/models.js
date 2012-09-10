@@ -209,7 +209,7 @@ m.Workbin = m.Folder.extend({
 			if (folder.kind === 'folder') {
 				return new m.Folder(folder, this);
 			} else if (folder.kind === 'workbin') {
-				return new m.Workbin(folder, this);
+				return new m.Workbin(folder, {parent: this});
 			}
 		},this);
 		this.items = new m.Items(x);
