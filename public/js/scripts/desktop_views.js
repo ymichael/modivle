@@ -563,7 +563,6 @@ v.WorkbinView = Backbone.View.extend({
 			while (current.parent) {
 				var name = current.get('path');
 				path.unshift(name);
-				
 				current = current.parent;
 			}
 			this.$el.trigger("navigate", path);

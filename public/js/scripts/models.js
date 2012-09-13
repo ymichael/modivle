@@ -163,6 +163,7 @@ m.File = Backbone.Model.extend({
 m.Workbin = m.Folder.extend({
 	initialize: function(model, options){
 		this.type = "workbin";
+		this.set({"path": this.get("name")});
 		this.parent = options && options.parent;
 		this.fields();
 		this.on('change', this.fields, this);
