@@ -1,7 +1,8 @@
 /*global require:true */
 require.config({
 	paths: {
-		'jquery': "libs/zeptowrapper",
+		'jquery': "libs/jquery",
+		// 'jquery': "libs/zeptowrapper",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'keyboardjs' : "libs/keyboard",
