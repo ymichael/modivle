@@ -61,12 +61,13 @@
 	margin: 0 auto; 
 	padding: 0;
 }
-body {
+html, body {
 	font-family: "Open Sans", arial, sans-serif;
 	font-weight: normal;
 	color: @textcolor;
 	letter-spacing: -1px;
 	font-size: 18px;
+    overflow-x: hidden;
 }
 header, #main, footer {
 	width :100%;
@@ -199,6 +200,7 @@ GENERIC STYLES
 	}
 }
 .row {
+    display: block;
 	position: relative;
 	padding: 10px 15px;
 	overflow: hidden;
@@ -251,6 +253,7 @@ GENERIC STYLES
 	}
 }
 .post {
+    display: block;
 	position: relative;
 	margin: 0 15px;
 	padding: 10px 0;
