@@ -5,7 +5,7 @@
 	include: "desktop_main",
 	out: "../../../build/js/desktop_main.js",
 	paths: {
-		'jquery': "libs/zeptowrapper",
+		'jquery': "libs/jquery",
 		'underscore': "libs/underscore",
 		'backbone': "libs/backbone",
 		'keyboardjs' : "libs/keyboard",
