@@ -141,6 +141,9 @@ exports.workbin = function(req,res){
 exports.landing = function(req, res){
   if (!req.session.bootstrap || !req.session.bootstrap.token){
     var variables = utils.bootstrap(req);
+    
+    variables.title = "MODIVLE - A NUS IVLE Client";
+
     if (variables.useragent === "mobile"){
       res.render('mobile_landing', variables);
     } else {
@@ -175,6 +178,7 @@ exports.privacy = function(req, res){
   
   var loggedin = (!req.session.bootstrap || !req.session.bootstrap.token) ? false : true;
   variables.loggedin = loggedin;
+  variables.title = "Privacy Policy - MODIVLE"
   
   if (variables.useragent === "mobile"){
     res.render('mobile_privacy', variables);
