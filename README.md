@@ -29,4 +29,4 @@ $ node app.js
 - MODIVLE uses [jshint](https://github.com/jshint/jshint/) for validation of js.
 	- Validate changes by doing `make jshint`
 	- Rules for `jshint` can be found in the `.jshintrc`
-- See wiki for MODIVLE [roadmap](modivle/wiki/MODIVLE-Roadmap)
+- See wiki for MODIVLE [roadmap](https://github.com/ymichael/modivle/wiki/MODIVLE-Roadmap)
