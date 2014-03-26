@@ -1,6 +1,6 @@
 ![MODIVLE source](http://dl.dropbox.com/u/24733998/modivleblack.png)
 
-Application hosted [here](http://modivle.yrmichael.com)
+Application hosted [here](http://modivle.ymichael.com)
 
 ## Requirements:
 - [Nodejs](http://nodejs.org), [npm](http://npmjs.org/)
