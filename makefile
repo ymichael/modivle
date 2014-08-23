@@ -1,17 +1,21 @@
+REQUIREJS = ./node_modules/requirejs/bin/r.js
+LESSC = ./node_modules/less/bin/lessc
+
+
 all:
 	#optimise js files
-	r.js -o public/js/build/desktop.build.js
-	r.js -o public/js/build/mobile.build.js
+	$(REQUIREJS) -o public/js/build/desktop.build.js
+	$(REQUIREJS) -o public/js/build/mobile.build.js
 
 	# zepto
 	# mkdir build/js/libs
 	# uglifyjs -o build/js/libs/zepto.js public/js/libs/zepto.js
 
 	#parse and minify less files
-	lessc public/css/desktop_app.less > build/css/desktop_app.css --yui-compress
-	lessc public/css/desktop_landing.less > build/css/desktop_landing.css --yui-compress
-	lessc public/css/mobile_app.less > build/css/mobile_app.css --yui-compress
-	lessc public/css/mobile_landing.less > build/css/mobile_landing.css --yui-compress
+	$(LESSC) public/css/desktop_app.less > build/css/desktop_app.css --yui-compress
+	$(LESSC) public/css/desktop_landing.less > build/css/desktop_landing.css --yui-compress
+	$(LESSC) public/css/mobile_app.less > build/css/mobile_app.css --yui-compress
+	$(LESSC) public/css/mobile_landing.less > build/css/mobile_landing.css --yui-compress
 
 clean:
 	#remove concatenated less files
