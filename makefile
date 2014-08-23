@@ -17,10 +17,10 @@ clean:
 	#remove concatenated less files
 	rm -rf public/css/tmp
 	mkdir public/css/tmp
-	
+
 	#remove minified js files
 	rm build/js/*.js
-	
+
 	#remove minified css files
 	rm build/css/*.css
 
@@ -31,7 +31,7 @@ clean:
 jshint:
 	#scripts
 	jshint public/js/scripts/
-	
+
 	#main files
 	jshint public/js/login.js
 	jshint public/js/desktop_main.js
@@ -41,13 +41,13 @@ images:
 	#copy images into build folder
 	cp -R public/img build/
 	cp public/favicon.ico build/favicon.ico
-	
+
 	#optimise pngs
 	optipng build/img/*.png --strip all
 	optipng build/img/filetypes/*.png --strip all
 	optipng build/img/logo/*.png --strip all
 	optipng build/img/landing/*.png --strip all
-	
+
 	#jpeg
 	jpegtran -copy none -outfile build/img/landing/keyboard.jpg -optimize public/img/landing/keyboard.jpg
 	jpegtran -copy none -outfile build/img/landing/lessnoise.jpg -optimize public/img/landing/lessnoise.jpg
