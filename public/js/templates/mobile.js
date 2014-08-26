@@ -75,7 +75,7 @@ tmpl.forumpost = "\
 	<span class='date'>{{ nicedate }}</span>\
 </div>\
 <div class='body'>{{ body }}</div>\
-<div class='subthreads'></div>";
+<div id='x{{ id }}' class='subthreads'></div>";
 
 //ANNOUNCEMENTS
 tmpl.announcementsview = "\

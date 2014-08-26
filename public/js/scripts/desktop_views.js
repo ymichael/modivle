@@ -453,10 +453,11 @@ v.ForumSingleThreadThreadView = Backbone.View.extend({
 			this.$el.append(ich.inforow({text: "loading entire thread..."}));
 		} else {
 			if (this.model.threads.length !== 0) {
+				var $subthreadContainer = this.$("#" + this.model.id);
 				_.each(this.model.threads, function(subthread){
 					var x = new v.ForumSingleThreadThreadView({model: subthread});
-					this.$(".subthreads").append(x.render().el);
-				}, this);
+					$subthreadContainer.append(x.render().el);
+				});
 			}
 			if (this.root) {
 				this.$el.append(ich.inforow({text: "end of thread."}));

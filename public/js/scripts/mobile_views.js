@@ -78,7 +78,6 @@ v.RowView = Backbone.View.extend({
         "touchmove": "feedback"
     },
     feedback: function(e) {
-        console.log(e);
         var that = this;
         if (e.type === "touchend") {
             setTimeout(function(){
@@ -644,10 +643,14 @@ v.ForumSingleThreadThreadView = Backbone.View.extend({
             this.$el.append(ich.infoview({text: "loading entire thread..."}));
         } else {
             if (this.model.threads.length !== 0) {
+                // TODO(michael): Figure out a way around this. currently we
+                // prepend the id of the subthread with an x character because of this:
+                // http://stackoverflow.com/questions/20306204/using-queryselector-with-ids-that-are-numbers
+                var $subthreadContainer = this.$("#x" + this.model.id);
                 _.each(this.model.threads, function(subthread){
                     var x = new v.ForumSingleThreadThreadView({model: subthread});
-                    this.$(".subthreads").append(x.render().el);
-                }, this);
+                    $subthreadContainer.append(x.render().el);
+                });
             }
             if (this.root) {
                 this.$el.append(ich.infoview({text: "end of thread."}));
