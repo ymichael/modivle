@@ -15,7 +15,10 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser("5{6?8j6^@%$R^Q+"));
   // redis session store.
-  var sessionstore = new redisstore();
+  var sessionstore = new redisstore({
+    host: process.env.REDIS_HOST || "localhost",
+    host: process.env.REDIS_PORT || 6379
+  });
   app.use(express.session({
     store: sessionstore,
     cookie: {maxAge: 1000*60*60*24*14}
