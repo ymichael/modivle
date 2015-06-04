@@ -30,7 +30,7 @@ var App = React.createClass({
     };
   },
   logout: function() {
-    storage.clear();
+    storage.logout();
     utils.redirectToWelcomePage();
   },
   validateUser: function() {

@@ -25,7 +25,7 @@ Ivle.prototype.jsonP_ = function(endpoint, params, success, error) {
     dataType: 'jsonp',
     data: _.extend({
       "APIKey" : Ivle.API_KEY,
-      "AuthToken" : Ivle.token,
+      "Token" : this.token,
       "output" : "json"}, params),
     contentType:"application/x-javascript",
     url: Ivle.BASE_URL + endpoint,
