@@ -11,8 +11,8 @@ function Ivle(token) {
 };
 
 Ivle.API_KEY = "ba1ge5NQ9cl76KQNI1Suc";
-// Ivle.BASE_URL = "https://ivle.nus.edu.sg/api/Lapi.svc/";
-Ivle.BASE_URL = "http://localhost:9003/";
+Ivle.BASE_URL = "https://ivle.nus.edu.sg/api/Lapi.svc/";
+// Ivle.BASE_URL = "http://localhost:9003/";
 
 
 /**
