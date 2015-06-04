@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MODIVLE - A NUS IVLE Client</title>
+    <meta charset="utf-8">
+    <meta name="description" content="A NUS IVLE Client">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <!-- check if user if logged in -->
+    <script type="text/javascript" src="/build/javascript/auth.js"></script>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/build/stylesheets/app.css">
+  </head>
+  <body>
+    <div id="container"></div>
+    <footer>
+      <div id="footer_container">
+        <p>built by <a href="http://twitter.com/_ymichael" target="_blank">@_ymichael</a>. source code can be found <a href="https://github.com/ymichael/modivle" target="_blank">here</a> on github.</p>
+        <div style='display:inline-block' class="fb-like" data-href="http://facebook.com/modivle" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" data-font="arial"></div>
+      </div>
+    </footer>
+
+    <script type="text/javascript" src="/build/javascript/main.js"></script>
+    
+    <div id="fb-root"></div>
+    <script type="text/javascript">
+      (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=433921899980495";
+      fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+  </body>
+</html>

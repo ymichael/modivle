@@ -1,5 +1,2 @@
 npm-debug.log
-*.un~
-restart
-.DS_Store
-*.swp
+node_modules
