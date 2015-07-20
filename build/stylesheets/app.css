@@ -815,7 +815,8 @@ FORUM
 #forumcontainer .itemview .rowicon.headingicon {
   background-image: url(/build/images/speech.png);
 }
-#forumcontainer .itemview .rowicon.threadicon {
+#forumcontainer .itemview .rowicon.threadicon,
+#forumcontainer .itemview .rowicon.forumicon {
   background-image: url(/build/images/speech2.png);
 }
 #forumcontainer .posttitle {
