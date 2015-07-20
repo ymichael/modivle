@@ -25,7 +25,7 @@ Ivle.prototype.jsonP_ = function(endpoint, params, success, error) {
     dataType: 'jsonp',
     data: _.extend({
       "APIKey" : Ivle.API_KEY,
-      "Token" : this.token,
+      "AuthToken" : this.token,
       "output" : "json"}, params),
     contentType:"application/x-javascript",
     url: Ivle.BASE_URL + endpoint,
@@ -37,22 +37,23 @@ Ivle.prototype.jsonP_ = function(endpoint, params, success, error) {
 
 
 Ivle.prototype.validate = function(callback) {
-  this.jsonP_('Validate', {}, callback);
+  this.jsonP_('Validate', {
+    "Token" : this.token
+  }, callback);
 };
 
 
 Ivle.prototype.getUid = function(callback) {
-  this.jsonP_('UserID_Get', {}, callback);
+  this.jsonP_('UserID_Get', {
+    "Token" : this.token
+  }, callback);
 };
 
 
 Ivle.prototype.getUname = function(callback) {
-  this.jsonP_('UserName_Get', {}, callback);
-};
-
-
-Ivle.prototype.getUname = function(callback) {
-  this.jsonP_('UserEmail_Get', {}, callback);
+  this.jsonP_('UserName_Get', {
+    "Token" : this.token,
+  }, callback);
 };
 
 
