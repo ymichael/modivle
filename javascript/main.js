@@ -477,7 +477,7 @@ var AnnouncementView = React.createClass({
           </div>
           <span className='date'>{utils.readabledate(this.props.date)}</span>
         </div>
-      <div className='postbody'>{this.props.contents}</div>
+      <div className='postbody'dangerouslySetInnerHTML={{__html: this.props.contents}} />
       </div>
     );
   }
