@@ -78,7 +78,7 @@ var calcfilesize = function(bytes){
 };
 
 var supportImage = function(htmlToParse) {
-  var regexImg = /(img.*src=")\/([\w\/.\-\?=:;&]+")/g;
+  var regexImg = /(img.*?src=")\/([\w\/.\-\?=:;&]+")/g;
   return htmlToParse.replace(regexImg, '$1https://ivle.nus.edu.sg/$2');
 };
 
