@@ -231,7 +231,7 @@ Ivle.prototype.getForumHeadingThreads = function(headingId, callback) {
         author: result.Poster.Name,
         email: result.Poster.Email,
         uid: result.Poster.UserID,
-        body: result.PostBody,
+        body: utils.supportImage(result.PostBody),
         date: utils.nicedate(result.PostDate_js)
       };
     });
@@ -253,7 +253,7 @@ Ivle.prototype.parsePosts_ = function(posts) {
       author: post.Poster.Name,
       email: post.Poster.Email,
       uid: post.Poster.UserID,
-      body: post.PostBody,
+      body: utils.supportImage(post.PostBody),
       date: utils.nicedate(post.PostDate_js),
       children: this.parsePosts_(post.Threads.reverse())
     };

@@ -77,6 +77,10 @@ var calcfilesize = function(bytes){
   return  bytes + " " + unit[index];
 };
 
+var supportImage = function(htmlToParse) {
+  var regexImg = /(img.*src=")\/([\w\/.\-\?=:;&]+")/g;
+  return htmlToParse.replace(regexImg, '$1https://ivle.nus.edu.sg/$2');
+};
 
 module.exports.nicedate = nicedate;
 module.exports.readabledate = readabledate;
@@ -84,3 +88,4 @@ module.exports.isWelcomePage = isWelcomePage;
 module.exports.redirectToWelcomePage = redirectToWelcomePage;
 module.exports.redirectToMainPage = redirectToMainPage;
 module.exports.calcfilesize = calcfilesize;
+module.exports.supportImage = supportImage;
