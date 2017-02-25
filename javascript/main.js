@@ -22,7 +22,7 @@ var App = React.createClass({
       activeModule: null,
       currentFolder: null,
       currentThread: null,
-      currentView: "announcements",
+      currentView: "overview",
 
       // Sidebar state
       sidebarOpen: true,
@@ -98,7 +98,7 @@ var App = React.createClass({
     }
     // Try to match views.
     view = paths[1];
-    if (['announcements', 'forum', 'workbin'].indexOf(view) != -1) {
+    if (['overview', 'announcements', 'forum', 'workbin'].indexOf(view) != -1) {
       currentState.currentView = view;
       if (paths.length == 2) {
         this.setState(currentState, this.updateForView);
@@ -270,6 +270,13 @@ var App = React.createClass({
           this.state.activeModule.announcements = announcements;
           this.stateUpdated();
         }.bind(this));
+    } else if (this.state.currentView == "overview") {
+      this.props.ivle.getOverview(
+        this.state.activeModule.id,
+        function(overview) {
+          this.state.activeModule.overview = overview;
+          this.stateUpdated();
+        }.bind(this));
     } else if (this.state.currentView == "workbin") {
       this.props.ivle.getWorkbin(
         this.state.activeModule.id,
@@ -419,7 +426,7 @@ var ModulesView = React.createClass({
 
 var NavView = React.createClass({
   render: function() {
-    var navs = _.map(['announcements', 'workbin', 'forum'], function(tab) {
+    var navs = _.map(['overview', 'announcements', 'workbin', 'forum'], function(tab) {
       var active = tab == this.props.currentView ? "active" : "";
       return <div key={tab} className={'tab ' + active}
         onClick={this.props.viewSelected}>{tab}</div>
@@ -448,6 +455,8 @@ var ContentView = React.createClass({
           module={this.props.activeModule} />
       } else if (this.props.currentView == 'announcements') {
         contents = <AnnouncementsView module={this.props.activeModule} />
+      } else if (this.props.currentView == 'overview') {
+        contents = <OverviewView module={this.props.activeModule} />
       }
     }
     return (
@@ -499,6 +508,44 @@ var AnnouncementsView = React.createClass({
     }
     return (
       <div className="announcementsview">{contents}</div>
+    );
+  }
+});
+
+/**
+ * Overview
+ */
+var OverviewItemView = React.createClass({
+  render: function() {
+    return (
+      <div className="overviewview tabpost" key={this.props.id}>
+        <div className='posttitle'>
+          <div className='posttitlemain'>
+            <span className='main'>{this.props.title}</span>
+          </div>
+        </div>
+      <div className='postbody'dangerouslySetInnerHTML={{__html: this.props.contents}} />
+      </div>
+    );
+  }
+})
+
+var OverviewView = React.createClass({
+  render: function() {
+    var contents = "";
+    if (!this.props.module.overview) {
+      contents = <div className='inforow tabrow'>loading...</div>
+    } else {
+      if (this.props.module.overview.length == 0) {
+        contents = <div className='inforow tabrow'>no overview.</div> 
+      } else {
+        contents = this.props.module.overview.map(function(overview) {
+          return <OverviewItemView {...overview} />
+        });
+      }
+    }
+    return (
+      <div className="overviewview">{contents}</div>
     );
   }
 });

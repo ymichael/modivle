@@ -75,6 +75,23 @@ Ivle.prototype.getModules = function(callback) {
 };
 
 
+Ivle.prototype.getOverview = function(courseId, callback) {
+  this.jsonP_('Module_Information', {
+      "CourseId" : courseId,
+      "Duration" : 0
+  }, function(data) {
+    var overview = _.map(data.Results, function(result) {
+      return {
+        'id': result.ID,
+        'title': result.Title,
+        'contents': result.Description
+      };
+    });
+    callback(overview);
+  });
+};
+
+
 Ivle.prototype.getAnnouncements = function(courseId, callback) {
   this.jsonP_('Announcements', {
       "CourseId" : courseId,
